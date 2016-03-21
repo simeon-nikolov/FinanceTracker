@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`users` (
   `password` VARCHAR(50) NOT NULL,
   `email` VARCHAR(25) NOT NULL,
   `currency_id` INT(11) NOT NULL,
+  `isAdmin` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
