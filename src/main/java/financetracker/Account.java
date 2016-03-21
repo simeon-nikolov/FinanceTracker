@@ -1,6 +1,6 @@
 package financetracker;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import exceptions.InvalidArgumentException;
@@ -26,10 +26,11 @@ public class Account implements IAccount {
 		this.setId(id);
 		this.setTitle(title);
 		this.setBalance(balance);
-		this.expenses = new ArrayList<Expenses>();
-		this.incomes = new ArrayList<Income>();
+		this.expenses = new LinkedList<Expenses>();
+		this.incomes = new LinkedList<Income>();
 	}
 	
+	@Override
 	public void addExpense(Expenses expense) throws InvalidArgumentException {
 		if (expense == null) {
 			throw new InvalidArgumentException(OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE);
@@ -37,6 +38,7 @@ public class Account implements IAccount {
 		this.expenses.add(expense);
 	}
 	
+	@Override
 	public void addIncome(Income income) throws InvalidArgumentException {
 		if (income == null) {
 			throw new InvalidArgumentException(OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE);
@@ -44,18 +46,22 @@ public class Account implements IAccount {
 		this.incomes.add(income);
 	}
 	
+	@Override
 	public int getId() {
 		return id;
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
 
+	@Override
 	public int getBalance() {
 		return balance;
 	}
 
+	@Override
 	public void setId(int id) throws InvalidArgumentException {
 		if (id < 0) {
 			throw new InvalidArgumentException(ID_ERROR_MESSAGE);
@@ -63,6 +69,7 @@ public class Account implements IAccount {
 		this.id = id;
 	}
 
+	@Override
 	public void setTitle(String title) throws InvalidArgumentException {
 		if (title == null || title.isEmpty()) {
 			throw new InvalidArgumentException(TITLE_ERROR_MESSAGE);
@@ -70,6 +77,7 @@ public class Account implements IAccount {
 		this.title = title;
 	}
 
+	@Override
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
