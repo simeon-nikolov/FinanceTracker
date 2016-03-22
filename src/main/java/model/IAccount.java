@@ -1,10 +1,10 @@
-package financetracker;
+package model;
 
 import exceptions.InvalidArgumentException;
 
 public interface IAccount {
 	
-	void addExpense(Expenses expense) throws InvalidArgumentException;
+	void addExpense(Expense expense) throws InvalidArgumentException;
 	
 	void addIncome(Income income) throws InvalidArgumentException;
 	

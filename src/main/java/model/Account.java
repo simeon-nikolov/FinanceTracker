@@ -1,4 +1,4 @@
-package financetracker;
+package model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class Account implements IAccount {
 	private int id;
 	private String title;
 	private int balance;	
-	private List<Expenses> expenses;
+	private List<Expense> expenses;
 	private List<Income> incomes;
 
 	public Account() {}	
@@ -26,12 +26,12 @@ public class Account implements IAccount {
 		this.setId(id);
 		this.setTitle(title);
 		this.setBalance(balance);
-		this.expenses = new LinkedList<Expenses>();
+		this.expenses = new LinkedList<Expense>();
 		this.incomes = new LinkedList<Income>();
 	}
 	
 	@Override
-	public void addExpense(Expenses expense) throws InvalidArgumentException {
+	public void addExpense(Expense expense) throws InvalidArgumentException {
 		if (expense == null) {
 			throw new InvalidArgumentException(OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE);
 		}
