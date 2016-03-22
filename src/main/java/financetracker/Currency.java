@@ -1,5 +1,5 @@
 package financetracker;
 
 public enum Currency {
-	BGN, USD, EU
+	BGN, USD, EUR
 }
