@@ -1,7 +1,12 @@
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import exceptions.InvalidArgumentException;
 
+@Entity
+@Table(name="accounts")
 public class Account implements IAccount {
 	
 	private static final String OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE = "Object can not be null!";

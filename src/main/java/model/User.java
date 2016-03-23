@@ -1,7 +1,22 @@
 package model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import exceptions.InvalidArgumentException;
 
+@Entity
+@Table(name="users")
 public class User implements IUser {
 
 	private static final String USERNAME_ERROR_MESSAGE = "Username can not be null or empty string!";
@@ -9,12 +24,23 @@ public class User implements IUser {
 	private static final String PASSWORD_ERROR_MESSAGE = "Password can not be null or empty string!";
 	private static final String EMAIL_ERROR_MESSAGE = "Email can not be null or empty string!";
 	
-	
-	
+	@Id
+	@Column
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	
+	@Column
 	private String username;
+	
+	@Column
 	private String password;
+	
+	@Column
 	private String email;
+	
+	@ManyToOne(cascade=CascadeType.ALL, 
+			fetch = FetchType.EAGER)
+	@JoinColumn(name="currency_id")
 	private Currency currency;
 	
 	
@@ -49,8 +75,15 @@ public class User implements IUser {
 	}
 	
 	@Override
+	@Enumerated(EnumType.STRING)
 	public Currency getCurrency() {
 		return currency;		
+	}
+	
+	@Override
+	@Enumerated(EnumType.STRING)
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
 	
 	@Override
@@ -84,11 +117,4 @@ public class User implements IUser {
 		}
 		this.email = email;
 	}
-	
-	@Override
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-	
-	
 }
