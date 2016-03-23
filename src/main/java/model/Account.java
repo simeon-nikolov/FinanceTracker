@@ -1,8 +1,5 @@
 package model;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import exceptions.InvalidArgumentException;
 
 public class Account implements IAccount {
@@ -15,8 +12,6 @@ public class Account implements IAccount {
 	private int id;
 	private String title;
 	private int balance;	
-	private List<Expense> expenses;
-	private List<Income> incomes;
 
 	public Account() {}	
 	
@@ -26,24 +21,6 @@ public class Account implements IAccount {
 		this.setId(id);
 		this.setTitle(title);
 		this.setBalance(balance);
-		this.expenses = new LinkedList<Expense>();
-		this.incomes = new LinkedList<Income>();
-	}
-	
-	@Override
-	public void addExpense(Expense expense) throws InvalidArgumentException {
-		if (expense == null) {
-			throw new InvalidArgumentException(OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE);
-		}
-		this.expenses.add(expense);
-	}
-	
-	@Override
-	public void addIncome(Income income) throws InvalidArgumentException {
-		if (income == null) {
-			throw new InvalidArgumentException(OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE);
-		}
-		this.incomes.add(income);
 	}
 	
 	@Override
