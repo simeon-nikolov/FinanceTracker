@@ -2,6 +2,16 @@ package model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import exceptions.InvalidArgumentException;
 
 public class Budget implements IBudget {
@@ -10,12 +20,30 @@ public class Budget implements IBudget {
 	private static final String BUGHET_AMOUNT_ERROR_MESSAGE = "Bughet amount can't be negative value!";
 	private static final String ID_ERROR_MESSAGE = "ID can't be a negative number!";
 	
+	@Id
+	@Column
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="budget_type_id")
 	private BudgetType budgetType;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="repeat_type_id")
 	private RepeatType repeatType;
+	
+	@Column(name="begin_date")
 	private LocalDate beginDate;
+	
+	@Column(name="end_date")
 	private LocalDate endDate;
+	
+	@Column
 	private int amount;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="currency_id")
 	private Currency currency;
 	
 	public Budget() {}
@@ -47,21 +75,25 @@ public class Budget implements IBudget {
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public BudgetType getBudgetType() {
 		return budgetType;
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public void setBudgetType(BudgetType budgetType) {
 		this.budgetType = budgetType;
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public RepeatType getRepeatType() {
 		return repeatType;
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public void setRepeatType(RepeatType repeatType) {
 		this.repeatType = repeatType;
 	}
@@ -109,11 +141,13 @@ public class Budget implements IBudget {
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public Currency getCurrency() {
 		return currency;
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
