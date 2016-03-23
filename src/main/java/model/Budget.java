@@ -4,16 +4,23 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.security.core.userdetails.User;
 
 import exceptions.InvalidArgumentException;
 
+@Entity
+@Table(name="budgets")
 public class Budget implements IBudget {
 	private static final String END_DATE_ERROR_MESSAGE = "End date is null!";
 	private static final String BEGIN_DATE_ERROR_MESSAGE = "Begin date is null!";
@@ -25,11 +32,13 @@ public class Budget implements IBudget {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL, 
+			fetch = FetchType.EAGER)
 	@JoinColumn(name="budget_type_id")
 	private BudgetType budgetType;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL, 
+			fetch = FetchType.EAGER)
 	@JoinColumn(name="repeat_type_id")
 	private RepeatType repeatType;
 	
@@ -42,14 +51,20 @@ public class Budget implements IBudget {
 	@Column
 	private int amount;
 	
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL, 
+			fetch = FetchType.EAGER)
 	@JoinColumn(name="currency_id")
 	private Currency currency;
+	
+	@ManyToOne(cascade=CascadeType.ALL, 
+			fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	public Budget() {}
 	
 	public Budget(int id, BudgetType budgetType, RepeatType repeatType, 
-			LocalDate beginDate, LocalDate endDate, int amount, Currency currency) 
+			LocalDate beginDate, LocalDate endDate, int amount, Currency currency, User user) 
 					throws InvalidArgumentException {
 		this.setId(id);
 		this.setBudgetType(budgetType);
@@ -150,5 +165,13 @@ public class Budget implements IBudget {
 	@Enumerated(EnumType.STRING)
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

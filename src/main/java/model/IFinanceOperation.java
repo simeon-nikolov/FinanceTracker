@@ -22,9 +22,9 @@ public interface IFinanceOperation {
 
 	void setCategory(String category) throws InvalidArgumentException;
 
-	IAccount getAccount();
+	Account getAccount();
 
-	void setAccount(IAccount account) throws InvalidArgumentException;
+	void setAccount(Account account) throws InvalidArgumentException;
 
 	LocalDate getDate();
 
@@ -37,5 +37,9 @@ public interface IFinanceOperation {
 	RepeatType getRepeatType();
 
 	void setRepeatType(RepeatType repeatType);
+
+	String getType();
+
+	void setType(String type);
 
 }

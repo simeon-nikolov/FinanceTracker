@@ -2,8 +2,23 @@ package model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import exceptions.InvalidArgumentException;
 
+@Entity
+@Table(name="finance_operations")
 public abstract class FinanceOperation implements IFinanceOperation {
 	private static final String DATE_ERROR_MESSAGE = "Date is null!";
 	private static final String DESCRIPTION_ERROR_MESSAGE = "The description is null or empty string!";
@@ -12,19 +27,44 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	private static final String MONEY_AMOUNT_ERROR_MESSAGE = "Money amount can't be a negative value!";
 	private static final String ID_ERROR_MESSAGE = "ID can't be a negative number!";
 	
+	@Id
+	@Column
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	
+	@Column
 	private int amount;
+
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="currency_id")
 	private Currency currency;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="category_id")
 	private String category;
-	private IAccount account;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="account_id")
+	private Account account;
+	
+	@Column
 	private LocalDate date;
+	
+	@Column
 	private String description;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="repeat_type_id")
 	private RepeatType repeatType;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="finance_operatio_type_id")
+	private String type;
 	
 	public FinanceOperation() {}
 
 	public FinanceOperation(int id, int amount, Currency currency, String category, 
-			IAccount account, LocalDate date, String description, RepeatType repeatType) 
+			Account account, LocalDate date, String description, RepeatType repeatType) 
 					throws InvalidArgumentException {
 		this.setId(id);
 		this.setAmount(amount);
@@ -67,11 +107,13 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public Currency getCurrency() {
 		return currency;
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
@@ -91,12 +133,12 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	}
 
 	@Override
-	public IAccount getAccount() {
+	public Account getAccount() {
 		return account;
 	}
 
 	@Override
-	public void setAccount(IAccount account) throws InvalidArgumentException {
+	public void setAccount(Account account) throws InvalidArgumentException {
 		if (account == null) {
 			throw new InvalidArgumentException(ACCOUNT_ERROR_MESSAGE);
 		}
@@ -133,12 +175,24 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public RepeatType getRepeatType() {
 		return repeatType;
 	}
 
 	@Override
+	@Enumerated(EnumType.STRING)
 	public void setRepeatType(RepeatType repeatType) {
 		this.repeatType = repeatType;
+	}
+	
+	@Override
+	public String getType() {
+		return type;
+	}
+
+	@Override
+	public void setType(String type) {
+		this.type = type;
 	}
 }
