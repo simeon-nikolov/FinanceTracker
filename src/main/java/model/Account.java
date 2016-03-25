@@ -13,7 +13,7 @@ import exceptions.InvalidArgumentException;
 @Table(name="accounts")
 public class Account implements IAccount {
 	
-	private static final String OBJECT_CAN_NOT_BE_NULL_ERROR_MESSAGE = "Object can not be null!";
+	
 	private static final String TITLE_ERROR_MESSAGE = "Invalid argument - string is null or empty!";
 	private static final String ID_ERROR_MESSAGE = "ID can't be a negative number!";
 	
