@@ -1,7 +1,5 @@
 package model;
 
-import java.time.LocalDate;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.LocalDate;
 
 import exceptions.InvalidArgumentException;
 
@@ -35,11 +36,13 @@ public class Budget {
 	@Enumerated(EnumType.STRING)
 	private RepeatType repeatType;
 	
-//	@Column(name="begin_date")
-//	private LocalDate beginDate;
-//	
-//	@Column(name="end_date")
-//	private LocalDate endDate;
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	@Column(name="begin_date")
+	private LocalDate beginDate;
+	
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
+	@Column(name="end_date")
+	private LocalDate endDate;
 	
 	@Column
 	private int amount;
@@ -59,8 +62,8 @@ public class Budget {
 		this.setId(id);
 		this.setBudgetType(budgetType);
 		this.setRepeatType(repeatType);
-//		this.setBeginDate(beginDate);
-//		this.setEndDate(endDate);
+		this.setBeginDate(beginDate);
+		this.setEndDate(endDate);
 		this.setAmount(amount);
 		this.setCurrency(currency);
 	}
@@ -93,33 +96,29 @@ public class Budget {
 		this.repeatType = repeatType;
 	}
 
-//	@Override
-//	public LocalDate getBeginDate() {
-//		return beginDate;
-//	}
-//
-//	@Override
-//	public void setBeginDate(LocalDate beginDate) throws InvalidArgumentException {
-//		if (beginDate == null) {
-//			throw new InvalidArgumentException(BEGIN_DATE_ERROR_MESSAGE);
-//		}
-//		
-//		this.beginDate = beginDate;
-//	}
-//
-//	@Override
-//	public LocalDate getEndDate() {
-//		return endDate;
-//	}
-//
-//	@Override
-//	public void setEndDate(LocalDate endDate) throws InvalidArgumentException {
-//		if (endDate == null) {
-//			throw new InvalidArgumentException(END_DATE_ERROR_MESSAGE);
-//		}
-//		
-//		this.endDate = endDate;
-//	}
+	public LocalDate getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(LocalDate beginDate) throws InvalidArgumentException {
+		if (beginDate == null) {
+			throw new InvalidArgumentException(BEGIN_DATE_ERROR_MESSAGE);
+		}
+		
+		this.beginDate = beginDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) throws InvalidArgumentException {
+		if (endDate == null) {
+			throw new InvalidArgumentException(END_DATE_ERROR_MESSAGE);
+		}
+		
+		this.endDate = endDate;
+	}
 
 	public int getAmount() {
 		return amount;

@@ -57,12 +57,12 @@
 
 		<beans:property name="hibernateProperties">
 			<beans:props>
-				<beans:prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</beans:prop>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</beans:prop>
 				<beans:prop key="hibernate.show_sql">true</beans:prop>
 			</beans:props>
 		</beans:property>
 
-		<beans:property name="packagesToScan" value="bg.jwd.uni.entities" />
+		<beans:property name="packagesToScan" value="model" />
 	</beans:bean>
 
 	<beans:bean id="transactionManager"
