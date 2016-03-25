@@ -28,7 +28,7 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	
 	@Id
 	@Column
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@Column
@@ -37,7 +37,7 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	@JoinColumn(name="currency")
 	private Currency currency;
 	
-	@JoinColumn(name="category_id")
+	@JoinColumn(name="category")
 	private String category;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -50,10 +50,11 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	@Column
 	private String description;
 	
-	@JoinColumn(name="repeat_type_id")
+	@JoinColumn(name="repeat_type")
+	@Enumerated(EnumType.STRING)
 	private RepeatType repeatType;
 	
-	@JoinColumn(name="finance_operatio_type_id")
+	@JoinColumn(name="finance_operatio_type")
 	private String type;
 	
 	public FinanceOperation() {}
@@ -102,13 +103,11 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	}
 
 	@Override
-	@Enumerated(EnumType.STRING)
 	public Currency getCurrency() {
 		return currency;
 	}
 
 	@Override
-	@Enumerated(EnumType.STRING)
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}

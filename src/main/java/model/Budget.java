@@ -9,16 +9,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.security.core.userdetails.User;
 
 import exceptions.InvalidArgumentException;
 
 @Entity
 @Table(name="budgets")
-public class Budget implements IBudget {
+public class Budget {
 	private static final String END_DATE_ERROR_MESSAGE = "End date is null!";
 	private static final String BEGIN_DATE_ERROR_MESSAGE = "Begin date is null!";
 	private static final String BUGHET_AMOUNT_ERROR_MESSAGE = "Bughet amount can't be negative value!";
@@ -26,28 +24,31 @@ public class Budget implements IBudget {
 	
 	@Id
 	@Column
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@JoinColumn(name="budget_type_id")
+	@Column(name="budget_type")
+	@Enumerated(EnumType.STRING)
 	private BudgetType budgetType;
 	
-	@JoinColumn(name="repeat_type_id")
+	@Column(name="repeat_type")
+	@Enumerated(EnumType.STRING)
 	private RepeatType repeatType;
 	
-	@Column(name="begin_date")
-	private LocalDate beginDate;
-	
-	@Column(name="end_date")
-	private LocalDate endDate;
+//	@Column(name="begin_date")
+//	private LocalDate beginDate;
+//	
+//	@Column(name="end_date")
+//	private LocalDate endDate;
 	
 	@Column
 	private int amount;
 	
-	@JoinColumn(name="currency")
+	@Column(name="currency")
+	@Enumerated(EnumType.STRING)
 	private Currency currency;
 	
-	@JoinColumn(name="user_id")
+	@ManyToOne
 	private User user;
 	
 	public Budget() {}
@@ -58,18 +59,16 @@ public class Budget implements IBudget {
 		this.setId(id);
 		this.setBudgetType(budgetType);
 		this.setRepeatType(repeatType);
-		this.setBeginDate(beginDate);
-		this.setEndDate(endDate);
+//		this.setBeginDate(beginDate);
+//		this.setEndDate(endDate);
 		this.setAmount(amount);
 		this.setCurrency(currency);
 	}
 
-	@Override
 	public int getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(int id) throws InvalidArgumentException {
 		if (id < 0) {
 			throw new InvalidArgumentException(ID_ERROR_MESSAGE);
@@ -78,64 +77,54 @@ public class Budget implements IBudget {
 		this.id = id;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public BudgetType getBudgetType() {
 		return budgetType;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public void setBudgetType(BudgetType budgetType) {
 		this.budgetType = budgetType;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public RepeatType getRepeatType() {
 		return repeatType;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public void setRepeatType(RepeatType repeatType) {
 		this.repeatType = repeatType;
 	}
 
-	@Override
-	public LocalDate getBeginDate() {
-		return beginDate;
-	}
+//	@Override
+//	public LocalDate getBeginDate() {
+//		return beginDate;
+//	}
+//
+//	@Override
+//	public void setBeginDate(LocalDate beginDate) throws InvalidArgumentException {
+//		if (beginDate == null) {
+//			throw new InvalidArgumentException(BEGIN_DATE_ERROR_MESSAGE);
+//		}
+//		
+//		this.beginDate = beginDate;
+//	}
+//
+//	@Override
+//	public LocalDate getEndDate() {
+//		return endDate;
+//	}
+//
+//	@Override
+//	public void setEndDate(LocalDate endDate) throws InvalidArgumentException {
+//		if (endDate == null) {
+//			throw new InvalidArgumentException(END_DATE_ERROR_MESSAGE);
+//		}
+//		
+//		this.endDate = endDate;
+//	}
 
-	@Override
-	public void setBeginDate(LocalDate beginDate) throws InvalidArgumentException {
-		if (beginDate == null) {
-			throw new InvalidArgumentException(BEGIN_DATE_ERROR_MESSAGE);
-		}
-		
-		this.beginDate = beginDate;
-	}
-
-	@Override
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	@Override
-	public void setEndDate(LocalDate endDate) throws InvalidArgumentException {
-		if (endDate == null) {
-			throw new InvalidArgumentException(END_DATE_ERROR_MESSAGE);
-		}
-		
-		this.endDate = endDate;
-	}
-
-	@Override
 	public int getAmount() {
 		return amount;
 	}
 
-	@Override
 	public void setAmount(int amount) throws InvalidArgumentException {
 		if (amount < 0) {
 			throw new InvalidArgumentException(BUGHET_AMOUNT_ERROR_MESSAGE);
@@ -144,14 +133,10 @@ public class Budget implements IBudget {
 		this.amount = amount;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public Currency getCurrency() {
 		return currency;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}

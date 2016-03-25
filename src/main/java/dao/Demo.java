@@ -1,14 +1,20 @@
 package dao;
 
-import model.User;
+import model.Budget;
+
 
 public class Demo {
 	
 	public static void main(String[] args) {
-		UserDAO userDAO = new UserDAO();
-		User user = userDAO.getUserById(2);
-		System.out.println(user.getUsername());
-		System.out.println(user.getCurrency());
+		BudgetDAO dao = new BudgetDAO();
+		Budget budget = dao.getBudgetById(1);
+		System.out.println(budget.getAmount());
+//		System.out.println(budget.getBeginDate());
+//		System.out.println(budget.getEndDate());
+		System.out.println(budget.getBudgetType());
+		System.out.println(budget.getRepeatType());
+		System.out.println(budget.getCurrency());
+		System.out.println(budget.getUser().getUsername());
 	}
 
 }

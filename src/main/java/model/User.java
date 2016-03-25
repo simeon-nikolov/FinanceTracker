@@ -73,13 +73,11 @@ public class User implements IUser {
 	}
 	
 	@Override
-	@Enumerated(EnumType.STRING)
 	public Currency getCurrency() {
 		return currency;		
 	}
 	
 	@Override
-	@Enumerated(EnumType.STRING)
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
