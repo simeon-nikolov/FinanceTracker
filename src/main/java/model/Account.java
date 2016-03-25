@@ -11,7 +11,7 @@ import exceptions.InvalidArgumentException;
 
 @Entity
 @Table(name="accounts")
-public class Account implements IAccount {
+public class Account {
 	
 	
 	private static final String TITLE_ERROR_MESSAGE = "Invalid argument - string is null or empty!";
@@ -38,22 +38,18 @@ public class Account implements IAccount {
 		this.setBalance(balance);
 	}
 	
-	@Override
 	public int getId() {
 		return id;
 	}
 
-	@Override
 	public String getTitle() {
 		return title;
 	}
 
-	@Override
 	public int getBalance() {
 		return balance;
 	}
 
-	@Override
 	public void setId(int id) throws InvalidArgumentException {
 		if (id < 0) {
 			throw new InvalidArgumentException(ID_ERROR_MESSAGE);
@@ -61,7 +57,6 @@ public class Account implements IAccount {
 		this.id = id;
 	}
 
-	@Override
 	public void setTitle(String title) throws InvalidArgumentException {
 		if (title == null || title.isEmpty()) {
 			throw new InvalidArgumentException(TITLE_ERROR_MESSAGE);
@@ -69,7 +64,6 @@ public class Account implements IAccount {
 		this.title = title;
 	}
 
-	@Override
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
