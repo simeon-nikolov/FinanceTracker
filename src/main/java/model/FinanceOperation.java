@@ -14,11 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import exceptions.InvalidArgumentException;
 
 @Entity
 @Table(name="finance_operations")
-public abstract class FinanceOperation implements IFinanceOperation {
+public abstract class FinanceOperation {
 	private static final String DATE_ERROR_MESSAGE = "Date is null!";
 	private static final String DESCRIPTION_ERROR_MESSAGE = "The description is null or empty string!";
 	private static final String ACCOUNT_ERROR_MESSAGE = "Account is null!";
@@ -45,22 +47,25 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	private Account account;
 	
 	@Column
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
 	private LocalDate date;
 	
 	@Column
 	private String description;
 	
-	@JoinColumn(name="repeat_type")
+	@Column(name="repeat_type")
 	@Enumerated(EnumType.STRING)
 	private RepeatType repeatType;
 	
-	@JoinColumn(name="finance_operatio_type")
-	private String type;
+	@Column(name="finance_operatio_type")
+	@Enumerated(EnumType.STRING)
+	private FinanceOperationType financeOperationType;
 	
 	public FinanceOperation() {}
 
 	public FinanceOperation(int id, int amount, Currency currency, String category, 
-			Account account, LocalDate date, String description, RepeatType repeatType) 
+			Account account, LocalDate date, String description, RepeatType repeatType,
+			FinanceOperationType financeOperationType)
 					throws InvalidArgumentException {
 		this.setId(id);
 		this.setAmount(amount);
@@ -72,12 +77,10 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.setRepeatType(repeatType);
 	}
 
-	@Override
 	public int getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(int id) throws InvalidArgumentException {
 	if (id < 0) {
 		throw new InvalidArgumentException(ID_ERROR_MESSAGE);
@@ -86,14 +89,12 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.id = id;
 	}
 
-	@Override
 	public int getAmount() {
 		
 		
 		return amount;
 	}
 
-	@Override
 	public void setAmount(int amount) throws InvalidArgumentException {
 		if (amount < 0) {
 			throw new InvalidArgumentException(MONEY_AMOUNT_ERROR_MESSAGE);
@@ -102,22 +103,18 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.amount = amount;
 	}
 
-	@Override
 	public Currency getCurrency() {
 		return currency;
 	}
 
-	@Override
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
 
-	@Override
 	public String getCategory() {
 		return category;
 	}
 
-	@Override
 	public void setCategory(String category) throws InvalidArgumentException {
 		if (category == null || category.trim().equals("")) {
 			throw new InvalidArgumentException(CATEGORY_ERROR_MESSAGE);
@@ -126,12 +123,10 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.category = category;
 	}
 
-	@Override
 	public Account getAccount() {
 		return account;
 	}
 
-	@Override
 	public void setAccount(Account account) throws InvalidArgumentException {
 		if (account == null) {
 			throw new InvalidArgumentException(ACCOUNT_ERROR_MESSAGE);
@@ -140,12 +135,10 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.account = account;
 	}
 
-	@Override
 	public LocalDate getDate() {
 		return date;
 	}
 
-	@Override
 	public void setDate(LocalDate date) throws InvalidArgumentException {
 		if (date == null) {
 			throw new InvalidArgumentException(DATE_ERROR_MESSAGE);
@@ -154,12 +147,10 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.date = date;
 	}
 
-	@Override
 	public String getDescription() {
 		return description;
 	}
 
-	@Override
 	public void setDescription(String description) throws InvalidArgumentException {
 		if (description == null || description.trim().equals("")) {
 			throw new InvalidArgumentException(DESCRIPTION_ERROR_MESSAGE);
@@ -168,25 +159,19 @@ public abstract class FinanceOperation implements IFinanceOperation {
 		this.description = description;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public RepeatType getRepeatType() {
 		return repeatType;
 	}
 
-	@Override
-	@Enumerated(EnumType.STRING)
 	public void setRepeatType(RepeatType repeatType) {
 		this.repeatType = repeatType;
 	}
 	
-	@Override
-	public String getType() {
-		return type;
+	public FinanceOperationType getFinanceOperationType() {
+		return financeOperationType;
 	}
 
-	@Override
-	public void setType(String type) {
-		this.type = type;
+	public void setFinanceOperationType(FinanceOperationType financeOperationType) {
+		this.financeOperationType = financeOperationType;
 	}
 }
