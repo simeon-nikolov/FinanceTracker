@@ -33,7 +33,7 @@ public class BudgetDAO implements IBudgetDAO {
 	public void delete(Budget budget) {
 		sessionFactory.getCurrentSession().beginTransaction();
 		sessionFactory.getCurrentSession().delete(budget);
-		sessionFactory.getCurrentSession().update(budget);
+		sessionFactory.getCurrentSession().getTransaction().commit();
 	}
 
 	@Override
