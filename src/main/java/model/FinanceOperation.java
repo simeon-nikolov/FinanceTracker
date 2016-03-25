@@ -34,7 +34,7 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	@Column
 	private int amount;
 
-	@JoinColumn(name="currency_id")
+	@JoinColumn(name="currency")
 	private Currency currency;
 	
 	@JoinColumn(name="category_id")

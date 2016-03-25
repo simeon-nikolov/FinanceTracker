@@ -44,7 +44,7 @@ public class Budget implements IBudget {
 	@Column
 	private int amount;
 	
-	@JoinColumn(name="currency_id")
+	@JoinColumn(name="currency")
 	private Currency currency;
 	
 	@JoinColumn(name="user_id")

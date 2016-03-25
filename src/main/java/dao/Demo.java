@@ -8,6 +8,7 @@ public class Demo {
 		UserDAO userDAO = new UserDAO();
 		User user = userDAO.getUserById(2);
 		System.out.println(user.getUsername());
+		System.out.println(user.getCurrency());
 	}
 
 }
