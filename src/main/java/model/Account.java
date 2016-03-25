@@ -1,6 +1,10 @@
 package model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import exceptions.InvalidArgumentException;
@@ -13,9 +17,15 @@ public class Account implements IAccount {
 	private static final String TITLE_ERROR_MESSAGE = "Invalid argument - string is null or empty!";
 	private static final String ID_ERROR_MESSAGE = "ID can't be a negative number!";
 	
-	
+	@Id
+	@Column
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
+	
+	@Column
 	private String title;
+	
+	@Column
 	private int balance;	
 
 	public Account() {}	

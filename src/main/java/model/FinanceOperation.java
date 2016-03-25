@@ -2,7 +2,6 @@ package model;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -35,11 +34,9 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	@Column
 	private int amount;
 
-	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="currency_id")
 	private Currency currency;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="category_id")
 	private String category;
 	
@@ -53,11 +50,9 @@ public abstract class FinanceOperation implements IFinanceOperation {
 	@Column
 	private String description;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="repeat_type_id")
 	private RepeatType repeatType;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="finance_operatio_type_id")
 	private String type;
 	

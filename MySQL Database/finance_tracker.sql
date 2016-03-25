@@ -5,9 +5,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
 -- Schema finance_tracker
 -- -----------------------------------------------------
 
@@ -21,9 +18,8 @@ USE `finance_tracker` ;
 -- Table `finance_tracker`.`currencies`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`currencies` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  `currency` VARCHAR(3) NOT NULL,
+  PRIMARY KEY (`currency`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
@@ -37,17 +33,17 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`users` (
   `username` VARCHAR(20) NOT NULL,
   `password` VARCHAR(50) NOT NULL,
   `email` VARCHAR(25) NOT NULL,
-  `currency_id` INT(11) NOT NULL,
+  `currency` VARCHAR(3) NOT NULL,
   `isAdmin` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
-  INDEX `fk_users_currencies1_idx` (`currency_id` ASC),
+  INDEX `users_currencies_FK_idx` (`currency` ASC),
   CONSTRAINT `fk_users_currencies`
-    FOREIGN KEY (`currency_id`)
-    REFERENCES `finance_tracker`.`currencies` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    FOREIGN KEY (`currency`)
+    REFERENCES `finance_tracker`.`currencies` (`currency`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT)
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
@@ -105,23 +101,18 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`budgets` (
   `begin_date` DATE NULL DEFAULT NULL,
   `end_date` DATE NULL DEFAULT NULL,
   `amount` INT(11) NOT NULL,
-  `currency_id` INT(11) NOT NULL,
+  `currency` VARCHAR(3) NOT NULL,
   `budget_type_id` INT(11) NOT NULL,
   `repeat_type_id` INT(11) NOT NULL,
   `user_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_budgets_currencies1_idx` (`currency_id` ASC),
   INDEX `fk_budgets_budget_types1_idx` (`budget_type_id` ASC),
   INDEX `fk_budgets_repeat_types1_idx` (`repeat_type_id` ASC),
   INDEX `fk_budgets_users1_idx` (`user_id` ASC),
+  INDEX `fk_budgets_currencies_idx` (`currency` ASC),
   CONSTRAINT `fk_budgets_budget_types1`
     FOREIGN KEY (`budget_type_id`)
     REFERENCES `finance_tracker`.`budget_types` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_budgets_currencies1`
-    FOREIGN KEY (`currency_id`)
-    REFERENCES `finance_tracker`.`currencies` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_budgets_repeat_types1`
@@ -133,7 +124,12 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`budgets` (
     FOREIGN KEY (`user_id`)
     REFERENCES `finance_tracker`.`users` (`id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_budgets_currencies`
+    FOREIGN KEY (`currency`)
+    REFERENCES `finance_tracker`.`currencies` (`currency`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -192,7 +188,7 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `amount` INT(11) NOT NULL,
-  `currency_id` INT(11) NOT NULL,
+  `currency` VARCHAR(3) NOT NULL,
   `account_id` INT(11) NOT NULL,
   `date` DATE NOT NULL,
   `description` VARCHAR(200) NOT NULL,
@@ -201,19 +197,14 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
   `finance_operation_type_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_expenses_currencies1_idx` (`currency_id` ASC),
   INDEX `fk_expenses_accounts1_idx` (`account_id` ASC),
   INDEX `fk_expenses_repeat_types1_idx` (`repeat_type_id` ASC),
   INDEX `fk_expenses_expense_catgories1_idx` (`catgory_id` ASC),
   INDEX `fk_finance_operations_finance_operation_types1_idx` (`finance_operation_type_id` ASC),
+  INDEX `fk_finance_operations_currencies_idx` (`currency` ASC),
   CONSTRAINT `fk_expenses_accounts1`
     FOREIGN KEY (`account_id`)
     REFERENCES `finance_tracker`.`accounts` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_expenses_currencies1`
-    FOREIGN KEY (`currency_id`)
-    REFERENCES `finance_tracker`.`currencies` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_expenses_expense_catgories1`
@@ -229,6 +220,11 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
   CONSTRAINT `fk_finance_operations_finance_operation_types1`
     FOREIGN KEY (`finance_operation_type_id`)
     REFERENCES `finance_tracker`.`finance_operation_types` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_finance_operations_currencies`
+    FOREIGN KEY (`currency`)
+    REFERENCES `finance_tracker`.`currencies` (`currency`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

@@ -1,16 +1,14 @@
 package model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
 import javax.persistence.Table;
 
 import exceptions.InvalidArgumentException;
@@ -26,7 +24,7 @@ public class User implements IUser {
 	
 	@Id
 	@Column
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
 	@Column
@@ -38,12 +36,12 @@ public class User implements IUser {
 	@Column
 	private String email;
 	
-	@ManyToOne(cascade=CascadeType.ALL, 
-			fetch = FetchType.EAGER)
-	@JoinColumn(name="currency_id")
+	@JoinTable(name = "currencies", joinColumns = @JoinColumn(name = "currency"))
+	@Column(name = "currency", nullable = false, length=1)
+	@Enumerated(EnumType.STRING)
 	private Currency currency;
-	
-	
+
+	public User() {}
 	
 	public User(int id, String username, String password, String email, Currency currency)
 									throws InvalidArgumentException {
