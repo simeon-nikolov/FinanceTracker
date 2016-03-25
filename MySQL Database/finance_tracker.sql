@@ -73,9 +73,8 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `finance_tracker`.`budget_types`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`budget_types` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  `type` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`type`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -84,9 +83,8 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `finance_tracker`.`repeat_types`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`repeat_types` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  `type` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`type`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
@@ -98,28 +96,18 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`budgets` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `for` VARCHAR(45) NOT NULL,
-  `begin_date` DATE NULL DEFAULT NULL,
+  `begin_date` DATE NULL,
   `end_date` DATE NULL DEFAULT NULL,
   `amount` INT(11) NOT NULL,
   `currency` VARCHAR(3) NOT NULL,
-  `budget_type_id` INT(11) NOT NULL,
-  `repeat_type_id` INT(11) NOT NULL,
+  `budget_type` VARCHAR(15) NOT NULL,
+  `repeat_type` VARCHAR(15) NOT NULL,
   `user_id` INT(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_budgets_budget_types1_idx` (`budget_type_id` ASC),
-  INDEX `fk_budgets_repeat_types1_idx` (`repeat_type_id` ASC),
   INDEX `fk_budgets_users1_idx` (`user_id` ASC),
   INDEX `fk_budgets_currencies_idx` (`currency` ASC),
-  CONSTRAINT `fk_budgets_budget_types1`
-    FOREIGN KEY (`budget_type_id`)
-    REFERENCES `finance_tracker`.`budget_types` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_budgets_repeat_types1`
-    FOREIGN KEY (`repeat_type_id`)
-    REFERENCES `finance_tracker`.`repeat_types` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+  INDEX `fk_budgets_budget_types_idx` (`budget_type` ASC),
+  INDEX `fk_budgets_repeat_types_idx` (`repeat_type` ASC),
   CONSTRAINT `fk_budgets_users1`
     FOREIGN KEY (`user_id`)
     REFERENCES `finance_tracker`.`users` (`id`)
@@ -128,6 +116,16 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`budgets` (
   CONSTRAINT `fk_budgets_currencies`
     FOREIGN KEY (`currency`)
     REFERENCES `finance_tracker`.`currencies` (`currency`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_budgets_budget_types`
+    FOREIGN KEY (`budget_type`)
+    REFERENCES `finance_tracker`.`budget_types` (`type`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_budgets_repeat_types`
+    FOREIGN KEY (`repeat_type`)
+    REFERENCES `finance_tracker`.`repeat_types` (`type`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -138,9 +136,8 @@ DEFAULT CHARACTER SET = utf8;
 -- Table `finance_tracker`.`finance_operation_types`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operation_types` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
+  `type` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`type`))
 ENGINE = InnoDB;
 
 
@@ -150,12 +147,12 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`catgories` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `for_type_id` INT NOT NULL,
+  `for_type` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_catgories_finance_operation_types1_idx` (`for_type_id` ASC),
-  CONSTRAINT `fk_catgories_finance_operation_types1`
-    FOREIGN KEY (`for_type_id`)
-    REFERENCES `finance_tracker`.`finance_operation_types` (`id`)
+  INDEX `fk_categories_finance_operation_types_idx` (`for_type` ASC),
+  CONSTRAINT `fk_categories_finance_operation_types`
+    FOREIGN KEY (`for_type`)
+    REFERENCES `finance_tracker`.`finance_operation_types` (`type`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -169,12 +166,12 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`tags` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `for_type_id` INT NOT NULL,
+  `for_type` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_tags_finance_operation_types1_idx` (`for_type_id` ASC),
-  CONSTRAINT `fk_tags_finance_operation_types1`
-    FOREIGN KEY (`for_type_id`)
-    REFERENCES `finance_tracker`.`finance_operation_types` (`id`)
+  INDEX `fk_tags_finance_operation_types_idx` (`for_type` ASC),
+  CONSTRAINT `fk_tags_finance_operation_types`
+    FOREIGN KEY (`for_type`)
+    REFERENCES `finance_tracker`.`finance_operation_types` (`type`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -192,16 +189,16 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
   `account_id` INT(11) NOT NULL,
   `date` DATE NOT NULL,
   `description` VARCHAR(200) NOT NULL,
-  `repeat_type_id` INT(11) NOT NULL,
+  `repeat_type` VARCHAR(15) NOT NULL,
   `catgory_id` INT(11) NOT NULL,
-  `finance_operation_type_id` INT NOT NULL,
+  `finance_operation_type` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   INDEX `fk_expenses_accounts1_idx` (`account_id` ASC),
-  INDEX `fk_expenses_repeat_types1_idx` (`repeat_type_id` ASC),
   INDEX `fk_expenses_expense_catgories1_idx` (`catgory_id` ASC),
-  INDEX `fk_finance_operations_finance_operation_types1_idx` (`finance_operation_type_id` ASC),
   INDEX `fk_finance_operations_currencies_idx` (`currency` ASC),
+  INDEX `fk_finance_operations_repeat_types_idx` (`repeat_type` ASC),
+  INDEX `fk_finance_operations_finance_operation_types_idx` (`finance_operation_type` ASC),
   CONSTRAINT `fk_expenses_accounts1`
     FOREIGN KEY (`account_id`)
     REFERENCES `finance_tracker`.`accounts` (`id`)
@@ -212,19 +209,19 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
     REFERENCES `finance_tracker`.`catgories` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_expenses_repeat_types1`
-    FOREIGN KEY (`repeat_type_id`)
-    REFERENCES `finance_tracker`.`repeat_types` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_finance_operations_finance_operation_types1`
-    FOREIGN KEY (`finance_operation_type_id`)
-    REFERENCES `finance_tracker`.`finance_operation_types` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_finance_operations_currencies`
     FOREIGN KEY (`currency`)
     REFERENCES `finance_tracker`.`currencies` (`currency`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_finance_operations_repeat_types`
+    FOREIGN KEY (`repeat_type`)
+    REFERENCES `finance_tracker`.`repeat_types` (`type`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_finance_operations_finance_operation_types`
+    FOREIGN KEY (`finance_operation_type`)
+    REFERENCES `finance_tracker`.`finance_operation_types` (`type`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
