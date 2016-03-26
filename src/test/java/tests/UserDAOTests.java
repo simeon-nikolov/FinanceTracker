@@ -1,28 +1,51 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+
+import model.Currency;
+import model.User;
 
 import org.junit.Test;
 
 import dao.IUserDAO;
 import dao.UserDAO;
 import exceptions.InvalidArgumentException;
-import model.Currency;
-import model.User;
 
 public class UserDAOTests {
 
 	private IUserDAO dao = new UserDAO();
 	
 	@Test
-	public void testAddUser() {
-		User user = new User();
+	public void testGetUserById() {
 		try {
-			user.setUsername("user3");
+			int randNumber = (int) (Math.random() * 10_000);
+			User newUser = new User();
+			newUser.setUsername("testusername" + randNumber);
+			newUser.setPassword("124356");
+			newUser.setEmail("testemail" + randNumber + "@asd.asd");
+			newUser.setCurrency(Currency.BGN);
+			int id = dao.addUser(newUser);
+			User user = dao.getUserById(id);
+			
+			assertEquals(id, user.getId());
+			assertEquals(newUser.getUsername(), user.getUsername());	
+			
+			dao.deleteUser(user);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testAddUser() {
+		try {
+			int randNumber = (int) (Math.random() * 10_000);
+			User user = new User();
+			user.setUsername("user3" + randNumber);
 			user.setPassword("123456");
-			user.setEmail("abv1@abv1.com");
+			user.setEmail("abv1" + randNumber + "@abv1.com");
 			user.setCurrency(Currency.BGN);
 			
 			int id = dao.addUser(user);
@@ -31,7 +54,6 @@ public class UserDAOTests {
 			assertEquals(tempUser.getUsername(), user.getUsername());	
 			
 			dao.deleteUser(tempUser);
-			
 		} catch (InvalidArgumentException e) {
 			e.printStackTrace();
 		}
@@ -39,30 +61,24 @@ public class UserDAOTests {
 	
 	@Test
 	public void testUpdateUser() {
-		int id = 3;
-		User user = dao.getUserById(id);
-		String newEmail = "test@test.com";
 		try {
+			int randNumber = (int) (Math.random() * 10_000);
+			User user = new User();
+			user.setUsername("testusername" + randNumber);
+			user.setEmail("testemail" + randNumber + "@asd.asd");
+			user.setPassword("123123");
+			user.setCurrency(Currency.BGN);
+			int id = dao.addUser(user);
+			user.setId(id);
+			String newEmail = "test@test.com";
 			user.setEmail(newEmail);
 			dao.updateUser(user);
+			User tempUser = dao.getUserById(id);
+			assertEquals(newEmail, tempUser.getEmail());
+			dao.deleteUser(user);
 		} catch (InvalidArgumentException e) {			
 			e.printStackTrace();
 		}
-		
-		
-		User tempUser = dao.getUserById(id);
-		assertEquals(newEmail, tempUser.getEmail());
-		
-		
-	}
-	
-	@Test
-	public void testGetUserById() {
-		int id = 3;
-		User user = dao.getUserById(id);
-		
-		assertEquals(id, user.getId());
-		assertEquals("user", user.getUsername());		
 	}
 	
 	@Test
