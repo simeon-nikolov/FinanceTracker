@@ -48,8 +48,8 @@ public class BudgetDAO implements IBudgetDAO {
 	public Collection<Budget> getAllBudgetsByUser(User user) {
 		sessionFactory.getCurrentSession().beginTransaction();
 		Query query = sessionFactory.getCurrentSession().createQuery(
-				"from Budget b where b.user_id = :user_id");
-		query.setInteger("user_id", user.getId());
+				"from Budget b where b.user = :user");
+		query.setEntity("user", user);
 		Collection<Budget> result = query.list();
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		return result;

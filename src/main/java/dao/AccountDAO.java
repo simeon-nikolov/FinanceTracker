@@ -2,12 +2,11 @@ package dao;
 
 import java.util.Collection;
 
+import model.Account;
+import model.User;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-
-import model.Account;
-import model.Budget;
-import model.User;
 
 
 public class AccountDAO implements IAccountDAO {
@@ -48,10 +47,9 @@ public class AccountDAO implements IAccountDAO {
 	@Override
 	public Collection<Account> getAllAccountsForUser(User user) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		int id = user.getId();
 		Query query = sessionFactory.getCurrentSession().createQuery(
-				"FROM Account a WHERE a.user_id = :user_id");
-		query.setInteger("user_id", id);		
+				"FROM Account a WHERE a.user = :user");
+		query.setEntity("user", user);		
 		Collection<Account> result = query.list();
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		
