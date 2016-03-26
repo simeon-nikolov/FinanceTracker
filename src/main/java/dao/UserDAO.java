@@ -1,8 +1,9 @@
 package dao;
 
-import model.User;
-
 import java.util.Collection;
+import java.util.List;
+
+import model.User;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -41,6 +42,23 @@ public class UserDAO implements IUserDAO {
 		return user;
 	}
 	
+	@Override
+	public User getUserByUsername(String username) {
+		sessionFactory.getCurrentSession().beginTransaction();
+		Query query = sessionFactory.getCurrentSession().createQuery("from User u where u.username = :username");
+		query.setString("username", username);
+		query.setMaxResults(1);
+		@SuppressWarnings("unchecked")
+		List<User> result = query.list();
+		User user = null;
+		
+		if (result != null || result.size() > 0) {
+			user = result.get(0);
+		}
+		
+		sessionFactory.getCurrentSession().getTransaction().commit();
+		return user;
+	}
 	
 	@Override
 	public Collection<User> getAllUsers() {

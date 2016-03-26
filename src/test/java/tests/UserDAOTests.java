@@ -88,5 +88,27 @@ public class UserDAOTests {
 		System.out.println(list.size());
 		System.out.println(list);
 	}
+	
+	@Test
+	public void testGetUserByUsername() {
+		try {
+			int randNumber = (int) (Math.random() * 10_000);
+			User user = new User();
+			String username = "testusername" + randNumber;
+			user.setUsername(username);
+			user.setPassword("124356");
+			user.setEmail("testemail" + randNumber + "@asd.asd");
+			user.setCurrency(Currency.BGN);
+			int id = dao.addUser(user);
+			User fromDB = dao.getUserByUsername(username);
+			assertEquals(fromDB.getId(), id);
+			assertEquals(fromDB.getUsername(), user.getUsername());
+			assertEquals(fromDB.getEmail(), user.getEmail());
+			assertEquals(fromDB.getCurrency(), user.getCurrency());
+			dao.deleteUser(fromDB);
+		} catch (InvalidArgumentException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -12,6 +12,8 @@ public interface IUserDAO {
 	void deleteUser(User user);
 	
 	User getUserById(int userId);
+
+	User getUserByUsername(String username);
 	
 	Collection<User> getAllUsers();
 }
