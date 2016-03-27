@@ -141,14 +141,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `finance_tracker`.`catgories`
+-- Table `finance_tracker`.`categories`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `finance_tracker`.`catgories` (
+CREATE TABLE IF NOT EXISTS `finance_tracker`.`categories` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
+  `category` VARCHAR(45) NOT NULL,
   `for_type` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_categories_finance_operation_types_idx` (`for_type` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`category` ASC),
   CONSTRAINT `fk_categories_finance_operation_types`
     FOREIGN KEY (`for_type`)
     REFERENCES `finance_tracker`.`finance_operation_types` (`type`)
@@ -189,12 +190,12 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
   `date` DATE NOT NULL,
   `description` VARCHAR(200) NOT NULL,
   `repeat_type` VARCHAR(15) NOT NULL,
-  `catgory_id` INT(11) NOT NULL,
+  `category_id` INT(11) NOT NULL,
   `finance_operation_type` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   INDEX `fk_expenses_accounts1_idx` (`account_id` ASC),
-  INDEX `fk_expenses_expense_catgories1_idx` (`catgory_id` ASC),
+  INDEX `fk_expenses_expense_catgories1_idx` (`category_id` ASC),
   INDEX `fk_finance_operations_currencies_idx` (`currency` ASC),
   INDEX `fk_finance_operations_repeat_types_idx` (`repeat_type` ASC),
   INDEX `fk_finance_operations_finance_operation_types_idx` (`finance_operation_type` ASC),
@@ -204,8 +205,8 @@ CREATE TABLE IF NOT EXISTS `finance_tracker`.`finance_operations` (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_expenses_expense_catgories1`
-    FOREIGN KEY (`catgory_id`)
-    REFERENCES `finance_tracker`.`catgories` (`id`)
+    FOREIGN KEY (`category_id`)
+    REFERENCES `finance_tracker`.`categories` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_finance_operations_currencies`
