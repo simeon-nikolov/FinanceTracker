@@ -54,4 +54,9 @@ public class Tag {
 	public void setForType(FinanceOperationType forType) {
 		this.forType = forType;
 	}
+	
+	@Override
+	protected Object clone() {
+		return new Tag(this.id, this.tagName, this.forType);
+	}
 }

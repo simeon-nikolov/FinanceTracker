@@ -1,6 +1,10 @@
 package model;
 
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -14,6 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -67,6 +73,12 @@ public abstract class FinanceOperation {
 	@Column(name="finance_operation_type", insertable = false, updatable = false)
 	@Enumerated(EnumType.STRING)
 	private FinanceOperationType financeOperationType;
+	
+	@ManyToMany
+	@JoinTable(name="finance_operation_has_tags",
+	          joinColumns=@JoinColumn(name="finance_operation_id"),
+	          inverseJoinColumns=@JoinColumn(name="tag_id"))
+	private Collection<Tag> tags = new LinkedList<Tag>();
 	
 	public FinanceOperation() {}
 
@@ -177,5 +189,21 @@ public abstract class FinanceOperation {
 
 	public void setFinanceOperationType(FinanceOperationType financeOperationType) {
 		this.financeOperationType = financeOperationType;
+	}
+
+	public Collection<Tag> getTags() {
+		List<Tag> tags = new LinkedList<Tag>();
+		
+		for (Tag tag : this.tags) {
+			tags.add((Tag) tag.clone());
+		}
+		
+		return tags;
+	}
+
+	public void setTags(Collection<Tag> tags) {
+		for (Tag tag : tags) {
+			this.tags.add((Tag) tag.clone());
+		}
 	}
 }
