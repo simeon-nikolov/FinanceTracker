@@ -19,5 +19,8 @@
         <mapping class="model.User" />
         <mapping class="model.Budget" />
         <mapping class="model.Account" />
+        <mapping class="model.FinanceOperation" />
+        <mapping class="model.Income" />
+        <mapping class="model.Category" />
     </session-factory>         
 </hibernate-configuration>

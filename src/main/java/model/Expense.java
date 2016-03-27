@@ -1,17 +1,24 @@
 package model;
 
-import java.time.LocalDate;
+import org.joda.time.LocalDate;
 
 import exceptions.InvalidArgumentException;
 
 public class Expense extends FinanceOperation {
 
-	public Expense() {}
+	public Expense() {
+		super.setFinanceOperationType(FinanceOperationType.EXPENSE);
+	}
 
-	public Expense(int id, int amount, Currency currency, String category, 
+	public Expense(int id, int amount, Currency currency, Category category, 
 			Account account, LocalDate date, String description, RepeatType repeatType) 
 					throws InvalidArgumentException {
 		super(id, amount, currency, category, account, date, description, repeatType, FinanceOperationType.EXPENSE);
+	}
+	
+	@Override
+	public void setFinanceOperationType(FinanceOperationType financeOperationType) {
+		super.setFinanceOperationType(FinanceOperationType.EXPENSE);
 	}
 
 }
