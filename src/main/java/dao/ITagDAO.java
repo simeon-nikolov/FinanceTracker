@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.Collection;
+
+import model.FinanceOperationType;
 import model.Tag;
 
 public interface ITagDAO {
@@ -12,4 +15,6 @@ public interface ITagDAO {
 	Tag getTagById(int id);
 	
 	Tag getTagByTagname(String name);
+
+	Collection<Tag> getAllTagsByTypeFor(FinanceOperationType forType);
 }

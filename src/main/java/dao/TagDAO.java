@@ -1,7 +1,9 @@
 package dao;
 
+import java.util.Collection;
 import java.util.List;
 
+import model.FinanceOperationType;
 import model.Tag;
 
 import org.hibernate.Query;
@@ -54,6 +56,20 @@ public class TagDAO implements ITagDAO {
 			return null;
 		}
 		return result.get(0);
+	}
+	
+	@Override
+	public Collection<Tag> getAllTagsByTypeFor(FinanceOperationType forType) {
+		sessionFactory.getCurrentSession().beginTransaction();
+		Query query = sessionFactory.getCurrentSession().createQuery(
+				"from Tag t where t.forType = :forType");
+		query.setString("forType", forType.toString());
+		Collection<Tag> result = query.list();
+		sessionFactory.getCurrentSession().getTransaction().commit();
+		if (result == null || result.size() == 0) {
+			return null;
+		}
+		return result;
 	}
 
 }
