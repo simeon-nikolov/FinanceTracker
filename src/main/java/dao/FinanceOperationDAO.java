@@ -46,7 +46,9 @@ public class FinanceOperationDAO implements IFinanceOperationDAO {
 
 	@Override
 	public Expense getExpenseById(int id) {
+		sessionFactory.getCurrentSession().beginTransaction();
 		Expense expense = sessionFactory.getCurrentSession().get(Expense.class, id);
+		sessionFactory.getCurrentSession().getTransaction().commit();
 		return expense;
 	}
 

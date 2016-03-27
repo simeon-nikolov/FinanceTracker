@@ -21,6 +21,7 @@
         <mapping class="model.Account" />
         <mapping class="model.FinanceOperation" />
         <mapping class="model.Income" />
+        <mapping class="model.Expense" />
         <mapping class="model.Category" />
     </session-factory>         
 </hibernate-configuration>

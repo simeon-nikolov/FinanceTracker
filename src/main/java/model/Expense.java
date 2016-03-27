@@ -1,9 +1,14 @@
 package model;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import org.joda.time.LocalDate;
 
 import exceptions.InvalidArgumentException;
 
+@Entity
+@DiscriminatorValue(value="EXPENSE")
 public class Expense extends FinanceOperation {
 
 	public Expense() {
