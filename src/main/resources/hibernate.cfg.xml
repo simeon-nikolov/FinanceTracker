@@ -23,5 +23,6 @@
         <mapping class="model.Income" />
         <mapping class="model.Expense" />
         <mapping class="model.Category" />
+        <mapping class="model.Tag" />
     </session-factory>         
 </hibernate-configuration>
