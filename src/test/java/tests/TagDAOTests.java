@@ -21,7 +21,7 @@ import dao.ITagDAO;
 public class TagDAOTests {
 	private static final int TAGS_COUNT = 15;
 	private static final String NEW_TAG_NAME = "New Tag Name";
-	private static final String TAG_NAME = "Job";
+	private static final String TAG_NAME = "Fun";
 	
 	@Autowired
 	private ITagDAO tagDAO;
@@ -86,13 +86,13 @@ public class TagDAOTests {
 		for (int index = 0; index < TAGS_COUNT; index++) {
 			Tag tag = new Tag();
 			tag.setTagName(TAG_NAME + index);
-			tag.setForType(FinanceOperationType.INCOME);
+			tag.setForType(FinanceOperationType.EXPENSE);
 			int id = tagDAO.addTag(tag);
 			tag.setId(id);
 			tags.add(tag);
 		}
 		
-		List<Tag> tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.INCOME);
+		List<Tag> tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
 		assertEquals(tags.size(), tagsFromDB.size());
 		
 		for (Tag tag : tagsFromDB) {

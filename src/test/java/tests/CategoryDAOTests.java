@@ -1,13 +1,14 @@
 package tests;
 
 import org.junit.Test;
+
+import dao.CategoryDAO;
+import dao.ICategoryDAO;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.CategoryDAO;
-import dao.ICategoryDAO;
 import model.Category;
 import model.FinanceOperationType;
 

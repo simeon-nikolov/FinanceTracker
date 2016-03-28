@@ -6,7 +6,9 @@ import java.util.List;
 
 import model.Currency;
 import model.User;
+
 import org.junit.Test;
+
 import dao.IUserDAO;
 import dao.UserDAO;
 import exceptions.InvalidArgumentException;

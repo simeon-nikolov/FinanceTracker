@@ -1,15 +1,16 @@
 package tests;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import dao.AccountDAO;
 import dao.IAccountDAO;
 import dao.IUserDAO;
 import dao.UserDAO;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import exceptions.InvalidArgumentException;
 import model.Account;
 import model.Currency;
