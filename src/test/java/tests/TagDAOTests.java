@@ -9,16 +9,22 @@ import model.FinanceOperationType;
 import model.Tag;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import dao.ITagDAO;
-import dao.TagDAO;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
 public class TagDAOTests {
 	private static final int TAGS_COUNT = 15;
 	private static final String NEW_TAG_NAME = "New Tag Name";
 	private static final String TAG_NAME = "Job";
 	
-	private ITagDAO tagDAO = new TagDAO();
+	@Autowired
+	private ITagDAO tagDAO;
 	
 	@Test
 	public void testAddTag() {

@@ -8,10 +8,14 @@ import model.Tag;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class TagDAO implements ITagDAO {
 	
-	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@Override
 	public int addTag(Tag tag) {
