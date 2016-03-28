@@ -14,21 +14,27 @@ import model.User;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import dao.BudgetDAO;
 import dao.IBudgetDAO;
 import dao.IUserDAO;
-import dao.UserDAO;
 import exceptions.InvalidArgumentException;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
 public class BudgetDAOTests {
 
 	private static final int MONEY_AMOUNT = 10000;
 	private static final int RANDOM_NUMBERS_SIZE = 10_000;
 	private static final int NUMBER_OF_BUDGETS = 5;
 	
-	private IBudgetDAO budgetDAO = new BudgetDAO();
-	private IUserDAO userDAO = new UserDAO();
+	@Autowired
+	private IBudgetDAO budgetDAO;
+	@Autowired
+	private IUserDAO userDAO;
 
 	@Test
 	public void testAddBudget() {

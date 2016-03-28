@@ -9,10 +9,14 @@ import model.Income;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class FinanceOperationDAO implements IFinanceOperationDAO {
 	
-	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 
 	@Override
 	public int add(FinanceOperation financeOperation) {

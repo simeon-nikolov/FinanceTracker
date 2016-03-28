@@ -7,12 +7,14 @@ import model.User;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class BudgetDAO implements IBudgetDAO {
 	
-	SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	@Autowired
+	SessionFactory sessionFactory;
 
 	@Override
 	public int add(Budget budget) {

@@ -16,15 +16,18 @@ import model.User;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import dao.AccountDAO;
-import dao.FinanceOperationDAO;
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
 import dao.IUserDAO;
-import dao.UserDAO;
 import exceptions.InvalidArgumentException;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
 public class FinanceOperationDAOTests {
 	private static final int LIST_SIZE = 15;
 	private static final String NEW_DESCRIPTION_TEXT = "New description....";
@@ -38,9 +41,12 @@ public class FinanceOperationDAOTests {
 	private static final int ACCOUNT_BALANCE = 100_000;
 	private static final int RANDOM_NUMBERS_SIZE = 10_000;
 
-	private IAccountDAO accDAO = new AccountDAO();
-	private IUserDAO userDAO = new UserDAO();
-	private IFinanceOperationDAO foDAO = new FinanceOperationDAO();
+	@Autowired
+	private IAccountDAO accDAO;
+	@Autowired
+	private IUserDAO userDAO;
+	@Autowired
+	private IFinanceOperationDAO foDAO;
 
 	@Test
 	public void testAddIncome() {

@@ -1,29 +1,36 @@
 package tests;
 
-import org.junit.Test;
-
-import dao.AccountDAO;
-import dao.IAccountDAO;
-import dao.IUserDAO;
-import dao.UserDAO;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import exceptions.InvalidArgumentException;
 import model.Account;
 import model.Currency;
 import model.User;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import dao.IAccountDAO;
+import dao.IUserDAO;
+import exceptions.InvalidArgumentException;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
 public class AccountDAOTests {
 	
 	private static final int NUMBER_OF_TEST_ACCOUNTS = 10;
 	private static final int ACCOUNT_BALANCE_RANDOM_NUMBER = 2000;
 	private static final int RANDOM_NUMBER_SIZE = 10_000;
 	
-	private IAccountDAO dao = new AccountDAO();
-	private IUserDAO userDao = new UserDAO();
+	@Autowired
+	private IAccountDAO dao;
+	@Autowired
+	private IUserDAO userDao;
 	
 	@Test
 	public void testAddAccount() {

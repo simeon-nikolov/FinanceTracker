@@ -3,17 +3,19 @@ package dao;
 import java.util.Collection;
 import java.util.List;
 
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-
-
 import model.Category;
 import model.FinanceOperationType;
 
+import org.hibernate.Query;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class CategoryDAO implements ICategoryDAO {
 	
-	private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+	@Autowired
+	private SessionFactory sessionFactory;
 		
 	@Override
 	public int addCategory(Category category) {
