@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.Collection;
+import java.util.List;
 
 import model.Account;
 import model.User;
@@ -57,6 +58,27 @@ public class AccountDAO implements IAccountDAO {
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		
 		return result;
+	}
+	
+	@Override
+	@SuppressWarnings("null")
+	public Account getAccountForUserByName(String accountName, User user) {
+		sessionFactory.getCurrentSession().beginTransaction();
+		Query query = sessionFactory.getCurrentSession()
+				.createQuery("FROM Account A WHERE A.title = :title AND A.user = :user ");
+		query.setString("title", accountName);
+		query.setEntity("user", user);
+		query.setMaxResults(1);
+		@SuppressWarnings("unchecked")
+		List<Account> result = query.list();
+		Account account = null;
+		
+		if (result != null || result.size() > 0) {
+			account = result.get(0);
+		}
+		
+		sessionFactory.getCurrentSession().getTransaction().commit();
+		return account;
 	}
 
 }

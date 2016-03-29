@@ -16,5 +16,7 @@ public interface IAccountDAO {
 	void updateAccount(Account account);
 
 	Collection<Account> getAllAccountsForUser(User user);
+	
+	public Account getAccountForUserByName(String accountName, User user);
 
 }

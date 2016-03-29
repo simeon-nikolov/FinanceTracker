@@ -125,6 +125,23 @@ public class AccountDAOTests {
 		userDao.deleteUser(user);		
 	}
 	
+	@Test
+	public void testGetAccountForUserByName() {
+		User user = addUserToDB();
+		Account account = makeNewAccount(user);
+		String title = account.getTitle();
+		
+		int id = dao.addAccount(account);
+		
+		Account fromDB = dao.getAccountForUserByName(title, user);
+		
+		assertEquals(fromDB.getBalance(), account.getBalance());
+		assertEquals(fromDB.getId(), id);
+		
+		dao.deleteAccount(account);
+		userDao.deleteUser(user);
+	}
+	
 	
 	private User addUserToDB() {
 		User user = new User();
