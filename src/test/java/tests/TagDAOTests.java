@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import dao.ITagDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
+@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
 public class TagDAOTests {
 	private static final int TAGS_COUNT = 15;
 	private static final String NEW_TAG_NAME = "New Tag Name";

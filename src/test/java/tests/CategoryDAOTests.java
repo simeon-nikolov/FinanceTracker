@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import dao.ICategoryDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
+@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
 public class CategoryDAOTests {
 	
 	private static final int RANDOM_NUMBER_FOR_TESTS = 10_000;

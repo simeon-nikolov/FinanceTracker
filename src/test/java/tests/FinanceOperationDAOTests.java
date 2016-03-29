@@ -27,7 +27,7 @@ import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
+@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
 public class FinanceOperationDAOTests {
 	private static final int LIST_SIZE = 15;
 	private static final String NEW_DESCRIPTION_TEXT = "New description....";

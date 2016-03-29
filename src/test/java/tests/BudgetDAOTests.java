@@ -24,7 +24,7 @@ import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
+@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
 public class BudgetDAOTests {
 
 	private static final int MONEY_AMOUNT = 10000;

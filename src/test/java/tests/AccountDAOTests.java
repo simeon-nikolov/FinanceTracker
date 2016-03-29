@@ -20,7 +20,7 @@ import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
+@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
 public class AccountDAOTests {
 	
 	private static final int NUMBER_OF_TEST_ACCOUNTS = 10;

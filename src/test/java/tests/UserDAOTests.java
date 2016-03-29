@@ -17,7 +17,7 @@ import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.AutowiredConfiguration.class)
+@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
 public class UserDAOTests {
 
 	private static final int RANDOM_NUMBER_FOR_TESTS = 10_000;
