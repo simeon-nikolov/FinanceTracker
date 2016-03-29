@@ -74,7 +74,7 @@ public abstract class FinanceOperation {
 	@Enumerated(EnumType.STRING)
 	private FinanceOperationType financeOperationType;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="finance_operation_has_tags",
 	          joinColumns=@JoinColumn(name="finance_operation_id"),
 	          inverseJoinColumns=@JoinColumn(name="tag_id"))

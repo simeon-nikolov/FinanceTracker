@@ -82,6 +82,8 @@ public class TagDAOTests {
 	@Test
 	public void testGetAllTagsByTypeFor() {
 		List<Tag> tags = new ArrayList<Tag>(TAGS_COUNT);
+		List<Tag> tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
+		int sizeBefore = tagsFromDB == null ? 0 : tagsFromDB.size();
 		
 		for (int index = 0; index < TAGS_COUNT; index++) {
 			Tag tag = new Tag();
@@ -92,8 +94,8 @@ public class TagDAOTests {
 			tags.add(tag);
 		}
 		
-		List<Tag> tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
-		assertEquals(tags.size(), tagsFromDB.size());
+		tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
+		assertEquals(tags.size(), tagsFromDB.size() - sizeBefore);
 		
 		for (Tag tag : tagsFromDB) {
 			tagDAO.deleteTag(tag);
