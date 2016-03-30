@@ -2,6 +2,7 @@ package config;
 
 import java.util.Locale;
 
+import org.hibernate.SessionFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.example")
+@ComponentScan("dao")
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	
     @Override
@@ -27,6 +28,11 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/pdfs/**").addResourceLocations("/static/pdf/");
     }
+    
+    @Bean
+	public SessionFactory sessionFactory() {
+		return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+	}
 	
 	@Bean
 	public InternalResourceViewResolver getInternalResourceViewResolver() {
@@ -46,6 +52,7 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
 		return messageSource;
 	}
 	
+		
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver resolver = new SessionLocaleResolver();

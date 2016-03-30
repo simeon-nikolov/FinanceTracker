@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import dao.IAccountDAO;
 import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
+@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
+@ContextConfiguration(classes=config.SpringWebConfig.class)
 public class AccountDAOTests {
 	
 	private static final int NUMBER_OF_TEST_ACCOUNTS = 10;

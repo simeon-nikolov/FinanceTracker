@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
@@ -29,8 +30,9 @@ import dao.ITagDAO;
 import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
+@WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=dao.SpringWebConfiguration.class)
+@ContextConfiguration(classes=config.SpringWebConfig.class)
 public class FinanceOperationDAOTests {
 	private static final int TAGS_COUNT = 3;
 	private static final int LIST_SIZE = 5;
