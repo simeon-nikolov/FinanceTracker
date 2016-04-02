@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"dao", "controller", "config"})
+@ComponentScan({"dao", "controller", "config", "view/model"})
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	
     @Override
