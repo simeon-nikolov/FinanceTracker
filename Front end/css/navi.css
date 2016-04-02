@@ -8,7 +8,7 @@ Licence URI: http://www.os-templates.com/template-terms
 File: Navigation CSS
 */
 
-#topnav{display:block; float:left; width:660px; margin:0; padding:0; list-style:none; font-size:13px; font-weight:normal; font-family:Verdana, Arial, Helvetica, sans-serif; color:#FFFFFF; background-color:#000000;}
+#topnav{display:block; float:left; width:100%; margin:0; padding:0; list-style:none; font-size:13px; font-weight:normal; font-family:Verdana, Arial, Helvetica, sans-serif; color:#FFFFFF; background-color:#000000;}
 #topnav ul, #topnav li{float:left; list-style:none; margin:0; padding:0;}
 #topnav li a:link, #topnav li a:visited, #topnav li a:hover{display:block; margin:0; padding:15px 20px; color:#FFFFFF; background-color:#000000;}
 #topnav ul ul li a:link, #topnav ul ul li a:visited{border:none;}
@@ -23,6 +23,9 @@ File: Navigation CSS
 #topnav li:hover ul, #topnav li li:hover ul{left:auto;}
 #topnav li:hover{position:static;}
 #topnav li.last a{margin-right:0;}
+#topnav ul li.right {
+	float:right;
+}
 
 /* ----------------------------------------------Column Navigation------------------------------------- */
 
