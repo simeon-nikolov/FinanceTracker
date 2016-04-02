@@ -138,3 +138,24 @@ h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; fon
 #copyright .wrapper{padding:10px 20px; border:none;}
 #copyright p{margin:0; padding:0;}
 #copyright .wrapper, #copyright a{color:#FFFFFF; background-color:#3D3D3D;}
+
+/* Custom CSS */
+
+#content {
+	min-height: 400px;
+	text-align: center;
+}
+
+.finance-operation-element {
+	border: 1px solid #aaa;
+}
+
+ul li {
+	list-style-type: none;
+}
+
+.account {
+	border-bottom: 1px dotted #000;
+	width: 55%;
+	text-align: left;
+}
