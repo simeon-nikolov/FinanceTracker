@@ -9,24 +9,24 @@ import org.hibernate.validator.constraints.Email;
 public class UserViewModel {
 
 	@NotNull
-	@Size(min = 2, max = 30)
+	@Size(min = 2, max = 15)
     private String username;
 	
-    @NotNull
-    @Size(min = 6, max = 30)
-    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
+//    @NotNull
+//    @Size(min = 6, max = 30)
+//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
     private String password;
     
-    @NotNull
-    @Size(min = 6, max = 30)
-    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
+//    @NotNull
+//    @Size(min = 6, max = 30)
+//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
     private String confirmPassword;
     
     @NotNull
     @Email
     private String email;
-
-	public String getUsername() {
+    
+  	public String getUsername() {
 		return username;
 	}
 
