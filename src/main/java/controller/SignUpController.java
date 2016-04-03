@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import view.model.UserViewModel;
 
 @Controller
-public class signUpController {
+public class SignUpController {
 
 	@RequestMapping(value = "/signUp", method = RequestMethod.GET)
-	public String signUP(Model model) {
+	public String showSignUpPage(Model model) {
 		UserViewModel userViewModel = new UserViewModel();
 		model.addAttribute("userViewModel", userViewModel);
 		return "signUp";
 	}
 
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
-	public String doLogin(@ModelAttribute("userViewModel") @Valid UserViewModel userViewModel, BindingResult result,
+	public String signUp(@ModelAttribute("userViewModel") @Valid UserViewModel userViewModel, BindingResult result,
 			Model model) {
 
 		System.out.println(userViewModel.getUsername());
@@ -36,6 +36,7 @@ public class signUpController {
 			model.addAttribute("errorMessage", "Both passwords must be the same!");
 			return "signUp";
 		}
-		return "index";
+		
+		return "login";
 	}
 }

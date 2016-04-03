@@ -30,7 +30,7 @@
 				<ul>
 					<li><a href="index.html">Home</a></li>
 					<li><a href="login.html">Login</a></li>
-					<li class="active right"><a href="sign-up.html">Sign Up</a></li>
+					<li class="active right"><a href="./signUp">Sign Up</a></li>
 				</ul>
 			</div>
 			<br class="clear" />
