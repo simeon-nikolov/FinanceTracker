@@ -56,7 +56,7 @@ public class UserDAO implements IUserDAO {
 		List<User> result = query.list();
 		User user = null;
 		
-		if (result != null || result.size() > 0) {
+		if (result != null && result.size() > 0) {
 			user = result.get(0);
 		}
 		

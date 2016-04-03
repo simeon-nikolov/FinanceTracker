@@ -73,7 +73,7 @@ public class CategoryDAO implements ICategoryDAO {
 		List<Category> result = query.list();
 		Category category = null;
 		
-		if (result != null || result.size() > 0) {
+		if (result != null && result.size() > 0) {
 			category = result.get(0);
 		}
 		

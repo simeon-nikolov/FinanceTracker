@@ -73,7 +73,7 @@ public class AccountDAO implements IAccountDAO {
 		List<Account> result = query.list();
 		Account account = null;
 		
-		if (result != null || result.size() > 0) {
+		if (result != null && result.size() > 0) {
 			account = result.get(0);
 		}
 		

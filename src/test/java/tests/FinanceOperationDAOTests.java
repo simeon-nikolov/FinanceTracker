@@ -25,6 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import dao.IAccountDAO;
+import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
@@ -55,6 +56,8 @@ public class FinanceOperationDAOTests {
 	private ITagDAO tagDAO;
 	@Autowired
 	private IFinanceOperationDAO foDAO;
+	@Autowired
+	private ICategoryDAO categoryDAO;
 
 	@Test
 	public void testAddIncome() {
@@ -79,7 +82,9 @@ public class FinanceOperationDAOTests {
 		
 		Account acc = fromDB.getAccount();
 		User user = acc.getUser();
+		Category category = fromDB.getCategory();
 		foDAO.delete(fromDB);
+		categoryDAO.deleteCategory(category);
 		accDAO.deleteAccount(acc);
 		userDAO.deleteUser(user);
 	}
@@ -107,7 +112,9 @@ public class FinanceOperationDAOTests {
 		
 		Account acc = fromDB.getAccount();
 		User user = acc.getUser();
+		Category category = fromDB.getCategory();
 		foDAO.delete(fromDB);
+		categoryDAO.deleteCategory(category);
 		accDAO.deleteAccount(acc);
 		userDAO.deleteUser(user);
 	}
@@ -142,7 +149,9 @@ public class FinanceOperationDAOTests {
 			
 			Account acc = fromDB.getAccount();
 			User user = acc.getUser();
+			Category category = fromDB.getCategory();
 			foDAO.delete(fromDB);
+			categoryDAO.deleteCategory(category);
 			accDAO.deleteAccount(acc);
 			userDAO.deleteUser(user);
 		} catch (InvalidArgumentException e) {
@@ -180,7 +189,9 @@ public class FinanceOperationDAOTests {
 			
 			Account acc = fromDB.getAccount();
 			User user = acc.getUser();
+			Category category = fromDB.getCategory();
 			foDAO.delete(fromDB);
+			categoryDAO.deleteCategory(category);
 			accDAO.deleteAccount(acc);
 			userDAO.deleteUser(user);
 		} catch (InvalidArgumentException e) {
@@ -200,7 +211,9 @@ public class FinanceOperationDAOTests {
 			tagDAO.deleteTag(tag);
 		}
 		
+		Category category = fromDB.getCategory();
 		foDAO.delete(fromDB);
+		categoryDAO.deleteCategory(category);
 		accDAO.deleteAccount(acc);
 		userDAO.deleteUser(user);
 	}
@@ -217,7 +230,10 @@ public class FinanceOperationDAOTests {
 			tagDAO.deleteTag(tag);
 		}
 		
+		Category category = fromDB.getCategory();
 		foDAO.delete(fromDB);
+		System.out.println(category.getId() + " " + category.getCategoryName());
+		categoryDAO.deleteCategory(category);
 		accDAO.deleteAccount(acc);
 		userDAO.deleteUser(user);
 	}
@@ -234,7 +250,9 @@ public class FinanceOperationDAOTests {
 				tagDAO.deleteTag(tag);
 			}
 			
+			Category category = fromDB.getCategory();
 			foDAO.delete(fromDB);
+			categoryDAO.deleteCategory(category);
 		}
 		
 		User user = account.getUser();
@@ -254,7 +272,9 @@ public class FinanceOperationDAOTests {
 				tagDAO.deleteTag(tag);
 			}
 			
+			Category category = fromDB.getCategory();
 			foDAO.delete(fromDB);
+			categoryDAO.deleteCategory(category);
 		}
 		
 		User user = account.getUser();
@@ -309,7 +329,7 @@ public class FinanceOperationDAOTests {
 		try {
 			income.setAccount(account);
 			income.setAmount(INCOME_AMOUNT);
-			Category category = new Category(1, INCOME_CATEGORY, FinanceOperationType.INCOME);
+			Category category = addOrGetIncomeCategory();
 			income.setCategory(category);
 			income.setCurrency(Currency.BGN);
 			income.setDate(LocalDate.now());
@@ -335,7 +355,7 @@ public class FinanceOperationDAOTests {
 		try {
 			expense.setAccount(account);
 			expense.setAmount(15_000);
-			Category category = new Category(2, EXPENSE_CATEGORY, FinanceOperationType.EXPENSE);
+			Category category = addOrGetExpenseCategory();
 			expense.setCategory(category);
 			expense.setCurrency(Currency.BGN);
 			expense.setDate(LocalDate.now());
@@ -348,6 +368,22 @@ public class FinanceOperationDAOTests {
 		}
 
 		return expense;
+	}
+
+	private Category addOrGetExpenseCategory() {
+		int randNumber = (int) (Math.random() * RANDOM_NUMBERS_SIZE);
+		Category category = new Category(0, EXPENSE_CATEGORY + randNumber, FinanceOperationType.EXPENSE);
+		categoryDAO.addCategory(category);
+		
+		return category;
+	}
+	
+	private Category addOrGetIncomeCategory() {
+		int randNumber = (int) (Math.random() * RANDOM_NUMBERS_SIZE);
+		Category category = new Category(0, INCOME_CATEGORY + randNumber, FinanceOperationType.INCOME);
+		categoryDAO.addCategory(category);
+		
+		return category;
 	}
 
 	private List<Tag> addTagsToDB(FinanceOperationType forType) {
