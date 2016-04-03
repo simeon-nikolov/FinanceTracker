@@ -31,6 +31,11 @@ public class signUpController {
 		if (result.hasErrors()) {			
 			return "signUp";
 		}
+		
+		if (!userViewModel.getPassword().equals(userViewModel.getConfirmPassword())) {
+			model.addAttribute("errorMessage", "Both passwords must be the same!");
+			return "signUp";
+		}
 		return "index";
 	}
 }
