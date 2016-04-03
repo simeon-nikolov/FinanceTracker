@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"dao", "controller", "config", "view/model"})
+@ComponentScan({"dao", "controller", "config", "view.model"})
 public class SpringWebConfig extends WebMvcConfigurerAdapter {
 	
     @Override
@@ -28,6 +28,7 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/css/**").addResourceLocations("/static/css/");
         registry.addResourceHandler("/pdfs/**").addResourceLocations("/static/pdf/");
         registry.addResourceHandler("/js/**").addResourceLocations("/static/js/");
+        registry.addResourceHandler("/images/**").addResourceLocations("/static/images/");
     }
     
     @Bean

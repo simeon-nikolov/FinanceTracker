@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import dao.DAOException;
 import dao.ICategoryDAO;
 
 @WebAppConfiguration
@@ -100,7 +101,7 @@ public class CategoryDAOTests {
 	}
 	
 	@Test
-	public void testGetCategoryByName() {
+	public void testGetCategoryByName() throws DAOException {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		Category category = makeNewCategory(type);
 		String categoryName = category.getCategoryName();

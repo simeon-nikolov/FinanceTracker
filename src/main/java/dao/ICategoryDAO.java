@@ -17,6 +17,6 @@ public interface ICategoryDAO {
 
 	Collection<Category> getAllCategoriesForFOType(FinanceOperationType type);
 
-	Category getCategoryByName(String categoryName);
+	Category getCategoryByName(String categoryName) throws DAOException;
 
 }

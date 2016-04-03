@@ -329,7 +329,7 @@ public class FinanceOperationDAOTests {
 		try {
 			income.setAccount(account);
 			income.setAmount(INCOME_AMOUNT);
-			Category category = addOrGetIncomeCategory();
+			Category category = addIncomeCategory();
 			income.setCategory(category);
 			income.setCurrency(Currency.BGN);
 			income.setDate(LocalDate.now());
@@ -355,7 +355,7 @@ public class FinanceOperationDAOTests {
 		try {
 			expense.setAccount(account);
 			expense.setAmount(15_000);
-			Category category = addOrGetExpenseCategory();
+			Category category = addExpenseCategory();
 			expense.setCategory(category);
 			expense.setCurrency(Currency.BGN);
 			expense.setDate(LocalDate.now());
@@ -370,7 +370,7 @@ public class FinanceOperationDAOTests {
 		return expense;
 	}
 
-	private Category addOrGetExpenseCategory() {
+	private Category addExpenseCategory() {
 		int randNumber = (int) (Math.random() * RANDOM_NUMBERS_SIZE);
 		Category category = new Category(0, EXPENSE_CATEGORY + randNumber, FinanceOperationType.EXPENSE);
 		categoryDAO.addCategory(category);
@@ -378,7 +378,7 @@ public class FinanceOperationDAOTests {
 		return category;
 	}
 	
-	private Category addOrGetIncomeCategory() {
+	private Category addIncomeCategory() {
 		int randNumber = (int) (Math.random() * RANDOM_NUMBERS_SIZE);
 		Category category = new Category(0, INCOME_CATEGORY + randNumber, FinanceOperationType.INCOME);
 		categoryDAO.addCategory(category);

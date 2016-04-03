@@ -1,5 +1,5 @@
 package model;
 
 public enum RepeatType {
-	NO_REPEAT, DAILY, WEEKLY, MONTHLY, YAERLY, CUSTOM 
+	NO_REPEAT, DAILY, WEEKLY, MONTHLY, YEARLY, CUSTOM 
 }
