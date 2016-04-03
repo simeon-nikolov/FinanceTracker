@@ -42,7 +42,7 @@ public class AccountDAO implements IAccountDAO {
 	@Override
 	public Account getAccountById(int accountId) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Account account = sessionFactory.getCurrentSession().get(Account.class, accountId);
+		Account account = (Account) sessionFactory.getCurrentSession().get(Account.class, accountId);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		
 		return account;

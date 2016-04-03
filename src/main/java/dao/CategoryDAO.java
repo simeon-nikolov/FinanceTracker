@@ -42,7 +42,7 @@ public class CategoryDAO implements ICategoryDAO {
 	@Override
 	public Category getCategoryById(int categoryId) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Category category = sessionFactory.getCurrentSession().get(Category.class, categoryId);
+		Category category = (Category) sessionFactory.getCurrentSession().get(Category.class, categoryId);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		
 		return category;

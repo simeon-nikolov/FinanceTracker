@@ -43,7 +43,7 @@ public class FinanceOperationDAO implements IFinanceOperationDAO {
 	@Override
 	public Income getIncomeById(int id) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Income income = sessionFactory.getCurrentSession().get(Income.class, id);
+		Income income = (Income) sessionFactory.getCurrentSession().get(Income.class, id);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		return income;
 	}
@@ -51,7 +51,7 @@ public class FinanceOperationDAO implements IFinanceOperationDAO {
 	@Override
 	public Expense getExpenseById(int id) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Expense expense = sessionFactory.getCurrentSession().get(Expense.class, id);
+		Expense expense = (Expense) sessionFactory.getCurrentSession().get(Expense.class, id);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		return expense;
 	}

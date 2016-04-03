@@ -12,14 +12,14 @@ public class UserViewModel {
 	@Size(min = 2, max = 15)
     private String username;
 	
-//    @NotNull
-//    @Size(min = 6, max = 30)
-//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
+    @NotNull
+    @Size(min = 6, max = 30)
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
     private String password;
     
-//    @NotNull
-//    @Size(min = 6, max = 30)
-//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
+    @NotNull
+    @Size(min = 6, max = 30)
+    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
     private String confirmPassword;
     
     @NotNull

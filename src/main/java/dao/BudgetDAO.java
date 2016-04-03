@@ -41,7 +41,7 @@ public class BudgetDAO implements IBudgetDAO {
 	@Override
 	public Budget getBudgetById(int id) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Budget budget = sessionFactory.getCurrentSession().get(Budget.class, id);
+		Budget budget = (Budget) sessionFactory.getCurrentSession().get(Budget.class, id);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		return budget;
 	}

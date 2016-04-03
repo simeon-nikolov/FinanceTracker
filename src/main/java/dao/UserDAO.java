@@ -41,7 +41,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public User getUserById(int userId) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		User user = sessionFactory.getCurrentSession().get(User.class, userId);
+		User user = (User) sessionFactory.getCurrentSession().get(User.class, userId);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		return user;
 	}

@@ -42,7 +42,7 @@ public class TagDAO implements ITagDAO {
 	@Override
 	public Tag getTagById(int id) {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Tag tag = sessionFactory.getCurrentSession().get(Tag.class, id);
+		Tag tag = (Tag) sessionFactory.getCurrentSession().get(Tag.class, id);
 		sessionFactory.getCurrentSession().getTransaction().commit();
 		return tag;
 	}
