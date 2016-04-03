@@ -38,8 +38,21 @@
 <div id="container">
   <div class="wrapper">
     <div id="content">
+    	<div class="col-md-6 col-md-offset-2">	
+			<c:if test="${param.error != null}">
+				<div class="alert alert-danger">
+					Invalid UserName and Password.
+				</div>
+			</c:if>
+			<c:if test="${param.logout != null}">
+				<div class="alert alert-success">
+					You have been logged out.
+				</div>
+			</c:if>	
+		</div>  
 		<div id="login">
-			<form action="#" method="post">
+			<form:form id="loginForm" method="post" action="./login" modelAttribute="loginUser" 
+				class="form-horizontal" role="form" cssStyle="width: 800px; margin: 0 auto;">
 				<fieldset>
 					<legend>Login</legend>
 					<table>
@@ -48,7 +61,7 @@
 								<label for="username">Username:</label>
 							</td>
 							<td>
-								<input id="username" type="text" value="" placeholder="Username" />
+								 <input type="text" id="username" name="username" class="form-control" placeholder="Username" />
 							</td>
 						</tr>
 						<tr>
@@ -56,13 +69,13 @@
 								<label for="password">Password:</label>
 							</td>
 							<td>
-								<input id="password" type="password" value="" placeholder="Password" />
+								<input type="password" id="password" name="password" class="form-control" placeholder="Password" />
 							</td>
 						</tr>
 					</table>
 					<input type="submit" value="Login" />
 				</fieldset>
-			</form>
+			</form:form>
 		</div>
 	</div>
     <br class="clear" />

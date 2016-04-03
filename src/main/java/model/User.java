@@ -36,6 +36,9 @@ public class User {
 	@Column
 	private String email;
 	
+	@Column
+	private boolean isAdmin;
+	
 	@JoinTable(name = "currencies", joinColumns = @JoinColumn(name = "currency"))
 	@Column(name = "currency", nullable = false, length=1)
 	@Enumerated(EnumType.STRING)
@@ -43,13 +46,14 @@ public class User {
 
 	public User() {}
 	
-	public User(int id, String username, String password, String email, Currency currency)
+	public User(int id, String username, String password, String email, Currency currency, boolean isAdmin)
 									throws InvalidArgumentException {
 		this.setId(id);
 		this.setUsername(username);
 		this.setPassword(password);
 		this.setEmail(email);
 		this.setCurrency(currency);
+		this.isAdmin = isAdmin;
 	}
 
 	public int getId() {
@@ -102,5 +106,13 @@ public class User {
 			throw new InvalidArgumentException(EMAIL_ERROR_MESSAGE);
 		}
 		this.email = email;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 }

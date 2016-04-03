@@ -1,5 +1,8 @@
 package config;
 
+import javax.servlet.Filter;
+
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.support.
 AbstractAnnotationConfigDispatcherServletInitializer;
  
@@ -7,7 +10,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
  
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { SpringWebConfig.class };
+        return new Class[] { SpringWebConfig.class, SecurityConfig.class };
     }
   
     @Override
@@ -19,4 +22,10 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
     protected String[] getServletMappings() {
         return new String[] { "/", "*.html", "*.pdf" };
     }
+    
+    @Override
+    protected Filter[] getServletFilters() {
+       return new Filter[]{ 
+    		   new DelegatingFilterProxy("springSecurityFilterChain")};
+    } 
 }

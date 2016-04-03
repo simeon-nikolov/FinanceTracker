@@ -3,6 +3,7 @@ package controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -53,7 +54,8 @@ public class SignUpController {
 		}
 		
 		User userForDB = new User();
-		String hashedPassword = BCrypt.hashpw(userViewModel.getPassword(), BCrypt.gensalt());
+		String hashedPassword = new BCryptPasswordEncoder().encode(userViewModel.getPassword());
+		
 		try {
 			userForDB.setUsername(userViewModel.getUsername());
 			userForDB.setPassword(hashedPassword);
