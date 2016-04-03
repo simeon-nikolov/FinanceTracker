@@ -5,23 +5,25 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class UserViewModel {
 
 	@NotNull
-	@Size(min = 2, max = 15)
+	@Size(min = 6, max = 15)
     private String username;
 	
     @NotNull
     @Size(min = 6, max = 30)
-//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
+//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])")
     private String password;
-    
+    	
     @NotNull
     @Size(min = 6, max = 30)
-//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%])")
+//    @Pattern(regexp = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])")
     private String confirmPassword;
     
+    @NotEmpty
     @NotNull
     @Email
     private String email;
