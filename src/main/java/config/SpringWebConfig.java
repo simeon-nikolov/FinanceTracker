@@ -3,6 +3,7 @@ package config;
 import java.util.Locale;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -33,7 +34,12 @@ public class SpringWebConfig extends WebMvcConfigurerAdapter {
     
     @Bean
 	public SessionFactory sessionFactory() {
-		return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+		//return new org.hibernate.cfg.Configuration().configure().buildSessionFactory();
+    	org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
+        configuration.configure("hibernate.cfg.xml");
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+        SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
+        return sessionFactory;
 	}
 	
 	@Bean
