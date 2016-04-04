@@ -15,8 +15,8 @@
 			<script src="js/chartist.js"></script>
 			<script>
 				var data = {
-						labels : ${categories},
-						series : ${money}
+						labels :<c:out value="${categories}" escapeXml="false"></c:out>,
+						series : <c:out value="${money}"></c:out>
 				};
 
 				var options = {

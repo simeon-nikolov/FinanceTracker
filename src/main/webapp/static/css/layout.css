@@ -156,3 +156,28 @@ ul li {
 	width: 55%;
 	text-align: left;
 }
+
+.date {
+	font-weight: bold;
+}
+
+.money-amount {
+	float: right;
+}
+
+.category {
+	font-weight: bold;
+}
+
+.tags {
+	color: rgba(0, 0, 0, 0.4);
+}
+
+.finance-info {
+	border: 1px solid #888;
+	margin-top: 10px;
+}
+
+.finance-info > div {
+	margin: 15px;
+}

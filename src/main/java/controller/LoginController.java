@@ -27,10 +27,10 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel, BindingResult result,
-			Model model) {
+	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel, 
+			BindingResult result, Model model) {
 		
-		return "index";
+		return "redirect:overview";
 	}
 	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
@@ -41,6 +41,6 @@ public class LoginController {
 	        new SecurityContextLogoutHandler().logout(request, response, auth);
 	    }
 	    
-	    return "redirect:/login";
+	    return "redirect:login";
 	}
 }
