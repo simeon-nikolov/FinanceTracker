@@ -10,12 +10,6 @@
 	<div class="wrapper">
 		<div id="content">
 			<input type="date" data-date-inline-picker="true" />
-			<p>Expnses size: ${expenses.size()}</p>
-			<c:forEach var="expense" items="${expenses}">
-				    Amount: <c:out value="${expense.amount}" />
-				    Currency: <c:out value="${expense.currency}" />
-				    Category: <c:out value="${expense.category.categoryName}" />
-			</c:forEach>
 			<h2>BGN ${moneyToSpend} Left to spend</h2>
 			<div class="ct-chart ct-perfect-fourth"></div>
 			<script src="js/chartist.js"></script>
