@@ -14,7 +14,7 @@
 		<div class="wrapper">
 			<div class="fl_left">
 				<h1>
-					<a href="index.html">Finance Tracker</a>
+					<a href="./index">Finance Tracker</a>
 				</h1>
 				<p>Free Website Template</p>
 			</div>
@@ -28,8 +28,8 @@
 		<div class="wrapper">
 			<div id="topnav">
 				<ul>
-					<li><a href="index.html">Home</a></li>
-					<li><a href="login.html">Login</a></li>
+					<li><a href="./index">Home</a></li>
+					<li><a href="./login">Login</a></li>
 					<li class="active right"><a href="./signUp">Sign Up</a></li>
 				</ul>
 			</div>

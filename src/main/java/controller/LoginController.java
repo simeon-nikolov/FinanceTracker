@@ -26,7 +26,7 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute("loginUser") @Valid LoginUserViewModel userViewModel, BindingResult result,
+	public String login(@ModelAttribute("loginUser") @Valid LoginUserViewModel loginUser, BindingResult result,
 			Model model) {
 		
 		return "index";

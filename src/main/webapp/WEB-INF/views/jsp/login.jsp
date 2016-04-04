@@ -16,7 +16,7 @@
 <div id="header">
   <div class="wrapper">
     <div class="fl_left">
-      <h1><a href="index.html">Finance Tracker</a></h1>
+      <h1><a href="./index">Finance Tracker</a></h1>
       <p>Free Website Template</p>
     </div>
     <div class="fl_right"> <a href="#"><img src="images/demo/468x60.gif" alt="" /></a> </div>
@@ -27,8 +27,8 @@
   <div class="wrapper">
     <div id="topnav">
       <ul>
-        <li class="active"><a href="./index">Home</a></li>
-        <li><a href="./login">Login</a></li>
+        <li><a href="./index">Home</a></li>
+        <li class="active"><a href="./login">Login</a></li>
 		<li class="last"><a href="./signUp">Sign Up</a></li>
       </ul>
     </div>

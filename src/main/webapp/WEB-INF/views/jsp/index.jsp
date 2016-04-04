@@ -12,7 +12,7 @@
 <div id="header">
   <div class="wrapper">
     <div class="fl_left">
-      <h1><a href="index.html">Finance Tracker</a></h1>
+      <h1><a href="./index">Finance Tracker</a></h1>
       <p>Free Website Template</p>
     </div>
     <div class="fl_right"> <a href="#"><img src="images/demo/468x60.gif" alt="" /></a> </div>
