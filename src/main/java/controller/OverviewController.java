@@ -39,9 +39,14 @@ public class OverviewController {
 	@RequestMapping(value = "/overview", method = RequestMethod.GET)
 	public String showOverview(Model model, HttpSession session) {
 		try {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String username = auth.getName();
-			session.setAttribute("username", username);
+			String username = (String) session.getAttribute("username");
+			
+			if (username == null || username.isEmpty()) {
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				username = auth.getName();
+				session.setAttribute("username", username);
+			}
+			
 			User user = userDAO.getUserByUsername(username);
 			int month = LocalDate.now().getMonthOfYear();
 			
