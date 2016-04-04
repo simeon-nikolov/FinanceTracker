@@ -2,10 +2,13 @@ package dao;
 
 import java.util.Collection;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+import exceptions.DuplicateUserException;
 import model.User;
 
 public interface IUserDAO {
-	int addUser(User user) throws DAOException;
+	int addUser(User user) throws DAOException, DuplicateUserException;
 	
 	void updateUser(User user) throws DAOException;
 	

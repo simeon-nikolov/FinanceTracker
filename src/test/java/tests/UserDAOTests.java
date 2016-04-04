@@ -16,6 +16,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import dao.DAOException;
 import dao.IUserDAO;
+import exceptions.DuplicateUserException;
 import exceptions.InvalidArgumentException;
 
 @WebAppConfiguration
@@ -29,7 +30,7 @@ public class UserDAOTests {
 	private IUserDAO dao;
 
 	@Test
-	public void testGetUserById() throws DAOException {
+	public void testGetUserById() throws DAOException, DuplicateUserException {
 		User user = makeNewUser();
 
 		int id = dao.addUser(user);
@@ -49,7 +50,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testAddUser() throws DAOException {
+	public void testAddUser() throws DAOException, DuplicateUserException {
 
 		User user = makeNewUser();
 		int id = dao.addUser(user);
@@ -70,7 +71,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testUpdateUser() throws DAOException {
+	public void testUpdateUser() throws DAOException, DuplicateUserException {
 		User user = makeNewUser();
 		int id = dao.addUser(user);
 		try {
@@ -104,7 +105,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testGetUserByUsername() throws DAOException {
+	public void testGetUserByUsername() throws DAOException, DuplicateUserException {
 		User user = makeNewUser();
 		String username = user.getUsername();		
 		int id = dao.addUser(user);		
