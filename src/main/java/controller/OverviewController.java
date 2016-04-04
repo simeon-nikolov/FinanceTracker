@@ -57,7 +57,7 @@ public class OverviewController {
 				
 				for (Expense expense : accExpenses) {
 					amountToSpend -= expense.getAmount();
-					String category = expense.getCategory().getCategoryName();
+					String category = "'" + expense.getCategory().getCategoryName() + "'";
 					categories.add(category);
 					int oldAmount = 0;
 					
