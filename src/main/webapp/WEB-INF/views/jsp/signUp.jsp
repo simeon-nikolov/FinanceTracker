@@ -39,6 +39,11 @@
 	<div id="container">
 		<div class="wrapper">
 			<div id="content">
+				<div class="dberror">
+					<jstl:if test="${not empty signUpError}">
+						<jstl:out value="${signUpError}"></jstl:out>
+					</jstl:if>
+				</div>
 				<div id="register">
 					<form:form action="signUp" commandName="userViewModel">
 						<fieldset>

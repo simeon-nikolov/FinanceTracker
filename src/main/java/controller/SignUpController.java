@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IUserDAO;
+import exceptions.DuplicateUserException;
 import exceptions.InvalidArgumentException;
 import model.Account;
 import model.Currency;
@@ -68,11 +71,14 @@ public class SignUpController {
 
 			int userID = userDao.addUser(userForDB);
 			userForDB.setId(userID);
-		} catch (InvalidArgumentException e) {
+		} catch (DuplicateUserException e) {
+			model.addAttribute("signUpError", e.getMessage());			
 			e.printStackTrace();
-		} catch (DAOException e) {
+			return "signUp";			
+		} catch (Exception e) {
 			model.addAttribute("signUpError", e.getMessage());
 			e.printStackTrace();
+			return "signUp";
 		}
 		Account defaultUserAccount = new Account();
 
@@ -81,12 +87,11 @@ public class SignUpController {
 			defaultUserAccount.setTitle(DEFAULT_STARTING_ACCOUNT_NAME);
 			defaultUserAccount.setBalance(DEFAULT_STARTING_ACCOUNT_BALANCE);
 
-			accountDao.addAccount(defaultUserAccount);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		} catch (DAOException e) {
+			accountDao.addAccount(defaultUserAccount);		
+		} catch (Exception e) {
 			model.addAttribute("signUpError", e.getMessage());
 			e.printStackTrace();
+			return "signUp";
 		}
 
 		return "login";
