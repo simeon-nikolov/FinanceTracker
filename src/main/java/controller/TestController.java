@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import config.BCrypt;
 import dao.IUserDAO;
 import model.User;
 
@@ -22,7 +21,7 @@ public class TestController {
 		User user = dao.getUserById(138);
 		String hashed = user.getPassword();
 		
-		System.out.println(BCrypt.checkpw("qwerty", hashed));
+		//System.out.println(BCrypt.checkpw("qwerty", hashed));
 		
 		return "login";
 	}	

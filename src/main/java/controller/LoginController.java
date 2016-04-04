@@ -21,12 +21,13 @@ public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String showLoginPage(Model model) {
+		model.addAttribute("loginUserViewModel", new LoginUserViewModel());
 		
 		return "login";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute("loginUser") @Valid LoginUserViewModel loginUser, BindingResult result,
+	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel, BindingResult result,
 			Model model) {
 		
 		return "index";

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix = "form" uri = "http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -41,7 +40,7 @@
     	<div class="col-md-6 col-md-offset-2">	
 			<c:if test="${param.error != null}">
 				<div class="alert alert-danger">
-					Invalid UserName and Password.
+					Invalid Username or Password.
 				</div>
 			</c:if>
 			<c:if test="${param.logout != null}">
@@ -51,8 +50,8 @@
 			</c:if>	
 		</div>  
 		<div id="login">
-			<form:form id="loginForm" method="post" action="./login" modelAttribute="loginUser" 
-				class="form-horizontal" role="form" cssStyle="width: 800px; margin: 0 auto;">
+			<form:form id="loginForm" method="post" action="./login" 
+				class="form-horizontal" commandName="loginUserViewModel" cssStyle="width: 800px; margin: 0 auto;">
 				<fieldset>
 					<legend>Login</legend>
 					<table>
@@ -61,7 +60,7 @@
 								<label for="username">Username:</label>
 							</td>
 							<td>
-								 <input type="text" id="username" name="username" class="form-control" placeholder="Username" />
+								 <form:input path="username" type="text" id="username" name="username" class="form-control" placeholder="Username" />
 							</td>
 						</tr>
 						<tr>
@@ -69,7 +68,7 @@
 								<label for="password">Password:</label>
 							</td>
 							<td>
-								<input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+								<form:input path="password" type="password" id="password" name="password" class="form-control" placeholder="Password" />
 							</td>
 						</tr>
 					</table>

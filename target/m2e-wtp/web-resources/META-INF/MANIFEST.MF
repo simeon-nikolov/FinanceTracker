@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: FinanceTracker Maven Webapp
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: simeon
+Built-By: Dev-1
 Implementation-Vendor-Id: com.github.financetracker
-Build-Jdk: 1.8.0_77
+Build-Jdk: 1.8.0_51
 Created-By: Maven Integration for Eclipse
 Implementation-Vendor: Pivotal Software, Inc.
 
