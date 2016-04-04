@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import model.Account;
@@ -9,6 +10,7 @@ import model.Income;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -112,6 +114,31 @@ public class FinanceOperationDAO implements IFinanceOperationDAO {
 			Query query = sessionFactory.getCurrentSession().createQuery("from Expense e where e.account = :account");
 			query.setEntity("account", account);
 			result = query.list();
+			sessionFactory.getCurrentSession().getTransaction().commit();
+		} catch (RuntimeException e) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			throw new DAOException("Finance operation can not be read from database!", e);
+		}
+
+		return result;
+	}
+	
+	@Override
+	public Collection<Expense> getAllExpensesForAMonth(LocalDate date, Account account) throws DAOException {
+		Collection<Expense> allExpenses = null;
+		Collection<Expense> result = null;
+		
+		try {
+			sessionFactory.getCurrentSession().beginTransaction();
+			allExpenses = new FinanceOperationDAO().getAllExpensesByAccount(account);
+			int month = date.getMonthOfYear();
+			int year = date.getYear();
+			result = new ArrayList<Expense>();
+			for (Expense expense : allExpenses) {
+				if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
+					result.add(expense);
+				}
+			}		
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();

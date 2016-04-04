@@ -9,6 +9,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,6 +45,8 @@ public class OverviewController {
 			session.setAttribute("username", username);
 			
 			User user = userDAO.getUserByUsername(username);
+			int month = LocalDate.now().getMonthOfYear();
+			int year = LocalDate.now().getYear();
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			List<Expense> expenses = new LinkedList<Expense>();
 			Set<String> categories = new HashSet<String>();
@@ -52,10 +55,15 @@ public class OverviewController {
 			
 			for (Account acc : accounts) {
 				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
-				expenses.addAll(accExpenses);
+				for (Expense expense : accExpenses) {
+					if (expense.getDate().getMonthOfYear() == month && 
+								expense.getDate().getYear() == year) {
+						expenses.add(expense);
+					}
+				}
 				amountToSpend += acc.getBalance();
 				
-				for (Expense expense : accExpenses) {
+				for (Expense expense : expenses) {
 					amountToSpend -= expense.getAmount();
 					String category = "'" + expense.getCategory().getCategoryName() + "'";
 					categories.add(category);

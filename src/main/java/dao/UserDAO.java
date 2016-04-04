@@ -32,9 +32,7 @@ public class UserDAO implements IUserDAO {
 			throw new  DuplicateUserException("Username or email is aleready taken!", e);			
 		} catch (RuntimeException e) {			
 			throw new DAOException("User can not be read from database!", e);
-		} finally {
-			sessionFactory.getCurrentSession().getTransaction().rollback();
-		}
+		} 
 		
 
 		return id;

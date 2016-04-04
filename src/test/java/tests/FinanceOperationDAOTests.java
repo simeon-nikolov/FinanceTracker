@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -282,7 +283,7 @@ public class FinanceOperationDAOTests {
 		User user = account.getUser();
 		accDAO.deleteAccount(account);
 		userDAO.deleteUser(user);
-	}
+	}	
 	
 	private List<Income> addManyIncomesToDB() throws DAOException, DuplicateUserException {
 		List<Income> incomes = new ArrayList<Income>(LIST_SIZE);
