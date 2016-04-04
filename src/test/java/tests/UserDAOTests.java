@@ -14,10 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import dao.DAOException;
 import dao.IUserDAO;
-import exceptions.DuplicateUserException;
-import exceptions.InvalidArgumentException;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,15 +27,10 @@ public class UserDAOTests {
 	private IUserDAO dao;
 
 	@Test
-	public void testGetUserById() throws DAOException, DuplicateUserException {
+	public void testGetUserById() throws Exception {
 		User user = makeNewUser();
-
 		int id = dao.addUser(user);
-		try {
-			user.setId(id);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
+		user.setId(id);
 		User userFromDB = dao.getUserById(id);
 
 		assertEquals(userFromDB.getId(), user.getId());
@@ -50,17 +42,10 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testAddUser() throws DAOException, DuplicateUserException {
-
+	public void testAddUser() throws Exception {
 		User user = makeNewUser();
 		int id = dao.addUser(user);
-
-		try {
-			user.setId(id);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
-
+		user.setId(id);
 		User userFromDB = dao.getUserById(id);
 
 		assertEquals(userFromDB.getId(), user.getId());
@@ -71,22 +56,12 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testUpdateUser() throws DAOException, DuplicateUserException {
+	public void testUpdateUser() throws Exception {
 		User user = makeNewUser();
 		int id = dao.addUser(user);
-		try {
-			user.setId(id);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
-
+		user.setId(id);
 		String newEmail = "test" + RANDOM_NUMBER_FOR_TESTS + "@test.com";
-		try {
-			user.setEmail(newEmail);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
-
+		user.setEmail(newEmail);
 		dao.updateUser(user);
 		User tempUser = dao.getUserById(id);
 
@@ -97,19 +72,15 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testGetAllUsers() throws DAOException {
+	public void testGetAllUsers() throws Exception {
 		List<User> list = (List<User>) dao.getAllUsers();
-
-		System.out.println(list.size());
-		System.out.println(list);
 	}
 
 	@Test
-	public void testGetUserByUsername() throws DAOException, DuplicateUserException {
+	public void testGetUserByUsername() throws Exception {
 		User user = makeNewUser();
 		String username = user.getUsername();		
 		int id = dao.addUser(user);		
-		
 		User fromDB = dao.getUserByUsername(username);
 		
 		assertEquals(fromDB.getId(), id);
@@ -120,22 +91,16 @@ public class UserDAOTests {
 		dao.deleteUser(fromDB);
 	}
 
-	private User makeNewUser() {
+	private User makeNewUser() throws Exception {
 		User user = new User();
 		int randNumber = (int) (Math.random() * RANDOM_NUMBER_FOR_TESTS);
 		String username = "testusername" + randNumber;
 		String email = "testemail" + randNumber + "@asd.asd";
-
-		try {
-			user.setUsername(username);
-			user.setPassword("123456");
-			user.setEmail(email);
-			user.setCurrency(Currency.BGN);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
+		user.setUsername(username);
+		user.setPassword("123456");
+		user.setEmail(email);
+		user.setCurrency(Currency.BGN);
 
 		return user;
 	}
-
 }

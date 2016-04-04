@@ -2,7 +2,6 @@ package tests;
 
 import static org.junit.Assert.assertEquals;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IUserDAO;
-import exceptions.DuplicateUserException;
-import exceptions.InvalidArgumentException;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,22 +34,14 @@ public class AccountDAOTests {
 	private IUserDAO userDao;
 	
 	@Test
-	public void testAddAccount() throws DAOException, DuplicateUserException {
+	public void testAddAccount() throws Exception {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);		
 		int id = dao.addAccount(account);	
-		
-		try {
-			account.setId(id);
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
-		
+		account.setId(id);
 		Account accTemp = dao.getAccountById(id);
-		
 		assertEquals(account.getTitle(), accTemp.getTitle());
 		assertEquals(account.getBalance(), accTemp.getBalance());
-		
 		dao.deleteAccount(account);
 		userDao.deleteUser(user);
 	}
@@ -61,124 +49,91 @@ public class AccountDAOTests {
 	
 	
 	@Test
-	public void testUpdateAccount() throws DAOException, DuplicateUserException {
+	public void testUpdateAccount() throws Exception {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);		
 		int id = dao.addAccount(account);				
-		
 		int newBalance = (int)(Math.random()*ACCOUNT_BALANCE_RANDOM_NUMBER);
 		String newTitle = "testUpdate";
-		
-		try {
-			account.setBalance(newBalance);
-			account.setTitle(newTitle);
-		} catch (InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		account.setBalance(newBalance);
+		account.setTitle(newTitle);
 		dao.updateAccount(account);
 		account = dao.getAccountById(id);
-		
 		assertEquals(account.getBalance(), newBalance);
 		assertEquals(account.getTitle(), newTitle);
-		
 		dao.deleteAccount(account);
 		userDao.deleteUser(user);
 	}
 	
 	@Test
-	public void testGetAccountById() throws DAOException, DuplicateUserException {
+	public void testGetAccountById() throws Exception {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);	
 		String title = account.getTitle();
 		int balance = account.getBalance();
 		int id = dao.addAccount(account);	
-				
 		Account fromDB = dao.getAccountById(id);
-		
 		assertEquals(fromDB.getTitle(), title);	
 		assertEquals(fromDB.getBalance(), balance);
-		
 		dao.deleteAccount(account);
 		userDao.deleteUser(user);
 	}
 	
 	@Test
-	public void testGetAllAccountsForUser() throws DAOException, DuplicateUserException {
+	public void testGetAllAccountsForUser() throws Exception {
 		User user = addUserToDB();
 		List<Account> accounts = new ArrayList<Account>();
 		
 		for (int i = 0 ; i < NUMBER_OF_TEST_ACCOUNTS; i++)  {
 			Account account = makeNewAccount(user);
 			int id = dao.addAccount(account);
-			try {
-				account.setId(id);
-			} catch (InvalidArgumentException e) {			
-				e.printStackTrace();
-			}
+			account.setId(id);
 			accounts.add(account);
 		}
 		
 		List<Account> listFromDB = (List<Account>) dao.getAllAccountsForUser(user);
-		
 		assertEquals(listFromDB.size(), accounts.size());		
 		
 		for (int i = 0 ; i < NUMBER_OF_TEST_ACCOUNTS; i++) {
 			dao.deleteAccount(accounts.get(i));
 		}
+		
 		userDao.deleteUser(user);		
 	}
 	
 	@Test
-	public void testGetAccountForUserByName() throws DAOException, DuplicateUserException {
+	public void testGetAccountForUserByName() throws Exception {
 		User user = addUserToDB();
 		Account account = makeNewAccount(user);
 		String title = account.getTitle();
-		
 		int id = dao.addAccount(account);
-		
 		Account fromDB = dao.getAccountForUserByName(title, user);
-		
 		assertEquals(fromDB.getBalance(), account.getBalance());
 		assertEquals(fromDB.getId(), id);
-		
 		dao.deleteAccount(account);
 		userDao.deleteUser(user);
 	}
 	
 	
-	private User addUserToDB() throws DAOException, DuplicateUserException {
+	private User addUserToDB() throws Exception {
 		User user = new User();
-
-		try {
-			int randNumber = (int) (Math.random() * RANDOM_NUMBER_SIZE);
-			user.setUsername("testusername" + randNumber);
-			user.setEmail("testemail" + randNumber + "@domain.asd");
-			user.setPassword("123456");
-			user.setCurrency(Currency.BGN);
-			int id = userDao.addUser(user);
-			user.setId(id);
-			
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
+		int randNumber = (int) (Math.random() * RANDOM_NUMBER_SIZE);
+		user.setUsername("testusername" + randNumber);
+		user.setEmail("testemail" + randNumber + "@domain.asd");
+		user.setPassword("123456");
+		user.setCurrency(Currency.BGN);
+		int id = userDao.addUser(user);
+		user.setId(id);
 
 		return user;
 	}
 	
-	private Account makeNewAccount(User user) {
+	private Account makeNewAccount(User user) throws Exception {
 		Account account = new Account();
-
-		try {
-			int balance = (int)(Math.random() * ACCOUNT_BALANCE_RANDOM_NUMBER);
-			account.setBalance(balance);
-			account.setTitle("testAccount");
-			account.setUser(user);
-			
-		} catch (InvalidArgumentException e) {
-			e.printStackTrace();
-		}
+		int balance = (int)(Math.random() * ACCOUNT_BALANCE_RANDOM_NUMBER);
+		account.setBalance(balance);
+		account.setTitle("testAccount");
+		account.setUser(user);
 
 		return account;
 	}

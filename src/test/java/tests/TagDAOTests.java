@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import dao.DAOException;
 import dao.ITagDAO;
 
 @WebAppConfiguration
@@ -30,7 +29,7 @@ public class TagDAOTests {
 	private ITagDAO tagDAO;
 	
 	@Test
-	public void testAddTag() throws DAOException {
+	public void testAddTag() throws Exception {
 		Tag tag = new Tag();
 		tag.setTagName(TAG_NAME);
 		tag.setForType(FinanceOperationType.INCOME);
@@ -43,7 +42,7 @@ public class TagDAOTests {
 	}
 	
 	@Test
-	public void testUpdateTag() throws DAOException {
+	public void testUpdateTag() throws Exception {
 		Tag tag = new Tag();
 		tag.setTagName(TAG_NAME);
 		tag.setForType(FinanceOperationType.INCOME);
@@ -60,7 +59,7 @@ public class TagDAOTests {
 	}
 	
 	@Test
-	public void testDeleteTag() throws DAOException {
+	public void testDeleteTag() throws Exception {
 		Tag tag = new Tag();
 		tag.setTagName(TAG_NAME);
 		tag.setForType(FinanceOperationType.INCOME);
@@ -70,7 +69,7 @@ public class TagDAOTests {
 	}
 	
 	@Test
-	public void testGetTagByTagname() throws DAOException {
+	public void testGetTagByTagname() throws Exception {
 		Tag tag = new Tag();
 		tag.setTagName(TAG_NAME);
 		tag.setForType(FinanceOperationType.INCOME);
@@ -83,7 +82,7 @@ public class TagDAOTests {
 	}
 	
 	@Test
-	public void testGetAllTagsByTypeFor() throws DAOException {
+	public void testGetAllTagsByTypeFor() throws Exception {
 		List<Tag> tags = new ArrayList<Tag>(TAGS_COUNT);
 		List<Tag> tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
 		int sizeBefore = tagsFromDB == null ? 0 : tagsFromDB.size();
