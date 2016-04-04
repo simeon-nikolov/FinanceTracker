@@ -46,7 +46,13 @@ public class OverviewController {
 			
 			User user = userDAO.getUserByUsername(username);
 			int month = LocalDate.now().getMonthOfYear();
+			if (session.getAttribute("month") != null) {
+				month = (int) session.getAttribute("month");
+			}
 			int year = LocalDate.now().getYear();
+			if (session.getAttribute("year") != null) {
+				month = (int) session.getAttribute("year");
+			}
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			List<Expense> expenses = new LinkedList<Expense>();
 			Set<String> categories = new HashSet<String>();

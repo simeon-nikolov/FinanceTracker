@@ -47,25 +47,10 @@
 					<option value="">Savings</option>
 					<option value="">Cash</option>
 				</select>
-				<ul>
-					<li>
-						<ul class="finance-operation-element">
-							<li><a>March 20<span style="float: right;">BGN
-										25.00</span></a></li>
-							<li><a href="#">Home and Utilities...</a></li>
-						</ul>
-						<ul class="finance-operation-element">
-							<li><a href="#">March 20<span style="float: right;">BGN
-										25.00</span></a></li>
-							<li><a href="#">Home and Utilities...</a></li>
-						</ul>
-						<ul class="finance-operation-element">
-							<li><a href="#">March 20<span style="float: right;">BGN
-										25.00</span></a></li>
-							<li><a href="#">Home and Utilities...</a></li>
-						</ul>
-					</li>
-				</ul>
+				<c:forEach var="expense" items="${expenses}">				
+				<%@include file="partials/expenseListTemplate.jsp"%>
+				</c:forEach>
+				
 			</div>
 		</div>
 		<br class="clear" />
