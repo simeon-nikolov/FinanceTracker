@@ -18,11 +18,11 @@ public class TestController {
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(Model model) {
-		User user = dao.getUserById(138);
-		String hashed = user.getPassword();
+//		User user = dao.getUserById(138);
+//		String hashed = user.getPassword();
+//		
+//		//System.out.println(BCrypt.checkpw("qwerty", hashed));
 		
-		//System.out.println(BCrypt.checkpw("qwerty", hashed));
-		
-		return "login";
+		return "headerAuthenticated";
 	}	
 }

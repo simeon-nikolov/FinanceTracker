@@ -7,16 +7,16 @@ import model.User;
 
 public interface IAccountDAO {
 
-	int addAccount(Account account);
+	int addAccount(Account account) throws DAOException;
 	
-	Account getAccountById(int accountId);
+	Account getAccountById(int accountId) throws DAOException;
 
-	void deleteAccount(Account account);
+	void deleteAccount(Account account) throws DAOException;
 
-	void updateAccount(Account account);
+	void updateAccount(Account account) throws DAOException;
 
-	Collection<Account> getAllAccountsForUser(User user);
+	Collection<Account> getAllAccountsForUser(User user) throws DAOException;
 	
-	public Account getAccountForUserByName(String accountName, User user);
+	public Account getAccountForUserByName(String accountName, User user) throws DAOException;
 
 }

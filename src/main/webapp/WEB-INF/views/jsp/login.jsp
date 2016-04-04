@@ -60,7 +60,7 @@
 								<label for="username">Username:</label>
 							</td>
 							<td>
-								 <form:input path="username" type="text" id="username" name="username" class="form-control" placeholder="Username" />
+								 <input path="username" type="text" id="username" name="username" class="form-control" placeholder="Username" />
 							</td>
 						</tr>
 						<tr>
@@ -68,7 +68,7 @@
 								<label for="password">Password:</label>
 							</td>
 							<td>
-								<form:input path="password" type="password" id="password" name="password" class="form-control" placeholder="Password" />
+								<input path="password" type="password" id="password" name="password" class="form-control" placeholder="Password" />
 							</td>
 						</tr>
 					</table>

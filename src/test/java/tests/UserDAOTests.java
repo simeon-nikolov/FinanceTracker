@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import dao.DAOException;
 import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
 
@@ -28,7 +29,7 @@ public class UserDAOTests {
 	private IUserDAO dao;
 
 	@Test
-	public void testGetUserById() {
+	public void testGetUserById() throws DAOException {
 		User user = makeNewUser();
 
 		int id = dao.addUser(user);
@@ -48,7 +49,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testAddUser() {
+	public void testAddUser() throws DAOException {
 
 		User user = makeNewUser();
 		int id = dao.addUser(user);
@@ -69,7 +70,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testUpdateUser() {
+	public void testUpdateUser() throws DAOException {
 		User user = makeNewUser();
 		int id = dao.addUser(user);
 		try {
@@ -95,7 +96,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testGetAllUsers() {
+	public void testGetAllUsers() throws DAOException {
 		List<User> list = (List<User>) dao.getAllUsers();
 
 		System.out.println(list.size());
@@ -103,7 +104,7 @@ public class UserDAOTests {
 	}
 
 	@Test
-	public void testGetUserByUsername() {
+	public void testGetUserByUsername() throws DAOException {
 		User user = makeNewUser();
 		String username = user.getUsername();		
 		int id = dao.addUser(user);		
