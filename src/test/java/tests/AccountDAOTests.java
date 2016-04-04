@@ -20,6 +20,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IUserDAO;
+import exceptions.DuplicateUserException;
 import exceptions.InvalidArgumentException;
 
 @WebAppConfiguration
@@ -37,7 +38,7 @@ public class AccountDAOTests {
 	private IUserDAO userDao;
 	
 	@Test
-	public void testAddAccount() throws DAOException {
+	public void testAddAccount() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);		
 		int id = dao.addAccount(account);	
@@ -60,7 +61,7 @@ public class AccountDAOTests {
 	
 	
 	@Test
-	public void testUpdateAccount() throws DAOException {
+	public void testUpdateAccount() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);		
 		int id = dao.addAccount(account);				
@@ -87,7 +88,7 @@ public class AccountDAOTests {
 	}
 	
 	@Test
-	public void testGetAccountById() throws DAOException {
+	public void testGetAccountById() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);	
 		String title = account.getTitle();
@@ -104,7 +105,7 @@ public class AccountDAOTests {
 	}
 	
 	@Test
-	public void testGetAllAccountsForUser() throws DAOException {
+	public void testGetAllAccountsForUser() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();
 		List<Account> accounts = new ArrayList<Account>();
 		
@@ -130,7 +131,7 @@ public class AccountDAOTests {
 	}
 	
 	@Test
-	public void testGetAccountForUserByName() throws DAOException {
+	public void testGetAccountForUserByName() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();
 		Account account = makeNewAccount(user);
 		String title = account.getTitle();
@@ -147,7 +148,7 @@ public class AccountDAOTests {
 	}
 	
 	
-	private User addUserToDB() throws DAOException {
+	private User addUserToDB() throws DAOException, DuplicateUserException {
 		User user = new User();
 
 		try {

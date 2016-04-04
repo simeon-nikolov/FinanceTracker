@@ -30,6 +30,7 @@ import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
+import exceptions.DuplicateUserException;
 import exceptions.InvalidArgumentException;
 
 @WebAppConfiguration
@@ -61,7 +62,7 @@ public class FinanceOperationDAOTests {
 	private ICategoryDAO categoryDAO;
 
 	@Test
-	public void testAddIncome() throws DAOException {
+	public void testAddIncome() throws DAOException, DuplicateUserException {
 		Income income = makeNewIncome();
 		int id = foDAO.add(income);
 		Income fromDB = foDAO.getIncomeById(id);
@@ -91,7 +92,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testAddExpense() throws DAOException {
+	public void testAddExpense() throws DAOException, DuplicateUserException {
 		Expense expense = makeNewExpense();
 		int id = foDAO.add(expense);
 		Expense fromDB = foDAO.getExpenseById(id);
@@ -121,7 +122,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testUpdateIncome() throws DAOException {
+	public void testUpdateIncome() throws DAOException, DuplicateUserException {
 		try {
 			Income income = makeNewIncome();
 			int id = foDAO.add(income);
@@ -161,7 +162,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testUpdateExpense() throws DAOException {
+	public void testUpdateExpense() throws DAOException, DuplicateUserException {
 		try {
 			Expense expense = makeNewExpense();
 			int id = foDAO.add(expense);
@@ -201,7 +202,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testDeleteIncome() throws DAOException {
+	public void testDeleteIncome() throws DAOException, DuplicateUserException {
 		Income income = makeNewIncome();
 		int id = foDAO.add(income);
 		Income fromDB = foDAO.getIncomeById(id);
@@ -220,7 +221,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testDeleteExpense() throws DAOException {
+	public void testDeleteExpense() throws DAOException, DuplicateUserException {
 		Expense expense = makeNewExpense();
 		int id = foDAO.add(expense);
 		Expense fromDB = foDAO.getExpenseById(id);
@@ -240,7 +241,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testGetAllIncomesByAccount() throws DAOException {
+	public void testGetAllIncomesByAccount() throws DAOException, DuplicateUserException {
 		List<Income> incomes = addManyIncomesToDB();
 		Account account = incomes.get(0).getAccount();
 		List<Income> incomesFromDB = (List<Income>) foDAO.getAllIncomesByAccount(account);
@@ -262,7 +263,7 @@ public class FinanceOperationDAOTests {
 	}
 	
 	@Test
-	public void testGetAllExpensesByAccount() throws DAOException {
+	public void testGetAllExpensesByAccount() throws DAOException, DuplicateUserException {
 		List<Expense> expenses = addManyExpensesToDB();
 		Account account = expenses.get(0).getAccount();
 		List<Expense> expensesFromDB = (List<Expense>) foDAO.getAllExpensesByAccount(account);
@@ -283,7 +284,7 @@ public class FinanceOperationDAOTests {
 		userDAO.deleteUser(user);
 	}
 	
-	private List<Income> addManyIncomesToDB() throws DAOException {
+	private List<Income> addManyIncomesToDB() throws DAOException, DuplicateUserException {
 		List<Income> incomes = new ArrayList<Income>(LIST_SIZE);
 		Account account = addAccountToDB();
 		
@@ -301,7 +302,7 @@ public class FinanceOperationDAOTests {
 		return incomes;
 	}
 	
-	private List<Expense> addManyExpensesToDB() throws DAOException {
+	private List<Expense> addManyExpensesToDB() throws DAOException, DuplicateUserException {
 		List<Expense> expenses = new ArrayList<Expense>(LIST_SIZE);
 		Account account = addAccountToDB();
 		
@@ -319,7 +320,7 @@ public class FinanceOperationDAOTests {
 		return expenses;
 	}
 
-	private Income makeNewIncome() throws DAOException {
+	private Income makeNewIncome() throws DAOException, DuplicateUserException {
 		Account account = addAccountToDB();
 		return makeNewIncome(account);
 	}
@@ -345,7 +346,7 @@ public class FinanceOperationDAOTests {
 		return income;
 	}
 
-	private Expense makeNewExpense() throws DAOException {
+	private Expense makeNewExpense() throws DAOException, DuplicateUserException {
 		Account account = addAccountToDB();
 		return makeNewExpense(account);
 	}
@@ -400,7 +401,7 @@ public class FinanceOperationDAOTests {
 		return tags;
 	}
 
-	private Account addAccountToDB() throws DAOException {
+	private Account addAccountToDB() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();
 		Account account = new Account();
 
@@ -416,7 +417,7 @@ public class FinanceOperationDAOTests {
 		return account;
 	}
 
-	private User addUserToDB() throws DAOException {
+	private User addUserToDB() throws DAOException, DuplicateUserException {
 		User user = new User();
 
 		try {

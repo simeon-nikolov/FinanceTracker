@@ -25,6 +25,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import dao.DAOException;
 import dao.IBudgetDAO;
 import dao.IUserDAO;
+import exceptions.DuplicateUserException;
 import exceptions.InvalidArgumentException;
 
 @WebAppConfiguration
@@ -42,7 +43,7 @@ public class BudgetDAOTests {
 	private IUserDAO userDAO;
 
 	@Test
-	public void testAddBudget() throws DAOException {
+	public void testAddBudget() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();
 		Budget budget = makeNewBudget(user);
 		int id = budgetDAO.add(budget);
@@ -62,7 +63,7 @@ public class BudgetDAOTests {
 	}
 
 	@Test
-	public void testUpdateBudget() throws DAOException {
+	public void testUpdateBudget() throws DAOException, DuplicateUserException {
 		try {
 			User user = addUserToDB();
 			Budget budget = makeNewBudget(user);
@@ -89,7 +90,7 @@ public class BudgetDAOTests {
 	}
 
 	@Test
-	public void testDeleteBudget() throws DAOException {
+	public void testDeleteBudget() throws DAOException, DuplicateUserException {
 		try {
 			User user = addUserToDB();
 			Budget budget = makeNewBudget(user);
@@ -103,7 +104,7 @@ public class BudgetDAOTests {
 	}
 	
 	@Test
-	public void testGetBudgetsByUser() throws DAOException {
+	public void testGetBudgetsByUser() throws DAOException, DuplicateUserException {
 		try {
 			User user = addUserToDB();
 			List<Budget> budgets = new ArrayList<Budget>(NUMBER_OF_BUDGETS);
@@ -129,7 +130,7 @@ public class BudgetDAOTests {
 	}
 	
 	@Test
-	public void testGetBudgetById() throws DAOException {
+	public void testGetBudgetById() throws DAOException, DuplicateUserException {
 		User user = addUserToDB();
 		Budget budget = makeNewBudget(user);
 		int id = budgetDAO.add(budget);
@@ -158,7 +159,7 @@ public class BudgetDAOTests {
 		return budget;
 	}
 
-	private User addUserToDB() throws DAOException {
+	private User addUserToDB() throws DAOException, DuplicateUserException {
 		User user = new User();
 
 		try {
