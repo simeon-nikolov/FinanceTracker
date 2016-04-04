@@ -1,11 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>	
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>IT Talents - Finance Tracker</title>
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
+<sec:authorize access="isAuthenticated()">
+<link rel="stylesheet" href="css/chartist.css">
+</sec:authorize>
 </head>
 <body id="top">
 	<div id="header">
@@ -22,17 +29,9 @@
 			<br class="clear" />
 		</div>
 	</div>
-	<div id="topbar">
-		<div class="wrapper">
-			<div id="topnav">
-				<ul>
-					<li><a href="./index">Home</a></li>
-					<li><a href="./login">Login</a></li>
-					<li class="last"><a href="./signUp">Sign Up</a></li>
-				</ul>
-			</div>
-			<br class="clear" />
-		</div>
-	</div>
-</body>
-</html>
+	<sec:authorize access="isAuthenticated()">
+		<%@include file="loggedInMenu.jsp"%>
+	</sec:authorize>
+	<sec:authorize access="not isAuthenticated()">
+		<%@include file="menu.jsp"%>
+	</sec:authorize>

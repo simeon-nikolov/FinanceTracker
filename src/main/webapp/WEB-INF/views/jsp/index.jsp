@@ -1,92 +1,105 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix = "form" uri = "http://www.springframework.org/tags/form" %>	
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>IT Talents - Finance Tracker</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="css/layout.css" type="text/css" />
-</head>
-<body id="top">
-<div id="header">
-  <div class="wrapper">
-    <div class="fl_left">
-      <h1><a href="./index">Finance Tracker</a></h1>
-      <p>Free Website Template</p>
-    </div>
-    <div class="fl_right"> <a href="#"><img src="images/demo/468x60.gif" alt="" /></a> </div>
-    <br class="clear" />
-  </div>
-</div>
-<div id="topbar">
-  <div class="wrapper">
-    <div id="topnav">
-      <ul>
-        <li class="active"><a href="./index">Home</a></li>
-        <li><a href="./login">Login</a></li>
-		<li class="last"><a href="./signUp">Sign Up</a></li>
-      </ul>
-    </div>
-    <br class="clear" />
-  </div>
-</div>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@include file="partials/header.jsp"%>
 <div id="homecontent">
-  <div class="wrapper">
-    <ul>
-      <li>
-        <h2 class="title"><img src="images/demo/60x60.gif" alt="" />Nullamlacus dui ipsum conseque loborttis</h2>
-        <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
-        <p class="readmore"><a href="#">Continue Reading &raquo;</a></p>
-      </li>
-      <li>
-        <h2 class="title"><img src="images/demo/60x60.gif" alt="" />Nullamlacus dui ipsum conseque loborttis</h2>
-        <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
-        <p class="readmore"><a href="#">Continue Reading &raquo;</a></p>
-      </li>
-      <li class="last">
-        <h2 class="title"><img src="images/demo/60x60.gif" alt="" />Nullamlacus dui ipsum conseque loborttis</h2>
-        <p>Nullamlacus dui ipsum conseque loborttis non euisque morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque congue magnis vestibulum quismodo nulla et feugiat. Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis malesuada.</p>
-        <p class="readmore"><a href="#">Continue Reading &raquo;</a></p>
-      </li>
-    </ul>
-    <br class="clear" />
-  </div>
+	<div class="wrapper">
+		<ul>
+			<li>
+				<h2 class="title">
+					<img src="images/demo/60x60.gif" alt="" />Nullamlacus dui ipsum
+					conseque loborttis
+				</h2>
+				<p>Nullamlacus dui ipsum conseque loborttis non euisque morbi
+					penas dapibulum orna. Urnaultrices quis curabitur phasellentesque
+					congue magnis vestibulum quismodo nulla et feugiat.
+					Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis
+					malesuada.</p>
+				<p class="readmore">
+					<a href="#">Continue Reading &raquo;</a>
+				</p>
+			</li>
+			<li>
+				<h2 class="title">
+					<img src="images/demo/60x60.gif" alt="" />Nullamlacus dui ipsum
+					conseque loborttis
+				</h2>
+				<p>Nullamlacus dui ipsum conseque loborttis non euisque morbi
+					penas dapibulum orna. Urnaultrices quis curabitur phasellentesque
+					congue magnis vestibulum quismodo nulla et feugiat.
+					Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis
+					malesuada.</p>
+				<p class="readmore">
+					<a href="#">Continue Reading &raquo;</a>
+				</p>
+			</li>
+			<li class="last">
+				<h2 class="title">
+					<img src="images/demo/60x60.gif" alt="" />Nullamlacus dui ipsum
+					conseque loborttis
+				</h2>
+				<p>Nullamlacus dui ipsum conseque loborttis non euisque morbi
+					penas dapibulum orna. Urnaultrices quis curabitur phasellentesque
+					congue magnis vestibulum quismodo nulla et feugiat.
+					Adipisciniapellentum leo ut consequam ris felit elit id nibh sociis
+					malesuada.</p>
+				<p class="readmore">
+					<a href="#">Continue Reading &raquo;</a>
+				</p>
+			</li>
+		</ul>
+		<br class="clear" />
+	</div>
 </div>
 <div id="container">
-  <div class="wrapper">
-    <div id="content">
-      <h2>About This Free CSS Template</h2>
-      <p>This is a W3C standards compliant free website template from <a href="http://www.os-templates.com/">OS Templates</a>.</p>
-      <p>This template is distributed using a <a href="http://www.os-templates.com/template-terms">Website Template Licence</a>, which allows you to use and modify the template for both personal and commercial use when you keep the provided credit links in the footer.</p>
-      <p>For more CSS templates visit <a href="http://www.os-templates.com/">Free Website Templates</a>.</p>
-      <p>Lacusenim inte trices lorem anterdum nam sente vivamus quis fauctor mauris. Wisinon vivamus wisis adipis laorem lobortis curabiturpiscingilla dui platea ipsum lacingilla.</p>
-      <p>Semalique tor sempus vestibulum libero nibh pretium eget eu elit montes. Sedsemporttis sit intesque felit quis elis et cursuspenatibulum tincidunt non curabitae.</p>
-    </div>
-    <div id="column">
-      <div class="holder">
-        <h2>Nullamlacus loborttis</h2>
-        <ul id="latestnews">
-          <li> <img class="imgl" src="images/demo/100x75.gif" alt="" />
-            <p><strong><a href="#">Indonectetus facilis leo.</a></strong></p>
-            <p>Nullamlacus dui ipsum cons eque loborttis non euis que morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque.</p>
-          </li>
-          <li class="last"> <img class="imgl" src="images/demo/100x75.gif" alt="" />
-            <p><strong><a href="#">Indonectetus facilis leo.</a></strong></p>
-            <p>Nullamlacus dui ipsum cons eque loborttis non euis que morbi penas dapibulum orna. Urnaultrices quis curabitur phasellentesque.</p>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <br class="clear" />
-  </div>
+	<div class="wrapper">
+		<div id="content">
+			<h2>About This Free CSS Template</h2>
+			<p>
+				This is a W3C standards compliant free website template from <a
+					href="http://www.os-templates.com/">OS Templates</a>.
+			</p>
+			<p>
+				This template is distributed using a <a
+					href="http://www.os-templates.com/template-terms">Website
+					Template Licence</a>, which allows you to use and modify the template
+				for both personal and commercial use when you keep the provided
+				credit links in the footer.
+			</p>
+			<p>
+				For more CSS templates visit <a href="http://www.os-templates.com/">Free
+					Website Templates</a>.
+			</p>
+			<p>Lacusenim inte trices lorem anterdum nam sente vivamus quis
+				fauctor mauris. Wisinon vivamus wisis adipis laorem lobortis
+				curabiturpiscingilla dui platea ipsum lacingilla.</p>
+			<p>Semalique tor sempus vestibulum libero nibh pretium eget eu
+				elit montes. Sedsemporttis sit intesque felit quis elis et
+				cursuspenatibulum tincidunt non curabitae.</p>
+		</div>
+		<div id="column">
+			<div class="holder">
+				<h2>Nullamlacus loborttis</h2>
+				<ul id="latestnews">
+					<li><img class="imgl" src="images/demo/100x75.gif" alt="" />
+						<p>
+							<strong><a href="#">Indonectetus facilis leo.</a></strong>
+						</p>
+						<p>Nullamlacus dui ipsum cons eque loborttis non euis que
+							morbi penas dapibulum orna. Urnaultrices quis curabitur
+							phasellentesque.</p></li>
+					<li class="last"><img class="imgl"
+						src="images/demo/100x75.gif" alt="" />
+						<p>
+							<strong><a href="#">Indonectetus facilis leo.</a></strong>
+						</p>
+						<p>Nullamlacus dui ipsum cons eque loborttis non euis que
+							morbi penas dapibulum orna. Urnaultrices quis curabitur
+							phasellentesque.</p></li>
+				</ul>
+			</div>
+		</div>
+		<br class="clear" />
+	</div>
 </div>
-<div id="copyright">
-  <div class="wrapper">
-    <p class="fl_left">Copyright &copy; 2014 - All Rights Reserved - <a href="#">Domain Name</a></p>
-    <p class="fl_right">Template by <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a></p>
-    <br class="clear" />
-  </div>
-</div>
-</body>
-</html>
+<%@include file="partials/footer.jsp"%>
