@@ -20,8 +20,7 @@
 			</div>
 			<div id="login">
 				<form:form id="loginForm" method="post" action="./login"
-					class="form-horizontal" commandName="loginUserViewModel"
-					cssStyle="width: 800px; margin: 0 auto;">
+					class="form-horizontal" commandName="loginUserViewModel">
 					<fieldset>
 						<legend>Login</legend>
 						<table>
