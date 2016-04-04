@@ -24,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import dao.DAOException;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
@@ -60,7 +61,7 @@ public class FinanceOperationDAOTests {
 	private ICategoryDAO categoryDAO;
 
 	@Test
-	public void testAddIncome() {
+	public void testAddIncome() throws DAOException {
 		Income income = makeNewIncome();
 		int id = foDAO.add(income);
 		Income fromDB = foDAO.getIncomeById(id);
@@ -90,7 +91,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testAddExpense() {
+	public void testAddExpense() throws DAOException {
 		Expense expense = makeNewExpense();
 		int id = foDAO.add(expense);
 		Expense fromDB = foDAO.getExpenseById(id);
@@ -120,7 +121,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testUpdateIncome() {
+	public void testUpdateIncome() throws DAOException {
 		try {
 			Income income = makeNewIncome();
 			int id = foDAO.add(income);
@@ -160,7 +161,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testUpdateExpense() {
+	public void testUpdateExpense() throws DAOException {
 		try {
 			Expense expense = makeNewExpense();
 			int id = foDAO.add(expense);
@@ -200,7 +201,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testDeleteIncome() {
+	public void testDeleteIncome() throws DAOException {
 		Income income = makeNewIncome();
 		int id = foDAO.add(income);
 		Income fromDB = foDAO.getIncomeById(id);
@@ -219,7 +220,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testDeleteExpense() {
+	public void testDeleteExpense() throws DAOException {
 		Expense expense = makeNewExpense();
 		int id = foDAO.add(expense);
 		Expense fromDB = foDAO.getExpenseById(id);
@@ -239,7 +240,7 @@ public class FinanceOperationDAOTests {
 	}
 
 	@Test
-	public void testGetAllIncomesByAccount() {
+	public void testGetAllIncomesByAccount() throws DAOException {
 		List<Income> incomes = addManyIncomesToDB();
 		Account account = incomes.get(0).getAccount();
 		List<Income> incomesFromDB = (List<Income>) foDAO.getAllIncomesByAccount(account);
@@ -261,7 +262,7 @@ public class FinanceOperationDAOTests {
 	}
 	
 	@Test
-	public void testGetAllExpensesByAccount() {
+	public void testGetAllExpensesByAccount() throws DAOException {
 		List<Expense> expenses = addManyExpensesToDB();
 		Account account = expenses.get(0).getAccount();
 		List<Expense> expensesFromDB = (List<Expense>) foDAO.getAllExpensesByAccount(account);
@@ -282,7 +283,7 @@ public class FinanceOperationDAOTests {
 		userDAO.deleteUser(user);
 	}
 	
-	private List<Income> addManyIncomesToDB() {
+	private List<Income> addManyIncomesToDB() throws DAOException {
 		List<Income> incomes = new ArrayList<Income>(LIST_SIZE);
 		Account account = addAccountToDB();
 		
@@ -300,7 +301,7 @@ public class FinanceOperationDAOTests {
 		return incomes;
 	}
 	
-	private List<Expense> addManyExpensesToDB() {
+	private List<Expense> addManyExpensesToDB() throws DAOException {
 		List<Expense> expenses = new ArrayList<Expense>(LIST_SIZE);
 		Account account = addAccountToDB();
 		
@@ -318,12 +319,12 @@ public class FinanceOperationDAOTests {
 		return expenses;
 	}
 
-	private Income makeNewIncome() {
+	private Income makeNewIncome() throws DAOException {
 		Account account = addAccountToDB();
 		return makeNewIncome(account);
 	}
 	
-	private Income makeNewIncome(Account account) {
+	private Income makeNewIncome(Account account) throws DAOException {
 		Income income = new Income();
 
 		try {
@@ -344,12 +345,12 @@ public class FinanceOperationDAOTests {
 		return income;
 	}
 
-	private Expense makeNewExpense() {
+	private Expense makeNewExpense() throws DAOException {
 		Account account = addAccountToDB();
 		return makeNewExpense(account);
 	}
 	
-	private Expense makeNewExpense(Account account) {
+	private Expense makeNewExpense(Account account) throws DAOException {
 		Expense expense = new Expense();
 
 		try {
@@ -370,7 +371,7 @@ public class FinanceOperationDAOTests {
 		return expense;
 	}
 
-	private Category addExpenseCategory() {
+	private Category addExpenseCategory() throws DAOException {
 		int randNumber = (int) (Math.random() * RANDOM_NUMBERS_SIZE);
 		Category category = new Category(0, EXPENSE_CATEGORY + randNumber, FinanceOperationType.EXPENSE);
 		categoryDAO.addCategory(category);
@@ -378,7 +379,7 @@ public class FinanceOperationDAOTests {
 		return category;
 	}
 	
-	private Category addIncomeCategory() {
+	private Category addIncomeCategory() throws DAOException {
 		int randNumber = (int) (Math.random() * RANDOM_NUMBERS_SIZE);
 		Category category = new Category(0, INCOME_CATEGORY + randNumber, FinanceOperationType.INCOME);
 		categoryDAO.addCategory(category);
@@ -386,7 +387,7 @@ public class FinanceOperationDAOTests {
 		return category;
 	}
 
-	private List<Tag> addTagsToDB(FinanceOperationType forType) {
+	private List<Tag> addTagsToDB(FinanceOperationType forType) throws DAOException {
 		List<Tag> tags = new LinkedList<Tag>();
 		
 		for (int index = 0; index < TAGS_COUNT; index++) {
@@ -399,7 +400,7 @@ public class FinanceOperationDAOTests {
 		return tags;
 	}
 
-	private Account addAccountToDB() {
+	private Account addAccountToDB() throws DAOException {
 		User user = addUserToDB();
 		Account account = new Account();
 
@@ -415,7 +416,7 @@ public class FinanceOperationDAOTests {
 		return account;
 	}
 
-	private User addUserToDB() {
+	private User addUserToDB() throws DAOException {
 		User user = new User();
 
 		try {

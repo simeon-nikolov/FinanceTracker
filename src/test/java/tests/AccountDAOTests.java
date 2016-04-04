@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IUserDAO;
 import exceptions.InvalidArgumentException;
@@ -36,7 +37,7 @@ public class AccountDAOTests {
 	private IUserDAO userDao;
 	
 	@Test
-	public void testAddAccount() {
+	public void testAddAccount() throws DAOException {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);		
 		int id = dao.addAccount(account);	
@@ -59,7 +60,7 @@ public class AccountDAOTests {
 	
 	
 	@Test
-	public void testUpdateAccount() {
+	public void testUpdateAccount() throws DAOException {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);		
 		int id = dao.addAccount(account);				
@@ -86,7 +87,7 @@ public class AccountDAOTests {
 	}
 	
 	@Test
-	public void testGetAccountById() {
+	public void testGetAccountById() throws DAOException {
 		User user = addUserToDB();			
 		Account account = makeNewAccount(user);	
 		String title = account.getTitle();
@@ -103,7 +104,7 @@ public class AccountDAOTests {
 	}
 	
 	@Test
-	public void testGetAllAccountsForUser() {
+	public void testGetAllAccountsForUser() throws DAOException {
 		User user = addUserToDB();
 		List<Account> accounts = new ArrayList<Account>();
 		
@@ -129,7 +130,7 @@ public class AccountDAOTests {
 	}
 	
 	@Test
-	public void testGetAccountForUserByName() {
+	public void testGetAccountForUserByName() throws DAOException {
 		User user = addUserToDB();
 		Account account = makeNewAccount(user);
 		String title = account.getTitle();
@@ -146,7 +147,7 @@ public class AccountDAOTests {
 	}
 	
 	
-	private User addUserToDB() {
+	private User addUserToDB() throws DAOException {
 		User user = new User();
 
 		try {

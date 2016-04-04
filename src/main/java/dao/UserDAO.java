@@ -17,60 +17,97 @@ public class UserDAO implements IUserDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public int addUser(User user) {
+	public int addUser(User user) throws DAOException {
+		int id = 0;
+		try {
 		sessionFactory.getCurrentSession().beginTransaction();
-		int id = (int) sessionFactory.getCurrentSession().save(user);
+		id = (int) sessionFactory.getCurrentSession().save(user);
 		sessionFactory.getCurrentSession().getTransaction().commit();
+	} catch (RuntimeException e) {
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+		throw new DAOException("User can not be read from database!", e);
+	}
+	
 		return id;
 	}
 	
 	@Override
-	public void updateUser(User user) {
+	public void updateUser(User user) throws DAOException {
+		try {
 		sessionFactory.getCurrentSession().beginTransaction();
 		sessionFactory.getCurrentSession().update(user);
 		sessionFactory.getCurrentSession().getTransaction().commit();
+	} catch (RuntimeException e) {
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+		throw new DAOException("User can not be read from database!", e);
+	}
 	}	
 	
 	@Override
-	public void deleteUser(User user) {
+	public void deleteUser(User user) throws DAOException {
+		try {
 		sessionFactory.getCurrentSession().beginTransaction();
 		sessionFactory.getCurrentSession().delete(user);
-		sessionFactory.getCurrentSession().getTransaction().commit();		
+		sessionFactory.getCurrentSession().getTransaction().commit();
+	} catch (RuntimeException e) {
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+		throw new DAOException("User can not be read from database!", e);
+	}
 	}
 	
 	@Override
-	public User getUserById(int userId) {
+	public User getUserById(int userId) throws DAOException {
+		User user = null;
+		try {
 		sessionFactory.getCurrentSession().beginTransaction();
-		User user = (User) sessionFactory.getCurrentSession().get(User.class, userId);
+		user = (User) sessionFactory.getCurrentSession().get(User.class, userId);
 		sessionFactory.getCurrentSession().getTransaction().commit();
+	} catch (RuntimeException e) {
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+		throw new DAOException("User can not be read from database!", e);
+	}
+	
 		return user;
 	}
 	
 	@Override
-	public User getUserByUsername(String username) {
+	public User getUserByUsername(String username) throws DAOException {
+		User user = null;
+		try {
 		sessionFactory.getCurrentSession().beginTransaction();
 		Query query = sessionFactory.getCurrentSession().createQuery("from User u where u.username = :username");
 		query.setString("username", username);
 		query.setMaxResults(1);
 		@SuppressWarnings("unchecked")
 		List<User> result = query.list();
-		User user = null;
+		
 		
 		if (result != null && result.size() > 0) {
 			user = result.get(0);
 		}
 		
 		sessionFactory.getCurrentSession().getTransaction().commit();
+	} catch (RuntimeException e) {
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+		throw new DAOException("User can not be read from database!", e);
+	}
+		
 		return user;
 	}
 	
+	
 	@Override
-	public Collection<User> getAllUsers() {
+	public Collection<User> getAllUsers() throws DAOException {
+		Collection<User> result = null;
+		try {
 		sessionFactory.getCurrentSession().beginTransaction();
-		Query sql = sessionFactory.getCurrentSession().createQuery("from User u");
-		@SuppressWarnings("unchecked")
-		Collection<User> result = sql.list();
+		Query sql = sessionFactory.getCurrentSession().createQuery("from User u");		
+		result = sql.list();
 		sessionFactory.getCurrentSession().getTransaction().commit();
+	} catch (RuntimeException e) {
+		sessionFactory.getCurrentSession().getTransaction().rollback();
+		throw new DAOException("User can not be read from database!", e);
+	}
 				
 		return result;
 	}

@@ -30,7 +30,7 @@ public class CategoryDAOTests {
 	private ICategoryDAO dao;
 	
 	@Test
-	public void testAddCatgory() {
+	public void testAddCatgory() throws DAOException {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		Category category = makeNewCategory(type);
 		String title = category.getCategoryName();		
@@ -45,7 +45,7 @@ public class CategoryDAOTests {
 	}
 	
 	@Test
-	public void testUpdateCategory() {
+	public void testUpdateCategory() throws DAOException {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		Category category = makeNewCategory(type);
 		int id = dao.addCategory(category);
@@ -62,7 +62,7 @@ public class CategoryDAOTests {
 	}
 	
 	@Test
-	public void testGetCategoryById() {
+	public void testGetCategoryById() throws DAOException {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		Category category = makeNewCategory(type);
 		String title = category.getCategoryName();		
@@ -77,7 +77,7 @@ public class CategoryDAOTests {
 	}
 	
 	@Test
-	public void testGetAllCategoriesForFOType() {
+	public void testGetAllCategoriesForFOType() throws DAOException {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		List<Category> startingList = (List<Category>) dao.getAllCategoriesForFOType(type);
 		int startNumber = startingList.size();

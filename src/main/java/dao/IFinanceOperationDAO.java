@@ -8,17 +8,17 @@ import model.FinanceOperation;
 import model.Income;
 
 public interface IFinanceOperationDAO {
-	int add(FinanceOperation financeOperation);
+	int add(FinanceOperation financeOperation) throws DAOException;
 	
-	void update(FinanceOperation financeOperation);
+	void update(FinanceOperation financeOperation) throws DAOException;
 	
-	void delete(FinanceOperation financeOperation);
+	void delete(FinanceOperation financeOperation) throws DAOException;
 	
-	Income getIncomeById(int id);
+	Income getIncomeById(int id) throws DAOException;
 	
-	Expense getExpenseById(int id);
+	Expense getExpenseById(int id) throws DAOException;
 	
-	Collection<Income> getAllIncomesByAccount(Account account);
+	Collection<Income> getAllIncomesByAccount(Account account) throws DAOException;
 	
-	Collection<Expense> getAllExpensesByAccount(Account account);
+	Collection<Expense> getAllExpensesByAccount(Account account) throws DAOException;
 }
