@@ -17,8 +17,5 @@
 		<br class="clear" />
 	</div>
 </div>
-<sec:authorize access="isAuthenticated()">
-<script src="js/chartist.js"></script>
-</sec:authorize>
 </body>
 </html>
