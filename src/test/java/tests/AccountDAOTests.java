@@ -46,8 +46,6 @@ public class AccountDAOTests {
 		userDao.deleteUser(user);
 	}
 	
-	
-	
 	@Test
 	public void testUpdateAccount() throws Exception {
 		User user = addUserToDB();			
@@ -114,7 +112,6 @@ public class AccountDAOTests {
 		userDao.deleteUser(user);
 	}
 	
-	
 	private User addUserToDB() throws Exception {
 		User user = new User();
 		int randNumber = (int) (Math.random() * RANDOM_NUMBER_SIZE);
@@ -137,5 +134,4 @@ public class AccountDAOTests {
 
 		return account;
 	}
-
 }
