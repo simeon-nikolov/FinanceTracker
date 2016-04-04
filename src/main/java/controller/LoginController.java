@@ -2,6 +2,7 @@ package controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
@@ -27,10 +28,9 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel, BindingResult result,
-			Model model) {
+	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel, BindingResult result) {
 		
-		return "index";
+		return "redirect:overview";
 	}
 	
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
@@ -41,6 +41,6 @@ public class LoginController {
 	        new SecurityContextLogoutHandler().logout(request, response, auth);
 	    }
 	    
-	    return "redirect:/login";
+	    return "redirect:login";
 	}
 }
