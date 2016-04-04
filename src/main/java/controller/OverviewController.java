@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
 import dao.IUserDAO;
@@ -33,29 +34,33 @@ public class OverviewController {
 
 	@RequestMapping(value = "/overview", method = RequestMethod.GET)
 	public String showOverview(Model model, HttpSession session) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String username = auth.getName();
-		session.setAttribute("username", username);
-		
-		
-		User user = userDAO.getUserByUsername(username);
-		List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
-		List<Expense> expenses = new LinkedList<Expense>();
-		int amountToSpend = 0;
-		
-		for (Account acc : accounts) {
-			List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
-			expenses.addAll(accExpenses);
-			amountToSpend += acc.getBalance();
+		try {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			session.setAttribute("username", username);
 			
-			for (Expense expense : accExpenses) {
-				amountToSpend -= expense.getAmount();
+			
+			User user = userDAO.getUserByUsername(username);
+			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
+			List<Expense> expenses = new LinkedList<Expense>();
+			int amountToSpend = 0;
+			
+			for (Account acc : accounts) {
+				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
+				expenses.addAll(accExpenses);
+				amountToSpend += acc.getBalance();
+				
+				for (Expense expense : accExpenses) {
+					amountToSpend -= expense.getAmount();
+				}
 			}
+			
+			float moneyToSpend = MoneyOperations.amountPerHendred(amountToSpend);
+			model.addAttribute("expenses", expenses);
+			model.addAttribute("moneyToSpend", moneyToSpend);
+		} catch (DAOException e) {
+			e.printStackTrace();
 		}
-		
-		float moneyToSpend = MoneyOperations.amountPerHendred(amountToSpend);
-		model.addAttribute("expenses", expenses);
-		model.addAttribute("moneyToSpend", moneyToSpend);
 		
 		return "overview";
 	}
