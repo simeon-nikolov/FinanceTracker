@@ -174,7 +174,8 @@ public class ExpensesController {
 				throw new Exception("Invalid expense!");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			model.addAttribute("errorMessage", e.getMessage());
+			return "forward:error";
 		}
 		
 		return "editExpense";
