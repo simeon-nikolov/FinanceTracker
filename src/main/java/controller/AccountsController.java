@@ -107,6 +107,23 @@ public class AccountsController {
 			e.printStackTrace();
 		}
 		return "verifyDeleteAccount";
+		
+	}
+	
+	@RequestMapping(value = "/deleteAccount", method = RequestMethod.GET)
+	public String deleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			Account account = accountDao.getAccountById(id);
+			deleteAllExpensesByAccount(account);
+			deleteAllIncomesByAccount(account);
+			
+			accountDao.deleteAccount(account);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allAccounts";
 	}
 	
 	
@@ -138,6 +155,25 @@ public class AccountsController {
 		}			
 		
 		return balance;
+	}
+	
+	private void deleteAllExpensesByAccount(Account acc) throws DAOException {
+		List<Expense> result = (List<Expense>) foDao.getAllExpensesByAccount(acc);
+		if (result != null) {
+			for (Expense e : result) {
+				foDao.delete(e);
+			}
+		}
+	}
+	
+	private void deleteAllIncomesByAccount(Account acc) throws DAOException {
+		List<Income> result = (List<Income>) foDao.getAllIncomesByAccount(acc);
+		if (result != null) {
+			for (Income i : result) {
+				foDao.delete(i);
+			}
+		}
+		
 	}
 
 }
