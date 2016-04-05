@@ -5,7 +5,7 @@
 		<div id="topnav">
 			<ul>
 				<li><a href="./overview">Overview</a></li>
-				<li><a href="./allAcounts">Accounts</a></li>
+				<li><a href="./allAccounts">Accounts</a></li>
 				<li><a href="./allExpenses">Expenses</a></li>
 				<li><a href="incomes.html">Incomes</a></li>
 				<li><a href="budgets.html">Budgets</a></li>

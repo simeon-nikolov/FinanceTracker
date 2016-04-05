@@ -22,7 +22,7 @@
 								<td><form:errors path="balance" cssClass="error" /> </td>
 							</tr>							
 						</table>
-						<input type="submit" value="Submit" />
+						<input type="submit" value="Add Account" />
 					</fieldset>
 				</form:form>
 			</div>

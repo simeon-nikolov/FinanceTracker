@@ -3,7 +3,11 @@ package view.model;
 
 import javax.validation.constraints.Size;
 
+import model.Currency;
+
 public class AccountViewModel {
+	
+	private int id;
 
 	@Size(min = 4, max = 15)
 	private String title;
@@ -11,11 +15,15 @@ public class AccountViewModel {
 	
 	private float balance;
 	
+	private Currency currency;
+	
 	public AccountViewModel() {}	
 
-	public AccountViewModel(String title, int balance) {		
+	public AccountViewModel(int id, String title, int balance, Currency currency) {
+		this.id = id;
 		this.title = title;
 		this.balance = balance;
+		this.currency = currency;
 	}
 
 	public String getTitle() {
@@ -32,6 +40,22 @@ public class AccountViewModel {
 
 	public void setBalance(float balance) {
 		this.balance = balance;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	};
 	
 	
