@@ -2,29 +2,41 @@ package view.model;
 
 import java.util.Collection;
 
-import org.joda.time.LocalDate;
+import javax.validation.constraints.NotNull;
 
-import model.Category;
 import model.Currency;
 import model.RepeatType;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.LocalDate;
 
 public class ExpenseViewModel {
 	private int id;
 	
+	@NotNull
 	private float amount;
 
+	@NotNull
 	private Currency currency;
 
+	@NotNull
+	@NotEmpty
 	private String category;
 	
+	@NotNull
+	@NotEmpty
 	private String account;
 
 	private LocalDate date;
 
+	@NotNull
+	@NotEmpty
 	private String description;
 
+	@NotNull
 	private RepeatType repeatType;
 
+	@NotNull
 	private Collection<String> tags;
 
 	public ExpenseViewModel() {}

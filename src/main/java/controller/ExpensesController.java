@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import model.Account;
 import model.Category;
@@ -21,9 +22,12 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
 import dao.DAOException;
 import dao.IAccountDAO;
@@ -95,7 +99,7 @@ public class ExpensesController {
 			e.printStackTrace();
 		}
 		
-		return "expenses";
+		return "allExpenses";
 	}
 	
 	@RequestMapping(value = "/addExpense", method = RequestMethod.GET)
@@ -139,5 +143,45 @@ public class ExpensesController {
 		}
 		
 		return "addExpense";
+	}
+	
+	@RequestMapping(value = "/addExpense", method = RequestMethod.POST)
+	public String addExpense(@ModelAttribute("expenseViewModel") @Valid ExpenseViewModel expenseViewModel, 
+			BindingResult result, Model model, HttpSession session) {
+		
+		try {
+			String username = (String) session.getAttribute("username");
+			User user = userDAO.getUserByUsername(username);
+			Expense expense = expenseViewModelToExpense(expenseViewModel, user);
+			financeOperationDAO.add(expense);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:allExpenses";
+	}
+
+	private Expense expenseViewModelToExpense(ExpenseViewModel expenseViewModel, User user) throws Exception {
+		Expense expense = new Expense();
+		expense.setAmount(MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+		expense.setCurrency(expenseViewModel.getCurrency());
+		expense.setDate(expenseViewModel.getDate());
+		expense.setDescription(expenseViewModel.getDescription());
+		expense.setRepeatType(expenseViewModel.getRepeatType());
+		expense.setFinanceOperationType(FinanceOperationType.EXPENSE);
+		Account account = accountDAO.getAccountForUserByName(expenseViewModel.getAccount(), user);
+		expense.setAccount(account);
+		Category category = categoryDAO.getCategoryByName(expenseViewModel.getCategory());
+		expense.setCategory(category);
+		List<Tag> tags = new LinkedList<Tag>();
+		
+		for (String tagName : expenseViewModel.getTags()) {
+			Tag tag = tagDAO.getTagByTagname(tagName);
+			tags.add(tag);
+		}
+		
+		expense.setTags(tags);
+		
+		return expense;
 	}
 }

@@ -15,7 +15,7 @@
 					<table class="table">
 						<tr>
 							<td><label for="amount">Amount:</label></td>
-							<td><form:input style="width: 100px;" id="amount" path="amount" type="number" value="" /></td>
+							<td><form:input style="width: 100px;" id="amount" path="amount" type="number" step="0.01" value="" /></td>
 							<td><form:errors path="amount" cssClass="error" /></td>
 						</tr>
 						<tr>
@@ -46,8 +46,8 @@
 							<td><form:errors path="category" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td><label for="date">Date:</label></td>
-							<td><form:input style="width: 200px;" id="date" path="date" type="date" /></td>
+							<td><label for="date-picker">Date:</label></td>
+							<td><form:input id="date-picker" style="width: 200px;" path="date" /></td>
 							<td><form:errors path="date" cssClass="error" /></td>
 						</tr>
 						<tr>
