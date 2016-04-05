@@ -9,7 +9,7 @@
 			</span> 
 			<span class="money-amount"> 
 				<jstl:out value="${expense.currency}"></jstl:out> 
-				<jstl:out value="${expense.amount}"></jstl:out>
+				<jstl:out value="${expense.amount / 100.0}"></jstl:out>
 			</span>
 		</p>
 	</div>

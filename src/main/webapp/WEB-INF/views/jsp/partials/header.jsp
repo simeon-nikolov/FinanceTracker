@@ -10,6 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>IT Talents - Finance Tracker</title>
 <link rel="stylesheet" href="css/layout.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
 <sec:authorize access="isAuthenticated()">
 <link rel="stylesheet" href="css/chartist.css">
 </sec:authorize>
