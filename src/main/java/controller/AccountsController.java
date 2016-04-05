@@ -107,8 +107,60 @@ public class AccountsController {
 			e.printStackTrace();
 		}
 		return "verifyDeleteAccount";
+		
 	}
 	
+	@RequestMapping(value = "/deleteAccount", method = RequestMethod.GET)
+	public String deleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			Account account = accountDao.getAccountById(id);
+			deleteAllExpensesByAccount(account);
+			deleteAllIncomesByAccount(account);
+			
+			accountDao.deleteAccount(account);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allAccounts";
+	}
+	
+	@RequestMapping(value = "/editAccount", method = RequestMethod.GET)
+	public String showEditAccountPage(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			Account account = accountDao.getAccountById(id);
+			AccountViewModel accountViewModel = new AccountViewModel();
+			accountViewModel.setTitle(account.getTitle());
+			accountViewModel.setBalance(MoneyOperations.amountPerHendred(account.getBalance()));
+			
+			model.addAttribute("accountViewModel", accountViewModel);
+			session.setAttribute("editAccountId", id);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "editAccount";
+	}
+	
+	@RequestMapping(value = "/editAccount", method = RequestMethod.POST)
+	public String editAccount(@ModelAttribute("accountViewModel") @Valid AccountViewModel accountViewModel, BindingResult result,
+			Model model, HttpSession session) {
+		try {
+			int id = (int) session.getAttribute("editAccountId");
+			Account account = accountDao.getAccountById(id);
+			account.setBalance(MoneyOperations.moneyToCents(accountViewModel.getBalance()));
+			account.setTitle(accountViewModel.getTitle());
+			
+			accountDao.updateAccount(account);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allAccounts";
+	}
 	
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
@@ -138,6 +190,25 @@ public class AccountsController {
 		}			
 		
 		return balance;
+	}
+	
+	private void deleteAllExpensesByAccount(Account acc) throws DAOException {
+		List<Expense> result = (List<Expense>) foDao.getAllExpensesByAccount(acc);
+		if (result != null) {
+			for (Expense e : result) {
+				foDao.delete(e);
+			}
+		}
+	}
+	
+	private void deleteAllIncomesByAccount(Account acc) throws DAOException {
+		List<Income> result = (List<Income>) foDao.getAllIncomesByAccount(acc);
+		if (result != null) {
+			for (Income i : result) {
+				foDao.delete(i);
+			}
+		}
+		
 	}
 
 }

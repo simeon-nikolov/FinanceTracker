@@ -11,13 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
-import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IUserDAO;
 import exceptions.DuplicateUserException;
-import exceptions.InvalidArgumentException;
 import model.Account;
 import model.Currency;
 import model.User;

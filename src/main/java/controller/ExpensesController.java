@@ -44,12 +44,11 @@ public class ExpensesController {
 	private IUserDAO userDAO;
 	@Autowired
 	private IAccountDAO accountDAO;
-	@Autowired 
+	@Autowired
 	private ICategoryDAO categoryDAO;
 	@Autowired
 	private ITagDAO tagDAO;
-	
-	
+
 	@RequestMapping(value = "/allExpenses", method = RequestMethod.GET)
 	public String showAllExpenses(HttpSession session, Model model) {
 		try {
@@ -60,37 +59,36 @@ public class ExpensesController {
 			List<Expense> expenses = new LinkedList<Expense>();
 			int month = LocalDate.now().getMonthOfYear();
 			int year = LocalDate.now().getYear();
-			
+
 			if (session.getAttribute("month") != null) {
 				month = (int) session.getAttribute("month");
 			}
-			
+
 			if (session.getAttribute("year") != null) {
 				year = (int) session.getAttribute("year");
 			}
-			
+
 			for (Account acc : accounts) {
 				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
-				
+
 				for (Expense expense : accExpenses) {
-					if (expense.getDate().getMonthOfYear() == month && 
-								expense.getDate().getYear() == year) {
+					if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
 						expenses.add(expense);
 					}
 				}
-				
+
 				for (Expense expense : expenses) {
 					String category = "'" + expense.getCategory().getCategoryName() + "'";
 					int oldAmount = 0;
-					
+
 					if (amountsByCategory.containsKey(category)) {
 						oldAmount = amountsByCategory.get(category);
 					}
-					
+
 					amountsByCategory.put(category, oldAmount + expense.getAmount());
 				}
 			}
-			
+
 			model.addAttribute("categories", amountsByCategory.keySet());
 			model.addAttribute("expensesAmounts", amountsByCategory.values());
 			model.addAttribute("expenses", expenses);
@@ -98,10 +96,10 @@ public class ExpensesController {
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
-		
+
 		return "allExpenses";
 	}
-	
+
 	@RequestMapping(value = "/addExpense", method = RequestMethod.GET)
 	public String showAddExpensePage(HttpSession session, Model model) {
 		try {
@@ -109,29 +107,29 @@ public class ExpensesController {
 			RepeatType[] allRepeatTypes = RepeatType.values();
 			Collection<Category> categories = categoryDAO.getAllCategoriesForFOType(FinanceOperationType.EXPENSE);
 			List<String> allCategories = new LinkedList<String>();
-			
+
 			for (Category category : categories) {
 				allCategories.add(category.getCategoryName());
 			}
-			
+
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
 			List<Account> userAccounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			List<String> allAcounts = new LinkedList<String>();
-			
+
 			for (Account acc : userAccounts) {
 				allAcounts.add(acc.getTitle());
 			}
-			
+
 			List<Tag> tags = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
 			List<String> allTags = new LinkedList<String>();
-			
+
 			if (tags != null) {
 				for (Tag tag : tags) {
 					allTags.add(tag.getTagName());
 				}
 			}
-			
+
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
@@ -141,14 +139,14 @@ public class ExpensesController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "addExpense";
 	}
-	
+
 	@RequestMapping(value = "/addExpense", method = RequestMethod.POST)
-	public String addExpense(@ModelAttribute("expenseViewModel") @Valid ExpenseViewModel expenseViewModel, 
+	public String addExpense(@ModelAttribute("expenseViewModel") @Valid ExpenseViewModel expenseViewModel,
 			BindingResult result, Model model, HttpSession session) {
-		
+
 		try {
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
@@ -157,7 +155,7 @@ public class ExpensesController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "redirect:allExpenses";
 	}
 	
@@ -216,14 +214,17 @@ public class ExpensesController {
 		Category category = categoryDAO.getCategoryByName(expenseViewModel.getCategory());
 		expense.setCategory(category);
 		List<Tag> tags = new LinkedList<Tag>();
-		
-		for (String tagName : expenseViewModel.getTags()) {
-			Tag tag = tagDAO.getTagByTagname(tagName);
-			tags.add(tag);
-		}
-		
+
+//		if (expenseViewModel.getTags() != null) {
+			for (String tagName : expenseViewModel.getTags()) {
+				Tag tag = tagDAO.getTagByTagname(tagName);
+				tags.add(tag);
+			}
+
+//		}
+
 		expense.setTags(tags);
-		
+
 		return expense;
 	}
 }
