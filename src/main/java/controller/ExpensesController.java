@@ -8,19 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import dao.DAOException;
-import dao.IAccountDAO;
-import dao.ICategoryDAO;
-import dao.IFinanceOperationDAO;
-import dao.ITagDAO;
-import dao.IUserDAO;
 import model.Account;
 import model.Category;
 import model.Currency;
@@ -29,7 +16,21 @@ import model.FinanceOperationType;
 import model.RepeatType;
 import model.Tag;
 import model.User;
+
+import org.joda.time.LocalDate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
 import view.model.ExpenseViewModel;
+import dao.DAOException;
+import dao.IAccountDAO;
+import dao.ICategoryDAO;
+import dao.IFinanceOperationDAO;
+import dao.ITagDAO;
+import dao.IUserDAO;
 
 @Controller
 public class ExpensesController {
@@ -127,13 +128,12 @@ public class ExpensesController {
 				}
 			}
 			
-			
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
-			model.addAttribute("expenseViewModel", new ExpenseViewModel());
 			model.addAttribute("allAccounts", allAcounts);
 			model.addAttribute("allTags", allTags);
+			model.addAttribute("expenseViewModel", new ExpenseViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -184,5 +184,9 @@ ul li {
 
 .month {
 	font-weight: bold;
-	
+}
+
+.error {
+	color: #ff3030;
+	font-weight: bold;
 }

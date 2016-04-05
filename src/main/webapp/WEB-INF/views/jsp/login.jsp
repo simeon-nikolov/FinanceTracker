@@ -8,8 +8,8 @@
 <%@include file="partials/header.jsp"%>
 <div id="container">
 	<div class="wrapper">
-		<div id="content">
-			<div class="col-md-6 col-md-offset-2">
+		<div id="login-content">
+			<div>
 				<c:if test="${param.error != null}">
 					<div class="alert alert-danger">Invalid Username or Password.
 					</div>
@@ -18,6 +18,7 @@
 					<div class="alert alert-success">You have been logged out.</div>
 				</c:if>
 			</div>
+			
 			<div id="login">
 				<form:form id="loginForm" method="post" action="./login"
 					class="form-horizontal" commandName="loginUserViewModel">
@@ -37,7 +38,7 @@
 								</td>
 							</tr>
 						</table>
-						<input type="submit" value="Login" />
+						<input class="btn btn-primary btn-md" type="submit" value="Login" />
 					</fieldset>
 				</form:form>
 			</div>

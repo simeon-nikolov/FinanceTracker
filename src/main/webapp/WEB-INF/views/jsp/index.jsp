@@ -53,7 +53,7 @@
 </div>
 <div id="container">
 	<div class="wrapper">
-		<div id="content">
+		<div id="index-content">
 			<h2>About This Free CSS Template</h2>
 			<p>
 				This is a W3C standards compliant free website template from <a
