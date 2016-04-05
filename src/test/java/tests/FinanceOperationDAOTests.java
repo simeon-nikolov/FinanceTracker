@@ -271,7 +271,21 @@ public class FinanceOperationDAOTests {
 		User user = account.getUser();
 		accDAO.deleteAccount(account);
 		userDAO.deleteUser(user);
-	}	
+	}
+	
+	@Test
+	public void testCheckUserHasFinanceOperation() throws Exception {
+		Expense expense = makeNewExpense();
+		int id = foDAO.add(expense);
+		expense.setId(id);
+		User user = expense.getAccount().getUser();
+		boolean isExpenseToUser = foDAO.checkUserHasFinanceOperation(expense, user);
+		assertEquals(true, isExpenseToUser);
+		Account acc = expense.getAccount();
+		foDAO.delete(expense);
+		accDAO.deleteAccount(acc);
+		userDAO.deleteUser(user);
+	}
 	
 	private List<Income> addManyIncomesToDB() throws Exception {
 		List<Income> incomes = new ArrayList<Income>(LIST_SIZE);

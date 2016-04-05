@@ -76,7 +76,6 @@ h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; fon
 /* ----------------------------------------------Content------------------------------------- */
 
 #container .wrapper{padding:20px 10px; line-height:1.4em; color:#666666; background-color:#F5F5F5;}
-#container a{color:#059BD8; background-color:#F5F5F5;}
 #container h1, #container h2, #container h3, #container h4, #container h5, #container h6{padding-bottom:8px; border-bottom:1px dotted #CCCCCC;}
 #content{display:block; float:left; width:580px;}
 

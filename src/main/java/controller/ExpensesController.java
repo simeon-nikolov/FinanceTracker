@@ -160,6 +160,48 @@ public class ExpensesController {
 		
 		return "redirect:allExpenses";
 	}
+	
+	@RequestMapping(value = "/editExpense", method = RequestMethod.GET)
+	public String showEditExpensePage(@ModelAttribute(value="id") int id, 
+			HttpSession session, Model model) {
+		try {
+			String username = (String) session.getAttribute("username");
+			User user = userDAO.getUserByUsername(username);
+			Expense expense = financeOperationDAO.getExpenseById(id);
+			
+			if (financeOperationDAO.checkUserHasFinanceOperation(expense, user)) {
+				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+				model.addAttribute("expenseViewModel", expenseViewModel);
+			} else {
+				throw new Exception("Invalid expense!");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "editExpense";
+	}
+
+	private ExpenseViewModel expenseToExpenseViewModel(Expense expense) throws Exception {
+		ExpenseViewModel expenseViewModel = new ExpenseViewModel();
+		expenseViewModel.setId(expense.getId());
+		expenseViewModel.setAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
+		expenseViewModel.setAccount(expense.getAccount().getTitle());
+		expenseViewModel.setCategory(expense.getCategory().getCategoryName());
+		expenseViewModel.setCurrency(expense.getCurrency());
+		expenseViewModel.setDate(expense.getDate());
+		expenseViewModel.setDescription(expense.getDescription());
+		expenseViewModel.setRepeatType(expense.getRepeatType());
+		List<String> tags = new LinkedList<String>();
+		
+		for (Tag tag : expense.getTags()) {
+			tags.add(tag.getTagName());
+		}
+		
+		expenseViewModel.setTags(tags);
+		
+		return expenseViewModel;
+	}
 
 	private Expense expenseViewModelToExpense(ExpenseViewModel expenseViewModel, User user) throws Exception {
 		Expense expense = new Expense();

@@ -35,7 +35,7 @@ File: Navigation CSS
 #column .subnav ul{margin:0; padding:0; list-style:none;}
 #column .subnav li{margin:0 0 3px 0; padding:0;}
 #column .subnav ul ul, #column .subnav ul ul ul, #column .subnav ul ul ul ul, #column .subnav ul ul ul ul ul{border-top:none; padding-top:0;}
-#column .subnav a{display:block; margin:0; padding:5px 10px 5px 20px; color:#777777; background:url("images/blue_file.gif") no-repeat 10px center #F9F9F9; text-decoration:none;}
+#column .subnav a{display:block; margin:0; padding:5px 10px 5px 20px; text-decoration:none;}
 #column .subnav a:hover{color:#059BD8; background-color:#F9F9F9;}
 #column .subnav ul ul a, #column .subnav ul ul ul a, #column .subnav ul ul ul ul a, #column .subnav ul ul ul ul ul a{background:url("images/black_file.gif") no-repeat #F9F9F9;}
 #column .subnav ul ul a{padding-left:40px; background-position:30px center;}

@@ -2,12 +2,13 @@ package dao;
 
 import java.util.Collection;
 
-import org.joda.time.LocalDate;
-
 import model.Account;
 import model.Expense;
 import model.FinanceOperation;
 import model.Income;
+import model.User;
+
+import org.joda.time.LocalDate;
 
 public interface IFinanceOperationDAO {
 	int add(FinanceOperation financeOperation) throws DAOException;
@@ -25,4 +26,6 @@ public interface IFinanceOperationDAO {
 	Collection<Expense> getAllExpensesByAccount(Account account) throws DAOException;
 	
 	Collection<Expense> getAllExpensesForAMonth(LocalDate date, Account account) throws DAOException;
+
+	boolean checkUserHasFinanceOperation(FinanceOperation financeOperation, User user) throws DAOException;
 }

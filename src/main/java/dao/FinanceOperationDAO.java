@@ -7,6 +7,7 @@ import model.Account;
 import model.Expense;
 import model.FinanceOperation;
 import model.Income;
+import model.User;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -146,6 +147,26 @@ public class FinanceOperationDAO implements IFinanceOperationDAO {
 		}
 
 		return result;
+	}
+	
+	@Override
+	public boolean checkUserHasFinanceOperation(FinanceOperation financeOperation, User user) throws DAOException {
+		try {
+			sessionFactory.getCurrentSession().beginTransaction();
+			Query query = sessionFactory.getCurrentSession().createQuery("from FinanceOperation fo where fo.account.user = :user");
+			query.setEntity("user", user);
+			Collection<FinanceOperation> result = query.list();
+			sessionFactory.getCurrentSession().getTransaction().commit();
+			
+			if (result.size() > 0) {
+				return true;
+			}
+			
+			return false;
+		} catch (RuntimeException e) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			throw new DAOException("Finance operation can not be read from database!", e);
+		}
 	}
 
 }

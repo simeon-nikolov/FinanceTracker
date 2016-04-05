@@ -45,6 +45,10 @@
 				<a href="./addExpense" class="btn btn-lg btn-default">+ Add Expense</a>
 				<c:forEach var="expense" items="${expenses}">				
 					<%@include file="partials/expenseListTemplate.jsp"%>
+					<div class="operations">
+						<a href="./editExpense?id=${expense.id}" class="btn btn-info btn-xs">Edit</a> 
+						<a href="./deleteExpense?id=${expense.id}" class="btn btn-danger btn-xs">Delete</a>
+					</div>
 				</c:forEach>
 			</div>
 		</div>
