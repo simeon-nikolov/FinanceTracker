@@ -24,6 +24,7 @@ import model.Account;
 import model.Expense;
 import model.Income;
 import model.User;
+import scala.annotation.meta.setter;
 import utils.MoneyOperations;
 import view.model.AccountViewModel;
 
@@ -126,6 +127,41 @@ public class AccountsController {
 		return "redirect:/allAccounts";
 	}
 	
+	@RequestMapping(value = "/editAccount", method = RequestMethod.GET)
+	public String showEditAccountPage(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			Account account = accountDao.getAccountById(id);
+			AccountViewModel accountViewModel = new AccountViewModel();
+			accountViewModel.setTitle(account.getTitle());
+			accountViewModel.setBalance(MoneyOperations.amountPerHendred(account.getBalance()));
+			
+			model.addAttribute("accountViewModel", accountViewModel);
+			session.setAttribute("editAccountId", id);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "editAccount";
+	}
+	
+	@RequestMapping(value = "/editAccount", method = RequestMethod.POST)
+	public String editAccount(@ModelAttribute("accountViewModel") @Valid AccountViewModel accountViewModel, BindingResult result,
+			Model model, HttpSession session) {
+		try {
+			int id = (int) session.getAttribute("editAccountId");
+			Account account = accountDao.getAccountById(id);
+			account.setBalance(MoneyOperations.moneyToCents(accountViewModel.getBalance()));
+			account.setTitle(accountViewModel.getTitle());
+			
+			accountDao.updateAccount(account);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allAccounts";
+	}
 	
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
