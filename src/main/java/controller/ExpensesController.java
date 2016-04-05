@@ -192,8 +192,10 @@ public class ExpensesController {
 		expenseViewModel.setRepeatType(expense.getRepeatType());
 		List<String> tags = new LinkedList<String>();
 		
-		for (Tag tag : expense.getTags()) {
-			tags.add(tag.getTagName());
+		if (expense.getTags() != null) {
+			for (Tag tag : expense.getTags()) {
+				tags.add(tag.getTagName());
+			}
 		}
 		
 		expenseViewModel.setTags(tags);
@@ -215,13 +217,12 @@ public class ExpensesController {
 		expense.setCategory(category);
 		List<Tag> tags = new LinkedList<Tag>();
 
-//		if (expenseViewModel.getTags() != null) {
+		if (expenseViewModel.getTags() != null) {
 			for (String tagName : expenseViewModel.getTags()) {
 				Tag tag = tagDAO.getTagByTagname(tagName);
 				tags.add(tag);
 			}
-
-//		}
+		}
 
 		expense.setTags(tags);
 
