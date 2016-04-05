@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,11 +17,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import dao.DAOException;
 import dao.IAccountDAO;
+import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
+import dao.ITagDAO;
 import dao.IUserDAO;
 import model.Account;
+import model.Category;
+import model.Currency;
 import model.Expense;
+import model.FinanceOperationType;
+import model.RepeatType;
+import model.Tag;
 import model.User;
+import view.model.ExpenseViewModel;
 
 @Controller
 public class ExpensesController {
@@ -30,6 +39,11 @@ public class ExpensesController {
 	private IUserDAO userDAO;
 	@Autowired
 	private IAccountDAO accountDAO;
+	@Autowired 
+	private ICategoryDAO categoryDAO;
+	@Autowired
+	private ITagDAO tagDAO;
+	
 	
 	@RequestMapping(value = "/allExpenses", method = RequestMethod.GET)
 	public String showAllExpenses(HttpSession session, Model model) {
@@ -84,7 +98,45 @@ public class ExpensesController {
 	}
 	
 	@RequestMapping(value = "/addExpense", method = RequestMethod.GET)
-	public String showAddExpensePage() {
+	public String showAddExpensePage(HttpSession session, Model model) {
+		try {
+			Currency[] allCurrencies = Currency.values();
+			RepeatType[] allRepeatTypes = RepeatType.values();
+			Collection<Category> categories = categoryDAO.getAllCategoriesForFOType(FinanceOperationType.EXPENSE);
+			List<String> allCategories = new LinkedList<String>();
+			
+			for (Category category : categories) {
+				allCategories.add(category.getCategoryName());
+			}
+			
+			String username = (String) session.getAttribute("username");
+			User user = userDAO.getUserByUsername(username);
+			List<Account> userAccounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
+			List<String> allAcounts = new LinkedList<String>();
+			
+			for (Account acc : userAccounts) {
+				allAcounts.add(acc.getTitle());
+			}
+			
+			List<Tag> tags = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
+			List<String> allTags = new LinkedList<String>();
+			
+			if (tags != null) {
+				for (Tag tag : tags) {
+					allTags.add(tag.getTagName());
+				}
+			}
+			
+			
+			model.addAttribute("allCurrencies", allCurrencies);
+			model.addAttribute("allRepeatTypes", allRepeatTypes);
+			model.addAttribute("allCategories", allCategories);
+			model.addAttribute("expenseViewModel", new ExpenseViewModel());
+			model.addAttribute("allAccounts", allAcounts);
+			model.addAttribute("allTags", allTags);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return "addExpense";
 	}
