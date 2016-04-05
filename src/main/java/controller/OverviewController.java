@@ -94,7 +94,7 @@ public class OverviewController {
 			model.addAttribute("expenses", expenses);
 			model.addAttribute("moneyToSpend", moneyToSpend);
 			model.addAttribute("categories", moneyByCategory.keySet());
-			model.addAttribute("money", moneyByCategory.values());
+			model.addAttribute("expensesAmounts", moneyByCategory.values());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}

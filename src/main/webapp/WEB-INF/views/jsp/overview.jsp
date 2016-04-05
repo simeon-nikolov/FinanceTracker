@@ -16,7 +16,7 @@
 			<script>
 				var data = {
 						labels :<c:out value="${categories}" escapeXml="false"></c:out>,
-						series : <c:out value="${money}"></c:out>
+						series : <c:out value="${expensesAmounts}"></c:out>
 				};
 
 				var options = {
