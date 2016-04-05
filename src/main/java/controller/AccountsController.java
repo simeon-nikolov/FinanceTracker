@@ -24,7 +24,6 @@ import model.Account;
 import model.Expense;
 import model.Income;
 import model.User;
-import scala.annotation.meta.setter;
 import utils.MoneyOperations;
 import view.model.AccountViewModel;
 
