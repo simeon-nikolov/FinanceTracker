@@ -23,8 +23,8 @@
 						</p>
 					</div>
 					<div>
-						<a href="./editAccount?id=${account.id}" class="btn btn-sm btn-default">Edit Account</a>
-						<a href="./verifyDeleteAccount?id=${account.id}" class="btn btn-sm btn-default">Delete Account</a>
+						<a href="./editAccount?id=${account.id}" class="btn btn-info btn-xs">Edit Account</a>
+						<a href="./verifyDeleteAccount?id=${account.id}" class="btn btn-danger btn-xs">Delete Account</a>
 					</div>
 				</c:forEach>
 			</div>

@@ -47,6 +47,8 @@
 				<a href="./addIncome" class="btn btn-lg btn-default">+ Add Income</a>
 				<c:forEach var="income" items="${incomes}">
 					<%@include file="partials/incomesListTemplate.jsp"%>
+					<a href="./editIncome?id=${income.id}" class="btn btn-info btn-xs">Edit</a> 
+					<a href="./deleteIncome?id=${income.id}" class="btn btn-danger btn-xs">Delete</a>
 				</c:forEach>
 			</div>
 		</div>
