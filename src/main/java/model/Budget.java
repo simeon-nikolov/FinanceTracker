@@ -18,8 +18,6 @@ import exceptions.InvalidArgumentException;
 @Entity
 @Table(name="budgets")
 public class Budget {
-	private static final String END_DATE_ERROR_MESSAGE = "End date is null!";
-	private static final String BEGIN_DATE_ERROR_MESSAGE = "Begin date is null!";
 	private static final String BUGHET_AMOUNT_ERROR_MESSAGE = "Bughet amount can't be negative value!";
 	private static final String ID_ERROR_MESSAGE = "ID can't be a negative number!";
 	
@@ -100,11 +98,7 @@ public class Budget {
 		return beginDate;
 	}
 
-	public void setBeginDate(LocalDate beginDate) throws InvalidArgumentException {
-		if (beginDate == null) {
-			throw new InvalidArgumentException(BEGIN_DATE_ERROR_MESSAGE);
-		}
-		
+	public void setBeginDate(LocalDate beginDate) {
 		this.beginDate = beginDate;
 	}
 
@@ -112,11 +106,7 @@ public class Budget {
 		return endDate;
 	}
 
-	public void setEndDate(LocalDate endDate) throws InvalidArgumentException {
-		if (endDate == null) {
-			throw new InvalidArgumentException(END_DATE_ERROR_MESSAGE);
-		}
-		
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 

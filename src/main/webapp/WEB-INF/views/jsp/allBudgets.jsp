@@ -8,7 +8,7 @@
 <%@include file="partials/header.jsp"%>
 <div id="container">
 	<div class="wrapper">
-		<div id="content">
+		<div id="budget-content">
 			<div class="month"> <h2>&lt; April &gt;</h2> </div>
 			<div><a href="./addBudget" class="btn btn-default btn-lg">+Add New Budget</a></div>
 			<c:forEach var="budget" items="${allBudgets}">				

@@ -77,11 +77,55 @@ public class BudgetController {
 		
 		return "redirect:allBudgets";
 	}
+	
+	@RequestMapping(value = "/editBudget", method = RequestMethod.GET)
+	public String showEditBudgetPage(@ModelAttribute(value="id") int id, 
+			HttpSession session, Model model) {
+		try {
+			User user = getUserFromSession(session);
+			Budget budget = budgetDAO.getBudgetById(id);
+			
+			if (budgetDAO.checkUserHasBudget(budget, user)) {
+				BudgetViewModel budgetViewModel = budgetToBudgetViewModel(budget);
+				model.addAttribute("budgetViewModel", budgetViewModel);
+			} else {
+				throw new Exception("Invalid budget!");
+			}
+		} catch(Exception e) {
+			model.addAttribute("errorMessage", e.getMessage());
+			return "forward:error";
+		}
+		
+		return "editBudget";
+	}
+	
+	@RequestMapping(value = "/editBudget", method = RequestMethod.POST)
+	public String editExpense (@ModelAttribute("budgetViewModel") @Valid BudgetViewModel budgetViewModel, BindingResult result,
+			Model model, HttpSession session) throws DAOException {
+		try {
+			User user = getUserFromSession(session);
+			Budget budget = budgetViewModelToBudget(budgetViewModel);
+			budget.setUser(user);
+			
+			if (budgetDAO.checkUserHasBudget(budget, user)) {
+				budgetDAO.update(budget);
+			}
+			else {
+				throw new Exception("Invalid budget!");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:allBudgets";
+	}
 
 	private Budget budgetViewModelToBudget(BudgetViewModel budgetViewModel) throws Exception {
 		Budget budget = new Budget();
 		
 		if (budgetViewModel != null) {
+			budget.setId(budgetViewModel.getId());
 			budget.setAmount(MoneyOperations.moneyToCents(budgetViewModel.getAmount()));
 			budget.setBudgetType(budgetViewModel.getBudgetType());
 			budget.setCurrency(budgetViewModel.getCurrency());

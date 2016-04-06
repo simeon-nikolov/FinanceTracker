@@ -15,4 +15,6 @@ public interface IBudgetDAO {
 	Budget getBudgetById(int id) throws DAOException;
 	
 	Collection<Budget> getAllBudgetsByUser(User user) throws DAOException;
+
+	boolean checkUserHasBudget(Budget budget, User user) throws DAOException;
 }

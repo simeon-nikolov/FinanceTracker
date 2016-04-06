@@ -121,6 +121,18 @@ public class BudgetDAOTests {
 		budgetDAO.delete(fromDB);
 		userDAO.deleteUser(user);
 	}
+	
+	@Test
+	public void testCheckUserHasFinanceOperation() throws Exception {
+		User user = addUserToDB();
+		Budget budget = makeNewBudget(user);
+		int id = budgetDAO.add(budget);
+		budget.setId(id);
+		boolean isBudgetToUser = budgetDAO.checkUserHasBudget(budget, user);
+		assertEquals(true, isBudgetToUser);
+		budgetDAO.delete(budget);
+		userDAO.deleteUser(user);
+	}
 
 	private Budget makeNewBudget(User user) throws Exception {
 		Budget budget = new Budget();

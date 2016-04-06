@@ -95,8 +95,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `finance_tracker`.`budgets` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `begin_date` DATE NOT NULL,
-  `end_date` DATE NOT NULL,
+  `begin_date` DATE NULL,
+  `end_date` DATE NULL,
   `amount` INT(11) NOT NULL,
   `currency` VARCHAR(3) NOT NULL,
   `budget_type` VARCHAR(15) NOT NULL,

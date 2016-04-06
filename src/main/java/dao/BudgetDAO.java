@@ -3,6 +3,7 @@ package dao;
 import java.util.Collection;
 
 import model.Budget;
+import model.FinanceOperation;
 import model.User;
 
 import org.hibernate.Query;
@@ -38,7 +39,7 @@ public class BudgetDAO implements IBudgetDAO {
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("Budget can not be read from database!", e);
+			throw new DAOException("Budget can not be updated!", e);
 		}
 	}
 
@@ -84,5 +85,25 @@ public class BudgetDAO implements IBudgetDAO {
 		}
 
 		return result;
+	}
+	
+	@Override
+	public boolean checkUserHasBudget(Budget budget, User user) throws DAOException {
+		try {
+			sessionFactory.getCurrentSession().beginTransaction();
+			Query query = sessionFactory.getCurrentSession().createQuery("from Budget b where b.user = :user");
+			query.setEntity("user", user);
+			Collection<FinanceOperation> result = query.list();
+			sessionFactory.getCurrentSession().getTransaction().commit();
+			
+			if (result.size() > 0) {
+				return true;
+			}
+			
+			return false;
+		} catch (RuntimeException e) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			throw new DAOException("Budget can not be read from database!", e);
+		}
 	}
 }
