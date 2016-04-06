@@ -109,16 +109,45 @@ public class BudgetController {
 			
 			if (budgetDAO.checkUserHasBudget(budget, user)) {
 				budgetDAO.update(budget);
-			}
-			else {
+			} else {
 				throw new Exception("Invalid budget!");
 			}
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return "redirect:allBudgets";
+	}
+	
+	@RequestMapping(value = "/verifyDeleteBudget", method = RequestMethod.GET)
+	public String showVerifyDeleteExpensePage(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {			
+			Budget budget = budgetDAO.getBudgetById(id);
+			BudgetViewModel budgetViewModel = budgetToBudgetViewModel(budget);
+			model.addAttribute("budgetViewModel", budgetViewModel);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+		
+		return "verifyDeleteBudget";
+	}
+	
+	@RequestMapping(value = "/deleteBudget", method = RequestMethod.GET)
+	public String deleteExpense(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			User user = getUserFromSession(session);
+			Budget budget = budgetDAO.getBudgetById(id);
+			
+			if (budgetDAO.checkUserHasBudget(budget, user)) {
+				budgetDAO.delete(budget);
+			} else {
+				throw new Exception("Invalid budget for deletion!");
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allBudgets";
 	}
 
 	private Budget budgetViewModelToBudget(BudgetViewModel budgetViewModel) throws Exception {

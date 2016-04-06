@@ -9,18 +9,17 @@
 <div id="container">
 	<div class="wrapper">
 		<div id="budget-content">
-			<div class="month"> <h2>&lt; April &gt;</h2> </div>
-			<div><a href="./addBudget" class="btn btn-default btn-lg">+Add New Budget</a></div>
-			<c:forEach var="budget" items="${allBudgets}">				
-				<div class="budget">
-					<p>${budget.budgetType} - ${budget.repeatType}</p>
-					<p>${budget.currency} ${budget.amount}</p>
-					<div class="operations">
-						<a href="./editBudget?id=${budget.id}" class="btn btn-info btn-md">Edit</a> 
-						<a href="./verifyDeleteBudget?id=${budget.id}" class="btn btn-danger btn-md">Delete</a>
-					</div>
-				</div>
-			</c:forEach>
+			<div>
+				<h3>
+					<p>Are you sure you want to delete budget?</p>
+					<p>${budgetViewModel.budgetType} - ${budgetViewModel.repeatType}</p>
+					<p>${budgetViewModel.currency} ${budgetViewModel.amount}</p>
+				</h3>
+			</div>
+			<div>
+				<a href="./deleteBudget?id=${budgetViewModel.id}" class="btn btn-sm btn-default">Yes</a>
+				<a href="./allBudgets" class="btn btn-sm btn-default">No</a>
+			</div>
 		</div>
 		<br class="clear" />
 	</div>
