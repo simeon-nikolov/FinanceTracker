@@ -160,6 +160,11 @@ ul li {
 	font-weight: bold;
 }
 
+.account-title {
+	float: left;
+	font-weight: bold;
+}
+
 .money-amount {
 	float: right;
 }
@@ -187,5 +192,10 @@ ul li {
 
 .error {
 	color: #ff3030;
+	font-weight: bold;
+}
+
+.finance-info .account-title {
+	float: left;
 	font-weight: bold;
 }

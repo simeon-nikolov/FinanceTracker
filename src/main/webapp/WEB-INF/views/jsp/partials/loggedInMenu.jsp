@@ -11,7 +11,7 @@
 				<li><a href="./allBudgets">Budgets</a></li>
 				<li><a href="export.html">Export</a></li>					
 				<li><a href="./logout">Logout</a></li>
-				<li><a href="settings.html">Settings</a></li>
+				<li><a href="./profile">${username}</a></li>
 			</ul>
 		</div>
 		<br class="clear" />
