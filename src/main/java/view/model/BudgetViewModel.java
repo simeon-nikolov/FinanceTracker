@@ -2,22 +2,19 @@ package view.model;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.LocalDate;
-
 import model.BudgetType;
 import model.Currency;
 import model.RepeatType;
+
+import org.joda.time.LocalDate;
 
 public class BudgetViewModel {
 	private int id;
 	
 	@NotNull
-	@NotEmpty
 	private BudgetType budgetType;
 	
 	@NotNull
-	@NotEmpty
 	private RepeatType repeatType;
 	
 	private LocalDate beginDate;
@@ -27,7 +24,6 @@ public class BudgetViewModel {
 	private float amount;
 	
 	@NotNull
-	@NotEmpty
 	private Currency currency;
 	
 	public BudgetViewModel() {}

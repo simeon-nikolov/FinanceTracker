@@ -10,6 +10,7 @@
 	<div class="wrapper">
 		<div id="content">
 			<div class="month"> <h2>&lt; April &gt;</h2> </div>
+			<div><a href="./addBudget" class="btn btn-default btn-lg">+Add New Budget</a></div>
 			<c:forEach var="budget" items="${allBudgets}">				
 				<div class="budget">
 					<p>${budget.budgetType} - ${budget.repeatType}</p>

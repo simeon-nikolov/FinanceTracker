@@ -4,22 +4,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import model.Budget;
+import model.BudgetType;
+import model.Currency;
+import model.RepeatType;
+import model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import utils.MoneyOperations;
+import view.model.BudgetViewModel;
 import dao.DAOException;
 import dao.IBudgetDAO;
 import dao.IUserDAO;
-import model.Budget;
-import model.User;
-import utils.MoneyOperations;
-import view.model.BudgetViewModel;
 
 @Controller
 public class BudgetController {
@@ -40,6 +47,50 @@ public class BudgetController {
 		}
 		
 		return "allBudgets";
+	}
+	
+	@RequestMapping(value = "/addBudget", method = RequestMethod.GET)
+	public String showAddBudgetPage(Model model) {
+		try {
+			model.addAttribute("currenicies", Currency.values());
+			model.addAttribute("budgetTypes", BudgetType.values());
+			model.addAttribute("repeatTypes", RepeatType.values());
+			model.addAttribute("budgetViewModel", new BudgetViewModel());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "addBudget";
+	}
+	
+	@RequestMapping(value = "/addBudget", method = RequestMethod.POST)
+	public String addBudget(@ModelAttribute("budgetViewModel") @Valid BudgetViewModel budgetViewModel,
+			BindingResult result, Model model, HttpSession session) {
+		try {
+			User user = getUserFromSession(session);
+			Budget budget = budgetViewModelToBudget(budgetViewModel);
+			budget.setUser(user);
+			budgetDAO.add(budget);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:allBudgets";
+	}
+
+	private Budget budgetViewModelToBudget(BudgetViewModel budgetViewModel) throws Exception {
+		Budget budget = new Budget();
+		
+		if (budgetViewModel != null) {
+			budget.setAmount(MoneyOperations.moneyToCents(budgetViewModel.getAmount()));
+			budget.setBudgetType(budgetViewModel.getBudgetType());
+			budget.setCurrency(budgetViewModel.getCurrency());
+			budget.setRepeatType(budgetViewModel.getRepeatType());
+			budget.setBeginDate(budgetViewModel.getBeginDate());
+			budget.setEndDate(budgetViewModel.getEndDate());
+		}
+		
+		return budget;
 	}
 
 	private List<BudgetViewModel> budgetsTobudgetsViewModel(List<Budget> budgets) {
