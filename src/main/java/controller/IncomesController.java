@@ -210,6 +210,38 @@ public class IncomesController {
 		}
 		return "redirect:allIncomes";
 	}
+	
+	@RequestMapping(value = "/verifyDeleteIncome", method = RequestMethod.GET)
+	public String verifyDeleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {			
+			Income income = foDao.getIncomeById(id);
+			model.addAttribute("incomeDate", income.getDate());
+			model.addAttribute("incomeAmount", MoneyOperations.amountPerHendred(income.getAmount()));
+			model.addAttribute("incomeId", id);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+		return "verifyDeleteIncome";
+		
+	}
+	
+	@RequestMapping(value = "/deleteIncome", method = RequestMethod.GET)
+	public String deleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			User user = getUserFromSession(session);
+			Income income = foDao.getIncomeById(id);
+			if (foDao.checkUserHasFinanceOperation(income, user)) {
+				foDao.delete(income);
+			}
+			else {
+				throw new Exception("Invalid income for deletion!");
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allIncomes";
+	}
 
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
