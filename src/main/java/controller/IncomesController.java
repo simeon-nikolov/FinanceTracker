@@ -212,7 +212,7 @@ public class IncomesController {
 	}
 	
 	@RequestMapping(value = "/verifyDeleteIncome", method = RequestMethod.GET)
-	public String verifyDeleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+	public String verifyDeleteIncome(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
 		try {			
 			Income income = foDao.getIncomeById(id);
 			model.addAttribute("incomeDate", income.getDate());
@@ -226,7 +226,7 @@ public class IncomesController {
 	}
 	
 	@RequestMapping(value = "/deleteIncome", method = RequestMethod.GET)
-	public String deleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+	public String deleteIncome(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
 		try {
 			User user = getUserFromSession(session);
 			Income income = foDao.getIncomeById(id);

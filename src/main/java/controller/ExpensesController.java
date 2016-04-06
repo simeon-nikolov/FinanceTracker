@@ -223,6 +223,39 @@ public class ExpensesController {
 		}
 		return "redirect:allIncomes";
 	}
+	
+	@RequestMapping(value = "/verifyDeleteExpense", method = RequestMethod.GET)
+	public String showVerifyDeleteExpensePage(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {			
+			Expense expense = financeOperationDAO.getExpenseById(id);
+			model.addAttribute("expenseDate", expense.getDate());
+			model.addAttribute("expenseAmount", MoneyOperations.amountPerHendred(expense.getAmount()));
+			model.addAttribute("expenseId", id);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+		return "verifyDeleteExpense";
+		
+	}
+	
+	@RequestMapping(value = "/deleteExpense", method = RequestMethod.GET)
+	public String deleteExpense(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
+		try {
+			String username = (String) session.getAttribute("username");
+			User user = userDAO.getUserByUsername(username);
+			Expense expense = financeOperationDAO.getExpenseById(id);
+			if (financeOperationDAO.checkUserHasFinanceOperation(expense, user)) {
+				financeOperationDAO.delete(expense);
+			}
+			else {
+				throw new Exception("Invalid expense for deletion!");
+			}			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/allExpenses";
+	}
 
 	private ExpenseViewModel expenseToExpenseViewModel(Expense expense) throws Exception {
 		ExpenseViewModel expenseViewModel = new ExpenseViewModel();
