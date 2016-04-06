@@ -28,7 +28,7 @@ public class ExpenseViewModel {
 	private String account;
 
 	private LocalDate date;
-
+	
 	@NotNull
 	@NotEmpty
 	private String description;

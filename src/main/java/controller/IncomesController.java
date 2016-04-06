@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,6 +91,7 @@ public class IncomesController {
 				}
 			}
 
+			Collections.sort(incomes, (i1, i2) -> i1.getDate().getDayOfMonth() - i2.getDate().getDayOfMonth());
 			model.addAttribute("categories", amountsByCategory.keySet());
 			model.addAttribute("incomesAmounts", amountsByCategory.values());
 			model.addAttribute("incomes", incomes);
@@ -108,34 +110,16 @@ public class IncomesController {
 		try {
 			Currency[] allCurrencies = Currency.values();
 			RepeatType[] allRepeatTypes = RepeatType.values();
-			Collection<Category> categories = categoryDao.getAllCategoriesForFOType(FinanceOperationType.INCOME);
-			List<String> allCategories = new LinkedList<String>();
-
-			for (Category category : categories) {
-				allCategories.add(category.getCategoryName());
-			}
-
 			User user = getUserFromSession(session);
-			List<Account> userAccounts = (List<Account>) accountDao.getAllAccountsForUser(user);
-			List<String> allAcounts = new LinkedList<String>();
-
-			for (Account acc : userAccounts) {
-				allAcounts.add(acc.getTitle());
-			}
-
-			List<Tag> tags = (List<Tag>) tagDao.getAllTagsByTypeFor(FinanceOperationType.INCOME);
-			List<String> allTags = new LinkedList<String>();
-
-			if (tags != null) {
-				for (Tag tag : tags) {
-					allTags.add(tag.getTagName());
-				}
-			}
+			
+			List<String> allCategories = getAllCategoriesForIncomes();			
+			List<String> allAccounts = getAllAccountsForUser(user);			
+			List<String> allTags = getAllTagsForIncomes();
 
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
-			model.addAttribute("allAccounts", allAcounts);
+			model.addAttribute("allAccounts", allAccounts);
 			model.addAttribute("allTags", allTags);
 			model.addAttribute("incomeViewModel", new IncomeViewModel());
 		} catch (Exception e) {
@@ -147,6 +131,11 @@ public class IncomesController {
 	@RequestMapping(value = "/addIncome", method = RequestMethod.POST)
 	public String addIncome(@ModelAttribute("incomeViewModel") @Valid IncomeViewModel incomeViewModel,
 			BindingResult result, Model model, HttpSession session) {
+		
+		if (result.hasErrors()) {
+			return "addAExpense";
+		}
+		
 		try {
 			User user = getUserFromSession(session);
 			Income income = incomeViewModelToIncome(incomeViewModel, user);
@@ -163,11 +152,19 @@ public class IncomesController {
 			HttpSession session, Model model) {
 		try {
 			User user = getUserFromSession(session);
-			Income income = foDao.getIncomeById(id);
+			Income income = foDao.getIncomeById(id);			
+			
+			List<String> allCategories = getAllCategoriesForIncomes();			
+			List<String> allAccounts = getAllAccountsForUser(user);
+			List<String> allTags = getAllTagsForIncomes();
 			
 			if (foDao.checkUserHasFinanceOperation(income, user)) {
 				IncomeViewModel incomeViewModel = incomeToIncomeViewModel(income);
 				model.addAttribute("incomeViewModel", incomeViewModel);
+				model.addAttribute("allCategories", allCategories);
+				model.addAttribute("allAccounts", allAccounts);
+				model.addAttribute("allTags", allTags);
+				session.setAttribute("editIncomeId", id);
 			} else {
 				throw new Exception("Invalid Income!");
 			}
@@ -177,7 +174,42 @@ public class IncomesController {
 		}
 		
 		return "editIncome";
-	}		
+	}	
+	
+	@RequestMapping(value = "/editIncome", method = RequestMethod.POST)
+	public String editIncome (@ModelAttribute("incomeViewModel") @Valid IncomeViewModel incomeViewModel, BindingResult result,
+			Model model, HttpSession session) throws DAOException {
+		
+		if (result.hasErrors()) {
+			User user = getUserFromSession(session);
+			List<String> allCategories = getAllCategoriesForIncomes();			
+			List<String> allAccounts = getAllAccountsForUser(user);
+			List<String> allTags = getAllTagsForIncomes();
+			
+			model.addAttribute("allCategories", allCategories);
+			model.addAttribute("allAccounts", allAccounts);
+			model.addAttribute("allTags", allTags);
+			return "editIncome";
+		}
+		
+		try {
+			User user = getUserFromSession(session);
+			Income income = incomeViewModelToIncome(incomeViewModel, user);
+			int id = (int) session.getAttribute("editIncomeId");
+			income.setId(id);
+			
+			if (foDao.checkUserHasFinanceOperation(income, user)) {
+				foDao.update(income);
+			}
+			else {
+				throw new Exception("Invalid Income!");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:allIncomes";
+	}
 
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
@@ -191,6 +223,7 @@ public class IncomesController {
 		return user;
 	}
 
+	//After using this method you must explicitly set ID 
 	private Income incomeViewModelToIncome(IncomeViewModel incomeViewModel, User user) throws Exception {
 		Income income = new Income();
 		income.setAmount(MoneyOperations.moneyToCents(incomeViewModel.getAmount()));
@@ -238,6 +271,40 @@ public class IncomesController {
 		incomeViewModel.setTags(tags);
 		
 		return incomeViewModel;
+	}
+	
+	private List<String> getAllTagsForIncomes() throws DAOException {
+		List<Tag> tags = (List<Tag>) tagDao.getAllTagsByTypeFor(FinanceOperationType.INCOME);
+		List<String> allTags = new LinkedList<String>();
+
+		if (tags != null) {
+			for (Tag tag : tags) {
+				allTags.add(tag.getTagName());
+			}
+		}
+		return allTags;
+	}
+	
+	private List<String> getAllCategoriesForIncomes() throws DAOException {
+		Collection<Category> categories = categoryDao.getAllCategoriesForFOType(FinanceOperationType.INCOME);
+		List<String> allCategories = new LinkedList<String>();
+
+		for (Category category : categories) {
+			allCategories.add(category.getCategoryName());
+		}
+		
+		return allCategories;
+	}
+	
+	private List<String> getAllAccountsForUser(User user) throws DAOException {
+		List<Account> userAccounts = (List<Account>) accountDao.getAllAccountsForUser(user);
+		List<String> allAccounts = new LinkedList<String>();
+
+		for (Account acc : userAccounts) {
+			allAccounts.add(acc.getTitle());
+		}
+		
+		return allAccounts;
 	}
 
 }

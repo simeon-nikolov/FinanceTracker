@@ -112,6 +112,22 @@ public class AccountDAOTests {
 		userDao.deleteUser(user);
 	}
 	
+	@Test
+	public void testCheckUserHasAccount() throws Exception {
+		User user = addUserToDB();
+		Account account = makeNewAccount(user);
+		String title = account.getTitle();
+		int id = dao.addAccount(account);
+		Account fromDB = dao.getAccountForUserByName(title, user);
+		boolean result = dao.checkUserHasAccount(fromDB, user);
+		
+		assertEquals(result, true);
+		
+		dao.deleteAccount(fromDB);
+		userDao.deleteUser(user);
+		
+	}
+	
 	private User addUserToDB() throws Exception {
 		User user = new User();
 		int randNumber = (int) (Math.random() * RANDOM_NUMBER_SIZE);

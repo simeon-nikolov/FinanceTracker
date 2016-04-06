@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import model.Account;
+import model.FinanceOperation;
 import model.User;
 
 import org.hibernate.Query;
@@ -112,6 +113,24 @@ public class AccountDAO implements IAccountDAO {
 			throw new DAOException("Account can not be read from database!", e);
 		}
 		return account;
+	}
+	
+	public boolean checkUserHasAccount(Account account, User user) throws DAOException {
+		try {
+			sessionFactory.getCurrentSession().beginTransaction();
+			Query query = sessionFactory.getCurrentSession().createQuery("from Account a where a.user = :user");
+			query.setEntity("user", user);
+			Collection<FinanceOperation> result = query.list();
+			sessionFactory.getCurrentSession().getTransaction().commit();
+			
+			if (result.size() > 0) {
+				return true;
+			}			
+			return false;
+		} catch (RuntimeException e) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			throw new DAOException("Account can not be read from database!", e);
+		}
 	}
 
 }

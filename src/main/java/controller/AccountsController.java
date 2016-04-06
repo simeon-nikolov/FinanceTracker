@@ -99,7 +99,7 @@ public class AccountsController {
 	
 	@RequestMapping(value = "/verifyDeleteAccount", method = RequestMethod.GET)
 	public String verifyDeleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
-		try {
+		try {			
 			Account acc = accountDao.getAccountById(id);
 			model.addAttribute("accountTitle", acc.getTitle());
 			model.addAttribute("accountId", id);
@@ -113,12 +113,17 @@ public class AccountsController {
 	@RequestMapping(value = "/deleteAccount", method = RequestMethod.GET)
 	public String deleteAccount(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
 		try {
+			User user = getUserFromSession(session);
 			Account account = accountDao.getAccountById(id);
-			deleteAllExpensesByAccount(account);
-			deleteAllIncomesByAccount(account);
-			
-			accountDao.deleteAccount(account);
-			
+			if (accountDao.checkUserHasAccount(account, user)) {
+				deleteAllExpensesByAccount(account);
+				deleteAllIncomesByAccount(account);
+				
+				accountDao.deleteAccount(account);
+			}
+			else {
+				throw new Exception("Invalid account!");
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -129,16 +134,24 @@ public class AccountsController {
 	@RequestMapping(value = "/editAccount", method = RequestMethod.GET)
 	public String showEditAccountPage(@ModelAttribute(value="id") int id, Model model, HttpSession session) {
 		try {
+			User user = getUserFromSession(session);
 			Account account = accountDao.getAccountById(id);
-			AccountViewModel accountViewModel = new AccountViewModel();
-			accountViewModel.setTitle(account.getTitle());
-			accountViewModel.setBalance(MoneyOperations.amountPerHendred(account.getBalance()));
 			
-			model.addAttribute("accountViewModel", accountViewModel);
-			session.setAttribute("editAccountId", id);
-			
+			if (accountDao.checkUserHasAccount(account, user)) {
+				AccountViewModel accountViewModel = new AccountViewModel();
+				accountViewModel.setTitle(account.getTitle());
+				accountViewModel.setBalance(MoneyOperations.amountPerHendred(account.getBalance()));
+				
+				model.addAttribute("accountViewModel", accountViewModel);
+				session.setAttribute("editAccountId", id);
+			}
+			else {
+				throw new Exception("Invalid account to delete!");
+			}			
 		} catch (Exception e) {
 			e.printStackTrace();
+			model.addAttribute("errorMessage", e.getMessage());
+			return "forward:error";
 		}
 		
 		return "editAccount";
@@ -148,13 +161,19 @@ public class AccountsController {
 	public String editAccount(@ModelAttribute("accountViewModel") @Valid AccountViewModel accountViewModel, BindingResult result,
 			Model model, HttpSession session) {
 		try {
+			User user = getUserFromSession(session);
 			int id = (int) session.getAttribute("editAccountId");
 			Account account = accountDao.getAccountById(id);
-			account.setBalance(MoneyOperations.moneyToCents(accountViewModel.getBalance()));
-			account.setTitle(accountViewModel.getTitle());
 			
-			accountDao.updateAccount(account);
-			
+			if (accountDao.checkUserHasAccount(account, user)) {
+				account.setBalance(MoneyOperations.moneyToCents(accountViewModel.getBalance()));
+				account.setTitle(accountViewModel.getTitle());
+				
+				accountDao.updateAccount(account);
+			}
+			else {
+				throw new Exception("Invalid account to delete!");
+			}				
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

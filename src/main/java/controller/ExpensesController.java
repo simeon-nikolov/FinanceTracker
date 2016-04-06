@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,7 @@ import model.Category;
 import model.Currency;
 import model.Expense;
 import model.FinanceOperationType;
+import model.Income;
 import model.RepeatType;
 import model.Tag;
 import model.User;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
+import view.model.IncomeViewModel;
 import dao.DAOException;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
@@ -89,6 +92,7 @@ public class ExpensesController {
 				}
 			}
 
+			Collections.sort(expenses, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
 			model.addAttribute("categories", amountsByCategory.keySet());
 			model.addAttribute("expensesAmounts", amountsByCategory.values());
 			model.addAttribute("expenses", expenses);
@@ -105,35 +109,17 @@ public class ExpensesController {
 		try {
 			Currency[] allCurrencies = Currency.values();
 			RepeatType[] allRepeatTypes = RepeatType.values();
-			Collection<Category> categories = categoryDAO.getAllCategoriesForFOType(FinanceOperationType.EXPENSE);
-			List<String> allCategories = new LinkedList<String>();
-
-			for (Category category : categories) {
-				allCategories.add(category.getCategoryName());
-			}
-
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
-			List<Account> userAccounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
-			List<String> allAcounts = new LinkedList<String>();
-
-			for (Account acc : userAccounts) {
-				allAcounts.add(acc.getTitle());
-			}
-
-			List<Tag> tags = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
-			List<String> allTags = new LinkedList<String>();
-
-			if (tags != null) {
-				for (Tag tag : tags) {
-					allTags.add(tag.getTagName());
-				}
-			}
+			
+			List<String> allCategories = getAllCategoriesForExpenses();			
+			List<String> allAccounts = getAllAccountsForUser(user);
+			List<String> allTags = getAllTagsForExpenses();
 
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
-			model.addAttribute("allAccounts", allAcounts);
+			model.addAttribute("allAccounts", allAccounts);
 			model.addAttribute("allTags", allTags);
 			model.addAttribute("expenseViewModel", new ExpenseViewModel());
 		} catch (Exception e) {
@@ -145,7 +131,20 @@ public class ExpensesController {
 
 	@RequestMapping(value = "/addExpense", method = RequestMethod.POST)
 	public String addExpense(@ModelAttribute("expenseViewModel") @Valid ExpenseViewModel expenseViewModel,
-			BindingResult result, Model model, HttpSession session) {
+			BindingResult result, Model model, HttpSession session) throws DAOException {
+		
+		if (result.hasErrors()) {
+			String username = (String) session.getAttribute("username");
+			User user = userDAO.getUserByUsername(username);
+			List<String> allCategories = getAllCategoriesForExpenses();			
+			List<String> allAccounts = getAllAccountsForUser(user);
+			List<String> allTags = getAllTagsForExpenses();
+			
+			model.addAttribute("allCategories", allCategories);
+			model.addAttribute("allAccounts", allAccounts);
+			model.addAttribute("allTags", allTags);
+			return "addExpense";
+		}
 
 		try {
 			String username = (String) session.getAttribute("username");
@@ -165,11 +164,19 @@ public class ExpensesController {
 		try {
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
-			Expense expense = financeOperationDAO.getExpenseById(id);
+			Expense expense = financeOperationDAO.getExpenseById(id);			
+			
+			List<String> allCategories = getAllCategoriesForExpenses();				
+			List<String> allAccounts = getAllAccountsForUser(user);			
+			List<String> allTags = getAllTagsForExpenses();
 			
 			if (financeOperationDAO.checkUserHasFinanceOperation(expense, user)) {
 				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
 				model.addAttribute("expenseViewModel", expenseViewModel);
+				model.addAttribute("allCategories", allCategories);
+				model.addAttribute("allAccounts", allAccounts);
+				model.addAttribute("allTags", allTags);
+				session.setAttribute("editExpenseId", id);
 			} else {
 				throw new Exception("Invalid expense!");
 			}
@@ -179,6 +186,42 @@ public class ExpensesController {
 		}
 		
 		return "editExpense";
+	}
+	
+	@RequestMapping(value = "/editExpense", method = RequestMethod.POST)
+	public String editExpense (@ModelAttribute("expenseViewModel") @Valid ExpenseViewModel expenseViewModel, BindingResult result,
+			Model model, HttpSession session) throws DAOException {
+		String username = (String) session.getAttribute("username");
+		User user = userDAO.getUserByUsername(username);
+		
+		if (result.hasErrors()) {
+			
+			List<String> allCategories = getAllCategoriesForExpenses();			
+			List<String> allAccounts = getAllAccountsForUser(user);
+			List<String> allTags = getAllTagsForExpenses();
+			
+			model.addAttribute("allCategories", allCategories);
+			model.addAttribute("allAccounts", allAccounts);
+			model.addAttribute("allTags", allTags);
+			return "editExpense";
+		}
+		
+		try {			
+			Expense expense = expenseViewModelToExpense(expenseViewModel, user);
+			int id = (int) session.getAttribute("editIncomeId");
+			expense.setId(id);
+			
+			if (financeOperationDAO.checkUserHasFinanceOperation(expense, user)) {
+				financeOperationDAO.update(expense);
+			}
+			else {
+				throw new Exception("Invalid Income!");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "redirect:allIncomes";
 	}
 
 	private ExpenseViewModel expenseToExpenseViewModel(Expense expense) throws Exception {
@@ -204,6 +247,7 @@ public class ExpensesController {
 		return expenseViewModel;
 	}
 
+	//After using this method you must explicitly set ID !!
 	private Expense expenseViewModelToExpense(ExpenseViewModel expenseViewModel, User user) throws Exception {
 		Expense expense = new Expense();
 		expense.setAmount(MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
@@ -228,5 +272,40 @@ public class ExpensesController {
 		expense.setTags(tags);
 
 		return expense;
+	}
+	
+	private List<String> getAllCategoriesForExpenses() throws DAOException {
+		Collection<Category> categories = categoryDAO.getAllCategoriesForFOType(FinanceOperationType.INCOME);
+		List<String> allCategories = new LinkedList<String>();
+
+		for (Category category : categories) {
+			allCategories.add(category.getCategoryName());
+		}
+		
+		return allCategories;
+	}
+	
+	private List<String> getAllAccountsForUser(User user) throws DAOException {
+		List<Account> userAccounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
+		List<String> allAcounts = new LinkedList<String>();
+
+		for (Account acc : userAccounts) {
+			allAcounts.add(acc.getTitle());
+		}
+		
+		return allAcounts;
+	}
+	
+
+	private List<String> getAllTagsForExpenses() throws DAOException {
+		List<Tag> tags = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
+		List<String> allTags = new LinkedList<String>();
+
+		if (tags != null) {
+			for (Tag tag : tags) {
+				allTags.add(tag.getTagName());
+			}
+		}
+		return allTags;
 	}
 }

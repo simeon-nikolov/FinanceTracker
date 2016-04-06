@@ -47,7 +47,7 @@
 						</tr>
 						<tr>
 							<td><label for="date-picker">Date:</label></td>
-							<td><form:input id="date-picker" style="width: 100px;" path="date" value="${expenseViewModel.date}" /></td>
+							<td><form:input id="date-picker" style="width: 100px;" path="date" value="${incomeViewModel.date}" /></td>
 							<td><form:errors path="date" cssClass="error" /></td>
 						</tr>
 						<tr>

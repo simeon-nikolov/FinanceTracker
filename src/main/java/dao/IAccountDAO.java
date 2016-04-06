@@ -18,5 +18,7 @@ public interface IAccountDAO {
 	Collection<Account> getAllAccountsForUser(User user) throws DAOException;
 	
 	public Account getAccountForUserByName(String accountName, User user) throws DAOException;
+	
+	boolean checkUserHasAccount(Account account, User user) throws DAOException;
 
 }
