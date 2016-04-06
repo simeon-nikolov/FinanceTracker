@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public class BudgetDAO implements IBudgetDAO {
 
 	@Autowired
-	SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
 	@Override
 	public int add(Budget budget) throws DAOException {
