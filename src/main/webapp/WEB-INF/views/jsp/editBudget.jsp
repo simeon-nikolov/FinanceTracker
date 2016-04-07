@@ -9,7 +9,7 @@
 <div id="container">
 	<div class="wrapper">
 		<div id="budget-content">
-			<form:form action="editBudget" commandName="budgetViewModel">
+			<form:form action="editBudget" commandName="budgetViewModel" method="POST">
 				<fieldset>
 					<legend>Edit Budget: </legend>
 					<table class="table">

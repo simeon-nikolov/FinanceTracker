@@ -1,12 +1,4 @@
 @charset "utf-8";
-/*
-Template Name: Internet Business
-Author: <a href="http://www.os-templates.com/">OS Templates</a>
-Author URI: http://www.os-templates.com/
-Licence: Free to use under our free template licence terms
-Licence URI: http://www.os-templates.com/template-terms
-File: Layout CSS
-*/
 
 @import url("navi.css");
 
@@ -34,7 +26,7 @@ img{display:block; margin:0; padding:0; border:0;}
 
 /* ----------------------------------------------Generalise------------------------------------- */
 
-h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; font-weight:normal; font-family:Georgia, "Times New Roman", Times, serif; border-bottom:1px dotted #DDDDDD;}
+h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; font-weight:normal; font-family:Georgia, "Times New Roman", Times, serif;}
 
 #header, #topbar, #featured_slide, #homecontent, #breadcrumb, #container, #footer, #copyright{display:block; width:960px; margin:0 auto;}
 
@@ -76,7 +68,7 @@ h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; fon
 /* ----------------------------------------------Content------------------------------------- */
 
 #container .wrapper{padding:20px 10px; line-height:1.4em; color:#666666; background-color:#F5F5F5;}
-#container h1, #container h2, #container h3, #container h4, #container h5, #container h6{padding-bottom:8px; border-bottom:1px dotted #CCCCCC;}
+#container h1, #container h2, #container h3, #container h4, #container h5, #container h6{padding-bottom:8px;}
 #content{display:block; float:left; width:580px;}
 
 /* Comments */
@@ -203,3 +195,24 @@ ul li {
 #budget-content {
 	text-align: center;
 }
+
+.profile {
+	
+}
+
+.profile-left-column {
+	float: left;
+	width: 20%;
+	display: inline-block;
+}
+
+.profile-right-column {
+	float:left;
+	width: 80%;
+	display: inline-block;
+}
+
+.profile-wrapper div {
+	
+}
+
