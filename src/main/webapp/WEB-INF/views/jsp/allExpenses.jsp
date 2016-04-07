@@ -43,13 +43,15 @@
 			<div class="subnav">
 				<%@include file="partials/accountsSelect.jsp"%>
 				<a href="./addExpense" class="btn btn-lg btn-default">+ Add Expense</a>
-				<c:forEach var="expense" items="${expenses}">				
-					<%@include file="partials/expenseListTemplate.jsp"%>
-					<div class="operations">
-						<a href="./editExpense?id=${expense.id}" class="btn btn-info btn-xs">Edit</a> 
-						<a href="./verifyDeleteExpense?id=${expense.id}" class="btn btn-danger btn-xs">Delete</a>
-					</div>
-				</c:forEach>
+				<div id="expenses">
+					<c:forEach var="expense" items="${expenses}">				
+						<%@include file="partials/expenseListTemplate.jsp"%>
+						<div class="operations">
+							<a href="./editExpense?id=${expense.id}" class="btn btn-info btn-xs">Edit</a> 
+							<a href="./verifyDeleteExpense?id=${expense.id}" class="btn btn-danger btn-xs">Delete</a>
+						</div>
+					</c:forEach>
+				</div>
 			</div>
 		</div>
 		<br class="clear" />
