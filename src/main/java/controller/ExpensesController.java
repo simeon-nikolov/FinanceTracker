@@ -15,7 +15,6 @@ import model.Category;
 import model.Currency;
 import model.Expense;
 import model.FinanceOperationType;
-import model.Income;
 import model.RepeatType;
 import model.Tag;
 import model.User;

@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import utils.CurrencyChange;
 import utils.MoneyOperations;
 import view.model.BudgetViewModel;
 import dao.DAOException;
 import dao.IBudgetDAO;
 import dao.IUserDAO;
+import exceptions.APIException;
 
 @Controller
 public class BudgetController {
@@ -36,7 +38,7 @@ public class BudgetController {
 	private IUserDAO userDAO;
 	
 	@RequestMapping(value = "/allBudgets", method = RequestMethod.GET)
-	public String showBudgetsPage(HttpSession session, Model model) {
+	public String showBudgetsPage(HttpSession session, Model model) {		
 		try {
 			User user = getUserFromSession(session);
 			List<Budget> budgets = (List<Budget>) budgetDAO.getAllBudgetsByUser(user);

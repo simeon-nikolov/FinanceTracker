@@ -9,7 +9,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import model.Account;
+import model.Currency;
 import model.Expense;
+import model.Tag;
 import model.User;
 
 import org.joda.time.LocalDate;
@@ -21,7 +23,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import utils.CurrencyChange;
 import utils.MoneyOperations;
+import view.model.ExpenseViewModel;
 import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
@@ -63,7 +67,7 @@ public class OverviewController {
 			int year = (int) session.getAttribute("year");
 			
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
-			List<Expense> expenses = new LinkedList<Expense>();
+			List<ExpenseViewModel> expenseViews = new LinkedList<ExpenseViewModel>();
 			Map<String, Integer> moneyByCategory = new HashMap<String, Integer>();
 			int amountToSpend = 0;
 			
@@ -73,35 +77,70 @@ public class OverviewController {
 				for (Expense expense : accExpenses) {
 					if (expense.getDate().getMonthOfYear() == month && 
 								expense.getDate().getYear() == year) {
-						expenses.add(expense);
+						
+						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);						
+						if (expense.getCurrency() != user.getCurrency()) {
+							int result = CurrencyChange.convertToThisCurrency(expense.getAmount(),
+									expense.getCurrency(), user.getCurrency());
+							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
+							expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
+						}
+						expenseViews.add(expenseViewModel);
 					}
 				}
 				
 				amountToSpend += acc.getBalance();
 				
-				for (Expense expense : expenses) {
-					amountToSpend -= expense.getAmount();
-					String category = "'" + expense.getCategory().getCategoryName() + "'";
+				for (ExpenseViewModel expenseViewModel : expenseViews) {
+					amountToSpend -= (MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+					String category = "'" + expenseViewModel.getCategory() + "'";
 					int oldAmount = 0;
 					
 					if (moneyByCategory.containsKey(category)) {
 						oldAmount = moneyByCategory.get(category);
 					}
 					
-					moneyByCategory.put(category, oldAmount + expense.getAmount());
+					moneyByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
 				}
 			}
-			Collections.sort(expenses, (e1, e2) -> e1.getDate().getDayOfMonth()-e2.getDate().getDayOfMonth());
+			Collections.sort(expenseViews, (e1, e2) -> e1.getDate().getDayOfMonth()-e2.getDate().getDayOfMonth());
 			float moneyToSpend = MoneyOperations.amountPerHendred(amountToSpend);
-			model.addAttribute("expenses", expenses);
+			model.addAttribute("expenses", expenseViews);		
 			model.addAttribute("moneyToSpend", moneyToSpend);
 			model.addAttribute("categories", moneyByCategory.keySet());
 			model.addAttribute("expensesAmounts", moneyByCategory.values());
 			model.addAttribute("accounts", accounts);
+			System.out.println(accounts);
 		} catch (DAOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 		
 		return "overview";
+	}
+	
+	private ExpenseViewModel expenseToExpenseViewModel(Expense expense) throws Exception {
+		ExpenseViewModel expenseViewModel = new ExpenseViewModel();
+		expenseViewModel.setId(expense.getId());
+		expenseViewModel.setAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
+		expenseViewModel.setUserCurrencyAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
+		expenseViewModel.setAccount(expense.getAccount().getTitle());
+		expenseViewModel.setCategory(expense.getCategory().getCategoryName());
+		expenseViewModel.setCurrency(expense.getCurrency());		
+		expenseViewModel.setDate(expense.getDate());
+		expenseViewModel.setDescription(expense.getDescription());
+		expenseViewModel.setRepeatType(expense.getRepeatType());
+		List<String> tags = new LinkedList<String>();
+		
+		if (expense.getTags() != null) {
+			for (Tag tag : expense.getTags()) {
+				tags.add(tag.getTagName());
+			}
+		}
+		
+		expenseViewModel.setTags(tags);
+		
+		return expenseViewModel;
 	}
 }

@@ -16,6 +16,9 @@ public class IncomeViewModel {
 	
 	@NotNull
 	private float amount;
+	
+	@NotNull
+	private float userCurrencyAmount;
 
 	@NotNull
 	private Currency currency;
@@ -126,6 +129,14 @@ public class IncomeViewModel {
 
 	public void setTags(Collection<String> tags) {
 		this.tags = tags;
+	}
+
+	public float getUserCurrencyAmount() {
+		return userCurrencyAmount;
+	}
+
+	public void setUserCurrencyAmount(float userCurrencyAmount) {
+		this.userCurrencyAmount = userCurrencyAmount;
 	}
 	
 	

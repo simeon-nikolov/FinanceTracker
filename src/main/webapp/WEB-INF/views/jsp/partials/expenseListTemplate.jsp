@@ -9,18 +9,18 @@
 			</span> 
 			<span class="money-amount"> 
 				<jstl:out value="${expense.currency}"></jstl:out> 
-				<jstl:out value="${expense.amount / 100.0}"></jstl:out>
+				<jstl:out value="${expense.amount}"></jstl:out>				
 			</span>
 		</p>
 	</div>
 	<div>
 		<p>
 			<span class="category"> 
-				<jstl:out value="${expense.category.categoryName}"></jstl:out>
+				<jstl:out value="${expense.category}"></jstl:out>
 			</span> 
 			<span class="tags">
 				<jstl:forEach var="tag" items="${expense.tags}">
-					<jstl:out value="${tag.tagName}"></jstl:out>
+					<jstl:out value="${tag}"></jstl:out>
 				</jstl:forEach>
 			</span>
 		</p>
