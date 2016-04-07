@@ -175,8 +175,7 @@ public class ExpensesController {
 				model.addAttribute("expenseViewModel", expenseViewModel);
 				model.addAttribute("allCategories", allCategories);
 				model.addAttribute("allAccounts", allAccounts);
-				model.addAttribute("allTags", allTags);
-				session.setAttribute("editExpenseId", id);
+				model.addAttribute("allTags", allTags);				
 			} else {
 				throw new Exception("Invalid expense!");
 			}
@@ -207,9 +206,7 @@ public class ExpensesController {
 		}
 		
 		try {			
-			Expense expense = expenseViewModelToExpense(expenseViewModel, user);
-			int id = (int) session.getAttribute("editIncomeId");
-			expense.setId(id);
+			Expense expense = expenseViewModelToExpense(expenseViewModel, user);			
 			
 			if (financeOperationDAO.checkUserHasFinanceOperation(expense, user)) {
 				financeOperationDAO.update(expense);
@@ -221,7 +218,7 @@ public class ExpensesController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:allIncomes";
+		return "redirect:allExpenses";
 	}
 	
 	@RequestMapping(value = "/verifyDeleteExpense", method = RequestMethod.GET)
@@ -279,10 +276,10 @@ public class ExpensesController {
 		
 		return expenseViewModel;
 	}
-
-	//After using this method you must explicitly set ID !!
+	
 	private Expense expenseViewModelToExpense(ExpenseViewModel expenseViewModel, User user) throws Exception {
 		Expense expense = new Expense();
+		expense.setId(expenseViewModel.getId());
 		expense.setAmount(MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
 		expense.setCurrency(expenseViewModel.getCurrency());
 		expense.setDate(expenseViewModel.getDate());

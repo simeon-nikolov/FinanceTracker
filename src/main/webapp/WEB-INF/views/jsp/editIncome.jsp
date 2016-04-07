@@ -75,7 +75,8 @@
 							<td><form:errors path="tags" cssClass="error" /></td>
 						</tr>
 					</table>
-					<input type="submit" class="btn btn-primary btn-md" value="Add" />
+					<input type="submit" class="btn btn-primary btn-md" value="Edit" />
+					<form:hidden path="id" value="${incomeViewModel.id}" />
 				</fieldset>
 			</form:form>
 		</div>

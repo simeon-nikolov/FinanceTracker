@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,8 +48,8 @@ public class AccountsRestController {
 			if (accountName.equals("all")) {
 				List<Account> accounts = (List<Account>) accDao.getAllAccountsForUser(user);
 				
-				for (Account acc : accounts) {
-					result = getExpensesByAccount(month, year, acc);
+				for (Account acc : accounts) {					
+					result = getExpensesByAccount(month, year, acc);					
 				}
 			} else {
 				Account account = accDao.getAccountForUserByName(accountName, user);

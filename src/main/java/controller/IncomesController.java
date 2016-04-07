@@ -163,8 +163,7 @@ public class IncomesController {
 				model.addAttribute("incomeViewModel", incomeViewModel);
 				model.addAttribute("allCategories", allCategories);
 				model.addAttribute("allAccounts", allAccounts);
-				model.addAttribute("allTags", allTags);
-				session.setAttribute("editIncomeId", id);
+				model.addAttribute("allTags", allTags);				
 			} else {
 				throw new Exception("Invalid Income!");
 			}
@@ -194,9 +193,7 @@ public class IncomesController {
 		
 		try {
 			User user = getUserFromSession(session);
-			Income income = incomeViewModelToIncome(incomeViewModel, user);
-			int id = (int) session.getAttribute("editIncomeId");
-			income.setId(id);
+			Income income = incomeViewModelToIncome(incomeViewModel, user);			
 			
 			if (foDao.checkUserHasFinanceOperation(income, user)) {
 				foDao.update(income);
@@ -254,10 +251,10 @@ public class IncomesController {
 
 		return user;
 	}
-
-	//After using this method you must explicitly set ID 
+	
 	private Income incomeViewModelToIncome(IncomeViewModel incomeViewModel, User user) throws Exception {
 		Income income = new Income();
+		income.setId(incomeViewModel.getId());
 		income.setAmount(MoneyOperations.moneyToCents(incomeViewModel.getAmount()));
 		income.setCurrency(incomeViewModel.getCurrency());
 		income.setDate(incomeViewModel.getDate());
