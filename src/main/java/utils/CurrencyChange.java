@@ -14,7 +14,7 @@ import model.Currency;
 
 public class CurrencyChange {
 	
-	private static final int PERCENT = 100;
+	
 	private static final int SUCCESS_CODE = 200;
 	private static final String MAIN_URL = "http://api.fixer.io/latest?base=";
 

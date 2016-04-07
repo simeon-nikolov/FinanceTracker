@@ -36,6 +36,7 @@ import model.Income;
 import model.RepeatType;
 import model.Tag;
 import model.User;
+import utils.CurrencyChange;
 import utils.MoneyOperations;
 import view.model.IncomeViewModel;
 
@@ -58,7 +59,7 @@ public class IncomesController {
 		try {
 			User user = getUserFromSession(session);
 			List<Account> accounts = (List<Account>) accountDao.getAllAccountsForUser(user);
-			List<Income> incomes = new ArrayList<Income>();
+			List<IncomeViewModel> incomeViews = new ArrayList<IncomeViewModel>();
 			Map<String, Integer> amountsByCategory = new HashMap<String, Integer>();
 			int month = LocalDate.now().getMonthOfYear();
 			int year = LocalDate.now().getYear();
@@ -76,28 +77,35 @@ public class IncomesController {
 
 				for (Income in : accIncomes) {
 					if (in.getDate().getMonthOfYear() == month && in.getDate().getYear() == year) {
-						incomes.add(in);
+						IncomeViewModel incomeViewModel = incomeToIncomeViewModel(in);
+						if (in.getCurrency() != user.getCurrency()) {
+							int result = CurrencyChange.convertToThisCurrency(in.getAmount(),
+											in.getCurrency(), user.getCurrency());
+							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
+							incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);
+						}
+						incomeViews.add(incomeViewModel);
 					}
 				}
 
-				for (Income in : incomes) {
-					String category = "'" + in.getCategory().getCategoryName() + "'";
+				for (IncomeViewModel incomeViewModel : incomeViews) {
+					String category = "'" + incomeViewModel.getCategory() + "'";
 					int oldAmount = 0;
 
 					if (amountsByCategory.containsKey(category)) {
 						oldAmount = amountsByCategory.get(category);
 					}
-					amountsByCategory.put(category, oldAmount + in.getAmount());
+					amountsByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(incomeViewModel.getAmount()));
 				}
 			}
 
-			Collections.sort(incomes, (i1, i2) -> i1.getDate().getDayOfMonth() - i2.getDate().getDayOfMonth());
-			model.addAttribute("categories", amountsByCategory.keySet());
-			model.addAttribute("incomesAmounts", amountsByCategory.values());
-			model.addAttribute("incomes", incomes);
+			Collections.sort(incomeViews, (i1, i2) -> i1.getDate().getDayOfMonth() - i2.getDate().getDayOfMonth());
+			
+			model.addAttribute("categories", amountsByCategory.keySet());			
+			model.addAttribute("incomesAmounts", amountsByCategory.values());			
+			model.addAttribute("incomes", incomeViews);			
 			model.addAttribute("accounts", accounts);
-			System.out.println(incomes);
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -283,6 +291,7 @@ public class IncomesController {
 		IncomeViewModel incomeViewModel = new IncomeViewModel();
 		incomeViewModel.setId(income.getId());
 		incomeViewModel.setAmount(MoneyOperations.amountPerHendred(income.getAmount()));
+		incomeViewModel.setUserCurrencyAmount(MoneyOperations.amountPerHendred(income.getAmount()));
 		incomeViewModel.setAccount(income.getAccount().getTitle());
 		incomeViewModel.setCategory(income.getCategory().getCategoryName());
 		incomeViewModel.setCurrency(income.getCurrency());
