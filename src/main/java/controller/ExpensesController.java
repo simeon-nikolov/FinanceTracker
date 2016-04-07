@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
-import view.model.IncomeViewModel;
 import dao.DAOException;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
@@ -78,17 +77,17 @@ public class ExpensesController {
 						expenses.add(expense);
 					}
 				}
+			}
+			
+			for (Expense expense : expenses) {
+				String category = "'" + expense.getCategory().getCategoryName() + "'";
+				int oldAmount = 0;
 
-				for (Expense expense : expenses) {
-					String category = "'" + expense.getCategory().getCategoryName() + "'";
-					int oldAmount = 0;
-
-					if (amountsByCategory.containsKey(category)) {
-						oldAmount = amountsByCategory.get(category);
-					}
-
-					amountsByCategory.put(category, oldAmount + expense.getAmount());
+				if (amountsByCategory.containsKey(category)) {
+					oldAmount = amountsByCategory.get(category);
 				}
+
+				amountsByCategory.put(category, oldAmount + expense.getAmount());
 			}
 
 			Collections.sort(expenses, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
