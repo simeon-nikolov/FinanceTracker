@@ -1,8 +1,21 @@
 package view.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class ChangePasswordViewModel {
+	@NotNull
+	@NotEmpty
 	private String oldPassword;
+	@NotNull
+	@NotEmpty
+	@Size(min = 6, max = 30)
 	private String newPassword;
+	@NotNull
+	@NotEmpty
+	@Size(min = 6, max = 30)
 	private String confirmNewPassword;
 	
 	public ChangePasswordViewModel() {}

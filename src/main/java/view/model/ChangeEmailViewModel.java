@@ -1,8 +1,21 @@
 package view.model;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class ChangeEmailViewModel {
+    @NotNull
+    @NotEmpty
+    @Email
 	private String newEmail;
+    @NotNull
+    @NotEmpty
+    @Email
 	private String confirmNewEmail;
+    @NotNull
+    @NotEmpty
 	private String enterPassword;
 	
 	public ChangeEmailViewModel() {}
