@@ -25,5 +25,4 @@ public class Expense extends FinanceOperation {
 	public void setFinanceOperationType(FinanceOperationType financeOperationType) {
 		super.setFinanceOperationType(FinanceOperationType.EXPENSE);
 	}
-
 }

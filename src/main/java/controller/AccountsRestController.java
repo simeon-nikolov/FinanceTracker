@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +37,7 @@ public class AccountsRestController {
 
 	@RequestMapping(value="/accounts/{accountName}", method=RequestMethod.GET)
 	public List<Expense> getExpensesForAccount(@PathVariable("accountName") String accountName, HttpSession session) {
-		List<Expense> result = null;
+		List<Expense> result = new LinkedList<Expense>();
 		
 		try {
 			User user = getUserFromSession(session);
@@ -49,7 +48,7 @@ public class AccountsRestController {
 				List<Account> accounts = (List<Account>) accDao.getAllAccountsForUser(user);
 				
 				for (Account acc : accounts) {					
-					result = getExpensesByAccount(month, year, acc);					
+					result.addAll(getExpensesByAccount(month, year, acc));					
 				}
 			} else {
 				Account account = accDao.getAccountForUserByName(accountName, user);
