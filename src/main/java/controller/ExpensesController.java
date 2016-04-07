@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import utils.CurrencyChange;
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
 import dao.DAOException;
@@ -57,7 +58,7 @@ public class ExpensesController {
 			User user = userDAO.getUserByUsername(username);
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			Map<String, Integer> amountsByCategory = new HashMap<String, Integer>();
-			List<Expense> expenses = new LinkedList<Expense>();
+			List<ExpenseViewModel> expenseViews = new LinkedList<ExpenseViewModel>();
 			int month = LocalDate.now().getMonthOfYear();
 			int year = LocalDate.now().getYear();
 
@@ -74,28 +75,42 @@ public class ExpensesController {
 
 				for (Expense expense : accExpenses) {
 					if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
-						expenses.add(expense);
+						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+						if (expense.getCurrency() != user.getCurrency()) {
+							int result = CurrencyChange.convertToThisCurrency(expense.getAmount(), 
+										expense.getCurrency(), user.getCurrency());
+							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
+							expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
+						}
+						expenseViews.add(expenseViewModel);
 					}
 				}
 			}
 			
-			for (Expense expense : expenses) {
-				String category = "'" + expense.getCategory().getCategoryName() + "'";
+			for (ExpenseViewModel expenseViewModel : expenseViews) {
+				String category = "'" + expenseViewModel.getCategory() + "'";
 				int oldAmount = 0;
 
 				if (amountsByCategory.containsKey(category)) {
 					oldAmount = amountsByCategory.get(category);
 				}
 
-				amountsByCategory.put(category, oldAmount + expense.getAmount());
+				amountsByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
 			}
 
-			Collections.sort(expenses, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
+			Collections.sort(expenseViews, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
+			
 			model.addAttribute("categories", amountsByCategory.keySet());
+			System.out.println(amountsByCategory.keySet());
 			model.addAttribute("expensesAmounts", amountsByCategory.values());
-			model.addAttribute("expenses", expenses);
+			System.out.println(amountsByCategory.values());
+			model.addAttribute("expenses", expenseViews);
+			System.out.println(expenseViews);
 			model.addAttribute("accounts", accounts);
+			System.out.println(accounts);
 		} catch (DAOException e) {
+			e.printStackTrace();		
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 
@@ -256,6 +271,7 @@ public class ExpensesController {
 		ExpenseViewModel expenseViewModel = new ExpenseViewModel();
 		expenseViewModel.setId(expense.getId());
 		expenseViewModel.setAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
+		expenseViewModel.setUserCurrencyAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
 		expenseViewModel.setAccount(expense.getAccount().getTitle());
 		expenseViewModel.setCategory(expense.getCategory().getCategoryName());
 		expenseViewModel.setCurrency(expense.getCurrency());
