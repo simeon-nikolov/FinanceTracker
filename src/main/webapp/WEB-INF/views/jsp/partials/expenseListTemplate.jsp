@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="finance-info bordered">
 	<div>
 		<p>
@@ -9,7 +10,7 @@
 			</span> 
 			<span class="money-amount"> 
 				<jstl:out value="${expense.currency}"></jstl:out> 
-				<jstl:out value="${expense.amount}"></jstl:out>				
+				<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${expense.amount}" />			
 			</span>
 		</p>
 	</div>

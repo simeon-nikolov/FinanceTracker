@@ -2,10 +2,10 @@ package controller;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -57,7 +57,7 @@ public class ExpensesController {
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
-			Map<String, Integer> amountsByCategory = new HashMap<String, Integer>();
+			Map<String, Integer> amountsByCategory = new TreeMap<String, Integer>();
 			List<ExpenseViewModel> expenseViews = new LinkedList<ExpenseViewModel>();
 			int month = LocalDate.now().getMonthOfYear();
 			int year = LocalDate.now().getYear();

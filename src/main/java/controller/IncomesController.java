@@ -11,6 +11,15 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import model.Account;
+import model.Category;
+import model.Currency;
+import model.FinanceOperationType;
+import model.Income;
+import model.RepeatType;
+import model.Tag;
+import model.User;
+
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,23 +31,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import utils.CurrencyChange;
+import utils.MoneyOperations;
+import view.model.IncomeViewModel;
 import dao.DAOException;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
-import model.Account;
-import model.Category;
-import model.Currency;
-import model.FinanceOperationType;
-import model.Income;
-import model.RepeatType;
-import model.Tag;
-import model.User;
-import utils.CurrencyChange;
-import utils.MoneyOperations;
-import view.model.IncomeViewModel;
 
 @Controller
 public class IncomesController {
@@ -105,7 +106,6 @@ public class IncomesController {
 			model.addAttribute("incomesAmounts", amountsByCategory.values());			
 			model.addAttribute("incomes", incomeViews);			
 			model.addAttribute("accounts", accounts);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -141,7 +141,7 @@ public class IncomesController {
 			BindingResult result, Model model, HttpSession session) {
 		
 		if (result.hasErrors()) {
-			return "addAExpense";
+			return "addIncome";
 		}
 		
 		try {
@@ -176,8 +176,7 @@ public class IncomesController {
 				throw new Exception("Invalid Income!");
 			}
 		} catch(Exception e) {
-			model.addAttribute("errorMessage", e.getMessage());
-			return "forward:error";
+			e.printStackTrace();
 		}
 		
 		return "editIncome";
@@ -188,15 +187,7 @@ public class IncomesController {
 			Model model, HttpSession session) throws DAOException {
 		
 		if (result.hasErrors()) {
-			User user = getUserFromSession(session);
-			List<String> allCategories = getAllCategoriesForIncomes();			
-			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForIncomes();
-			
-			model.addAttribute("allCategories", allCategories);
-			model.addAttribute("allAccounts", allAccounts);
-			model.addAttribute("allTags", allTags);
-			return "editIncome";
+			return "redirect:editIncome";
 		}
 		
 		try {

@@ -3,63 +3,82 @@ $(document).ready(function() {
     $('.date-picker').datepicker();
 });
 
-function loadExpenses() {	
+function loadFinanceOperationsData(financeOperationType) {	
 	var accountName = $("#account").val();		
-		
+	var elementId = "#" + financeOperationType;
+	
 	$.ajax({
 	    url: './accounts/'+accountName,
 	    type: 'GET',
 	    success: function(data) {
-	    	$("#expenses").empty();
-	    	var labels = [];
-	    	var series = [];
+	    	$(elementId).empty();
+	    	var list = [];
 	    	
-	        $.each(data, function(index, expense) {
-	        	var index = $.inArray(expense.category.categoryName, labels);
-	        	
-	        	if (index >= 0) {
-	        		series[index] += expense.amount;
-				} else {
-		        	labels.push(expense.category.categoryName);
-		        	series.push(expense.amount);
-				}
-	        	
-	        	var tags = "";
-	        	
-	    		$.each(expense.tags, function(index, tag) {
-	    			tags += " " + tag.tagName;	
-	    		});
-	    		
-				$("<div>").appendTo("#expenses").html("" +
-					"<div class='finance-info bordered'>" +
-						"<div>" +
-							"<p>" +
-								"<span class='date'>" + 
-									expense.date.year + "-" + 
-									("0" + expense.date.monthOfYear).slice(-2)  + "-" +
-									("0" + expense.date.dayOfMonth).slice(-2)  + 
-								"</span>" + 
-								"<span class='money-amount'>" + 
-									expense.currency + " " + (expense.amount / 100.0).toFixed(2) +
-								"</span>" +
-							"</p>" +
-						"</div>" +
-						"<div>" +
-							"<p>" +
-								"<span class='category'>" + expense.category.categoryName + "</span>" + 
-								"<span class='tags'>" + tags + "</span>" +
-							"</p>" +
-						"</div>" +
-					"</div>" +
-					"<div class='operations'>" +
-						"<a href='./editExpense?id=" + expense.id + "' class='btn btn-info btn-xs'>Edit</a>" + 
-						"<a href='./verifyDeleteExpense?id=" + expense.id + "' class='btn btn-danger btn-xs'>Delete</a>" +
-					"</div>");
+	        $.each(data, function(index, financeOperation) {
+	        	list.push({'category': financeOperation.category, 'amount': financeOperation.amount});
+	        	var html = generateHtml(financeOperation); 
+				$("<div>").appendTo(elementId).html(html);
 	        });
 	        
+	        var labels = [];
+	    	var series = [];
+	    	sortArrays(list, labels, series)
 	        drawPieGraphic(labels, series);
 	    }		
 	});
+}
+
+function generateHtml(financeOperation) {
+	var tags = "";
+	
+	$.each(financeOperation.tags, function(index, tag) {
+		tags += " " + tag;	
+	});
+	
+	var html = "" +
+	"<div class='finance-info bordered'>" +
+		"<div>" +
+			"<p>" +
+				"<span class='date'>" + 
+				financeOperation.date.year + "-" + 
+					("0" + financeOperation.date.monthOfYear).slice(-2)  + "-" +
+					("0" + financeOperation.date.dayOfMonth).slice(-2)  + 
+				"</span>" + 
+				"<span class='money-amount'>" + 
+				financeOperation.currency + " " + (financeOperation.amount).toFixed(2) +
+				"</span>" +
+			"</p>" +
+		"</div>" +
+		"<div>" +
+			"<p>" +
+				"<span class='category'>" + financeOperation.category + "</span>" + 
+				"<span class='tags'>" + tags + "</span>" +
+			"</p>" +
+		"</div>" +
+	"</div>" +
+	"<div class='operations'>" +
+		"<a href='./editExpense?id=" + financeOperation.id + "' class='btn btn-info btn-xs'>Edit</a>" + 
+		"<a href='./verifyDeleteExpense?id=" + financeOperation.id + "' class='btn btn-danger btn-xs'>Delete</a>" +
+	"</div>";
+	
+	return html;
+}
+
+function sortArrays(list, labels, series) {
+	list.sort(function(a, b) {
+        return ((a.category < b.category) ? -1 : ((a.category == b.category) ? 0 : 1));
+    });
+    
+    for (var k = 0; k < list.length; k++) {
+        var index = $.inArray(list[k].category, labels);
+    	
+    	if (index >= 0) {
+    		series[index] += list[k].amount;
+		} else {
+        	labels.push(list[k].category);
+        	series.push(list[k].amount);
+		}
+    }
 }
 
 function drawPieGraphic(labelsData, seriesData) {
@@ -67,9 +86,6 @@ function drawPieGraphic(labelsData, seriesData) {
 			labels : labelsData,
 			series : seriesData
 	};
-	
-	console.log(labelsData);
-    console.log(seriesData);
 
 	var options = {
 		labelInterpolationFnc : function(value) {

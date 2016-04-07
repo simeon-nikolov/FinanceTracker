@@ -7,7 +7,10 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import model.Account;
+import model.Category;
 import model.Expense;
+import model.FinanceOperationType;
+import model.Tag;
 import model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +21,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import utils.MoneyOperations;
+import view.model.ExpenseViewModel;
 import dao.DAOException;
 import dao.IAccountDAO;
+import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
+import dao.ITagDAO;
 import dao.IUserDAO;
 
 @RestController
 public class AccountsRestController {
-	
 	@Autowired
 	IAccountDAO accDao;
-	
 	@Autowired
 	IFinanceOperationDAO foDao;
-	
 	@Autowired
 	IUserDAO userDao;
-
+	@Autowired
+	private ITagDAO tagDAO;
+	@Autowired
+	private ICategoryDAO categoryDAO;
+	
 	@RequestMapping(value="/accounts/{accountName}", method=RequestMethod.GET)
-	public List<Expense> getExpensesForAccount(@PathVariable("accountName") String accountName, HttpSession session) {
-		List<Expense> result = new LinkedList<Expense>();
+	public List<ExpenseViewModel> getExpensesForAccount(@PathVariable("accountName") String accountName, HttpSession session) {
+		List<ExpenseViewModel> result = new LinkedList<ExpenseViewModel>();
 		
 		try {
 			User user = getUserFromSession(session);
@@ -63,15 +71,15 @@ public class AccountsRestController {
 		return result;
 	}
 
-
-	private List<Expense> getExpensesByAccount(int month, int year, Account acc) throws DAOException {
-		List<Expense> result = new LinkedList<Expense>();
+	private List<ExpenseViewModel> getExpensesByAccount(int month, int year, Account acc) throws Exception {
+		List<ExpenseViewModel> result = new LinkedList<ExpenseViewModel>();
 		List<Expense> accExpenses = (List<Expense>) foDao.getAllExpensesByAccount(acc);
 		
 		for (Expense expense : accExpenses) {
 			if (expense.getDate().getMonthOfYear() == month && 
 						expense.getDate().getYear() == year) {
-				result.add(expense);
+				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+				result.add(expenseViewModel);
 			}
 		}
 		
@@ -88,5 +96,56 @@ public class AccountsRestController {
 		User user = userDao.getUserByUsername(username);
 
 		return user;
+	}
+	
+	private ExpenseViewModel expenseToExpenseViewModel(Expense expense) throws Exception {
+		ExpenseViewModel expenseViewModel = new ExpenseViewModel();
+		expenseViewModel.setId(expense.getId());
+		expenseViewModel.setAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
+		expenseViewModel.setUserCurrencyAmount(MoneyOperations.amountPerHendred(expense.getAmount()));
+		expenseViewModel.setAccount(expense.getAccount().getTitle());
+		expenseViewModel.setCategory(expense.getCategory().getCategoryName());
+		expenseViewModel.setCurrency(expense.getCurrency());
+		expenseViewModel.setDate(expense.getDate());
+		expenseViewModel.setDescription(expense.getDescription());
+		expenseViewModel.setRepeatType(expense.getRepeatType());
+		List<String> tags = new LinkedList<String>();
+		
+		if (expense.getTags() != null) {
+			for (Tag tag : expense.getTags()) {
+				tags.add(tag.getTagName());
+			}
+		}
+		
+		expenseViewModel.setTags(tags);
+		
+		return expenseViewModel;
+	}
+	
+	private Expense expenseViewModelToExpense(ExpenseViewModel expenseViewModel, User user) throws Exception {
+		Expense expense = new Expense();
+		expense.setId(expenseViewModel.getId());
+		expense.setAmount(MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+		expense.setCurrency(expenseViewModel.getCurrency());
+		expense.setDate(expenseViewModel.getDate());
+		expense.setDescription(expenseViewModel.getDescription());
+		expense.setRepeatType(expenseViewModel.getRepeatType());
+		expense.setFinanceOperationType(FinanceOperationType.EXPENSE);
+		Account account = accDao.getAccountForUserByName(expenseViewModel.getAccount(), user);
+		expense.setAccount(account);
+		Category category = categoryDAO.getCategoryByName(expenseViewModel.getCategory());
+		expense.setCategory(category);
+		List<Tag> tags = new LinkedList<Tag>();
+
+		if (expenseViewModel.getTags() != null) {
+			for (String tagName : expenseViewModel.getTags()) {
+				Tag tag = tagDAO.getTagByTagname(tagName);
+				tags.add(tag);
+			}
+		}
+
+		expense.setTags(tags);
+
+		return expense;
 	}
 }

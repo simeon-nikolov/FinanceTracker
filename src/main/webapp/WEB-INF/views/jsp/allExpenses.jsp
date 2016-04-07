@@ -13,7 +13,10 @@
 			<div class="ct-chart ct-perfect-fourth"></div>
 			<script src="js/chartist.js"></script>
 			<script>
-				drawPieGraphic(<c:out value="${categories}" escapeXml="false"></c:out>, <c:out value="${expensesAmounts}"></c:out>);
+				var labels = <c:out value="${categories}" escapeXml="false"></c:out>;
+				var series = <c:out value="${expensesAmounts}"></c:out>;
+
+				drawPieGraphic(labels, series);
 			</script>
 		</div>
 		<div id="column">

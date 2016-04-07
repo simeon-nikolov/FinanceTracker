@@ -1,15 +1,14 @@
 package controller;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpSession;
 
 import model.Account;
-import model.Currency;
 import model.Expense;
 import model.Tag;
 import model.User;
@@ -68,7 +67,7 @@ public class OverviewController {
 			
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			List<ExpenseViewModel> expenseViews = new LinkedList<ExpenseViewModel>();
-			Map<String, Integer> moneyByCategory = new HashMap<String, Integer>();
+			Map<String, Integer> moneyByCategory = new TreeMap<String, Integer>();
 			int amountToSpend = 0;
 			
 			for (Account acc : accounts) {
@@ -90,19 +89,20 @@ public class OverviewController {
 				}
 				
 				amountToSpend += acc.getBalance();
-				
-				for (ExpenseViewModel expenseViewModel : expenseViews) {
-					amountToSpend -= (MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
-					String category = "'" + expenseViewModel.getCategory() + "'";
-					int oldAmount = 0;
-					
-					if (moneyByCategory.containsKey(category)) {
-						oldAmount = moneyByCategory.get(category);
-					}
-					
-					moneyByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
-				}
 			}
+			
+			for (ExpenseViewModel expenseViewModel : expenseViews) {
+				amountToSpend -= (MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+				String category = "'" + expenseViewModel.getCategory() + "'";
+				int oldAmount = 0;
+				
+				if (moneyByCategory.containsKey(category)) {
+					oldAmount = moneyByCategory.get(category);
+				}
+				
+				moneyByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+			}
+			
 			Collections.sort(expenseViews, (e1, e2) -> e1.getDate().getDayOfMonth()-e2.getDate().getDayOfMonth());
 			float moneyToSpend = MoneyOperations.amountPerHendred(amountToSpend);
 			model.addAttribute("expenses", expenseViews);		
