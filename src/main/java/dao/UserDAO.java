@@ -11,6 +11,8 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import exceptions.DuplicateUserException;
 
 @Repository
@@ -44,7 +46,7 @@ public class UserDAO implements IUserDAO {
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("User can not be updated in the database!", e);
+			throw new DAOException("User can not be read from database!", e);
 		}
 	}
 

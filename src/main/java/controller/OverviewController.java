@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,18 +48,19 @@ public class OverviewController {
 				session.setAttribute("username", username);
 			}
 			
-			User user = userDAO.getUserByUsername(username);
-			int month = LocalDate.now().getMonthOfYear();
+			User user = userDAO.getUserByUsername(username);			
 			
-			if (session.getAttribute("month") != null) {
-				month = (int) session.getAttribute("month");
+			if (session.getAttribute("month") == null) {
+				int month = LocalDate.now().getMonthOfYear();
+				session.setAttribute("month", month);
 			}
+			int month = (int) session.getAttribute("month");			
 			
-			int year = LocalDate.now().getYear();
-			
-			if (session.getAttribute("year") != null) {
-				year = (int) session.getAttribute("year");
+			if (session.getAttribute("year") == null) {
+				int year = LocalDate.now().getYear();
+				session.setAttribute("year", year);
 			}
+			int year = (int) session.getAttribute("year");
 			
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			List<Expense> expenses = new LinkedList<Expense>();
@@ -89,7 +91,7 @@ public class OverviewController {
 					moneyByCategory.put(category, oldAmount + expense.getAmount());
 				}
 			}
-			
+			Collections.sort(expenses, (e1, e2) -> e1.getDate().getDayOfMonth()-e2.getDate().getDayOfMonth());
 			float moneyToSpend = MoneyOperations.amountPerHendred(amountToSpend);
 			model.addAttribute("expenses", expenses);
 			model.addAttribute("moneyToSpend", moneyToSpend);
