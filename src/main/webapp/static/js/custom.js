@@ -6,9 +6,14 @@ $(document).ready(function() {
 function loadFinanceOperationsData(financeOperationType) {	
 	var accountName = $("#account").val();		
 	var elementId = "#" + financeOperationType;
+	var url = "./accounts";
+	
+	if (accountName != "") {
+		url += "/" + accountName;
+	}
 	
 	$.ajax({
-	    url: './accounts/'+accountName,
+	    url: url,
 	    type: 'GET',
 	    success: function(data) {
 	    	$(elementId).empty();

@@ -19,10 +19,8 @@ public class ExpenseViewModel {
 	@NotNull
 	private Currency currency;
 	
-	@NotNull
 	private float userCurrencyAmount;
 
-	@NotNull
 	private Currency userCurrency;
 
 	@NotNull
@@ -38,11 +36,9 @@ public class ExpenseViewModel {
 	@NotNull
 	@NotEmpty
 	private String description;
-
-	@NotNull
+	
 	private RepeatType repeatType;
-
-	@NotNull
+	
 	private Collection<String> tags;
 
 	public ExpenseViewModel() {}

@@ -20,10 +20,8 @@ public class IncomeViewModel {
 	@NotNull
 	private Currency currency;
 	
-	@NotNull
 	private float userCurrencyAmount;
 
-	@NotNull
 	private Currency userCurrency;
 
 	@NotNull

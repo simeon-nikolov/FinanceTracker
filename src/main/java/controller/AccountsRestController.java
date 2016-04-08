@@ -42,50 +42,65 @@ public class AccountsRestController {
 	private ITagDAO tagDAO;
 	@Autowired
 	private ICategoryDAO categoryDAO;
-	
-	@RequestMapping(value="/accounts/{accountName}", method=RequestMethod.GET)
-	public List<ExpenseViewModel> getExpensesForAccount(@PathVariable("accountName") String accountName, HttpSession session) {
+
+	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
+	public List<ExpenseViewModel> getExpensesForAllAccounts(HttpSession session) {
 		List<ExpenseViewModel> result = new LinkedList<ExpenseViewModel>();
-		
 		try {
 			User user = getUserFromSession(session);
 			int month = (int) session.getAttribute("month");
 			int year = (int) session.getAttribute("year");
-			
-			if (accountName.equals("all")) {
-				List<Account> accounts = (List<Account>) accDao.getAllAccountsForUser(user);
-				
-				for (Account acc : accounts) {					
-					result.addAll(getExpensesByAccount(month, year, acc));					
-				}
-			} else {
-				Account account = accDao.getAccountForUserByName(accountName, user);
-				result = getExpensesByAccount(month, year, account);
+
+			List<Account> accounts = (List<Account>) accDao.getAllAccountsForUser(user);
+
+			for (Account acc : accounts) {
+				result.addAll(getExpensesByAccount(month, year, acc));
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		Collections.sort(result, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
-		
+
+		return result;
+	}
+
+	@RequestMapping(value = "/accounts/{accountName}", method = RequestMethod.GET)
+	public List<ExpenseViewModel> getExpensesForAccount(@PathVariable("accountName") String accountName,
+			HttpSession session) {
+		List<ExpenseViewModel> result = new LinkedList<ExpenseViewModel>();
+
+		try {
+			User user = getUserFromSession(session);
+			int month = (int) session.getAttribute("month");
+			int year = (int) session.getAttribute("year");
+
+			Account account = accDao.getAccountForUserByName(accountName, user);
+			result = getExpensesByAccount(month, year, account);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(result, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
+
 		return result;
 	}
 
 	private List<ExpenseViewModel> getExpensesByAccount(int month, int year, Account acc) throws Exception {
 		List<ExpenseViewModel> result = new LinkedList<ExpenseViewModel>();
 		List<Expense> accExpenses = (List<Expense>) foDao.getAllExpensesByAccount(acc);
-		
+
 		for (Expense expense : accExpenses) {
-			if (expense.getDate().getMonthOfYear() == month && 
-						expense.getDate().getYear() == year) {
+			if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
 				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
 				result.add(expenseViewModel);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
 		if (username == null || username.isEmpty()) {
@@ -97,7 +112,7 @@ public class AccountsRestController {
 
 		return user;
 	}
-	
+
 	private ExpenseViewModel expenseToExpenseViewModel(Expense expense) throws Exception {
 		ExpenseViewModel expenseViewModel = new ExpenseViewModel();
 		expenseViewModel.setId(expense.getId());
@@ -110,18 +125,18 @@ public class AccountsRestController {
 		expenseViewModel.setDescription(expense.getDescription());
 		expenseViewModel.setRepeatType(expense.getRepeatType());
 		List<String> tags = new LinkedList<String>();
-		
+
 		if (expense.getTags() != null) {
 			for (Tag tag : expense.getTags()) {
 				tags.add(tag.getTagName());
 			}
 		}
-		
+
 		expenseViewModel.setTags(tags);
-		
+
 		return expenseViewModel;
 	}
-	
+
 	private Expense expenseViewModelToExpense(ExpenseViewModel expenseViewModel, User user) throws Exception {
 		Expense expense = new Expense();
 		expense.setId(expenseViewModel.getId());

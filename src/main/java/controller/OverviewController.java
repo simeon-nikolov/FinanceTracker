@@ -114,6 +114,7 @@ public class OverviewController {
 			e.printStackTrace();
 		} catch (Exception e) {			
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "overview";

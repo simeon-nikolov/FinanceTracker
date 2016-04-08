@@ -42,6 +42,7 @@ public class ProfileController {
 			model.addAttribute("currencies", Currency.values());
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "profile";
@@ -56,6 +57,7 @@ public class ProfileController {
 			userDAO.updateUser(user);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:profile";
@@ -82,6 +84,7 @@ public class ProfileController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:profile";
@@ -108,6 +111,7 @@ public class ProfileController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:profile";

@@ -108,6 +108,7 @@ public class IncomesController {
 			model.addAttribute("accounts", accounts);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 
 		return "allIncomes";
@@ -132,6 +133,7 @@ public class IncomesController {
 			model.addAttribute("incomeViewModel", new IncomeViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		return "addIncome";
 	}
@@ -140,9 +142,9 @@ public class IncomesController {
 	public String addIncome(@ModelAttribute("incomeViewModel") @Valid IncomeViewModel incomeViewModel,
 			BindingResult result, Model model, HttpSession session) {
 		
-		if (result.hasErrors()) {
-			return "addIncome";
-		}
+//		if (result.hasErrors()) {
+//			return "addIncome";
+//		}
 		
 		try {
 			User user = getUserFromSession(session);
@@ -150,6 +152,7 @@ public class IncomesController {
 			foDao.add(income);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 
 		return "redirect:allIncomes";
@@ -177,6 +180,7 @@ public class IncomesController {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "editIncome";
@@ -203,6 +207,7 @@ public class IncomesController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		return "redirect:allIncomes";
 	}
@@ -216,6 +221,7 @@ public class IncomesController {
 			model.addAttribute("incomeId", id);
 		} catch (Exception e) {			
 			e.printStackTrace();
+			return "forward:error";
 		}
 		return "verifyDeleteIncome";
 		
@@ -234,6 +240,7 @@ public class IncomesController {
 			}			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:/allIncomes";

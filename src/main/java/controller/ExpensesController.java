@@ -103,11 +103,10 @@ public class ExpensesController {
 			model.addAttribute("categories", amountsByCategory.keySet());
 			model.addAttribute("expensesAmounts", amountsByCategory.values());
 			model.addAttribute("expenses", expenseViews);
-			model.addAttribute("accounts", accounts);
-		} catch (DAOException e) {
-			e.printStackTrace();		
+			model.addAttribute("accounts", accounts);			
 		} catch (Exception e) {			
 			e.printStackTrace();
+			return "forward:error";
 		}
 
 		return "allExpenses";
@@ -133,6 +132,7 @@ public class ExpensesController {
 			model.addAttribute("expenseViewModel", new ExpenseViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 
 		return "addExpense";
@@ -162,6 +162,7 @@ public class ExpensesController {
 			financeOperationDAO.add(expense);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 
 		return "redirect:allExpenses";
@@ -226,6 +227,7 @@ public class ExpensesController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		return "redirect:allExpenses";
 	}
@@ -239,6 +241,7 @@ public class ExpensesController {
 			model.addAttribute("expenseId", id);
 		} catch (Exception e) {			
 			e.printStackTrace();
+			return "forward:error";
 		}
 		return "verifyDeleteExpense";
 		
@@ -258,6 +261,7 @@ public class ExpensesController {
 			}			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:/allExpenses";

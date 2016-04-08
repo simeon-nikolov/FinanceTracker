@@ -8,7 +8,7 @@
 	<c:set var="financeOperationType" scope="session" value="incomes"></c:set>
 </c:if>
 <select class="form-control" id="account" name="select" onchange="loadFinanceOperationsData('${financeOperationType}')">
-	<option value="all">All accounts</option>
+	<option value="">All accounts</option>
 	<c:forEach var="acc" items="${accounts}">
 		<option value="${acc.title}"><c:out value="${acc.title}"></c:out></option>
 	</c:forEach>	

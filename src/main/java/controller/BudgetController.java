@@ -46,6 +46,7 @@ public class BudgetController {
 			model.addAttribute("allBudgets", budgetsViewModel);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "allBudgets";
@@ -60,6 +61,7 @@ public class BudgetController {
 			model.addAttribute("budgetViewModel", new BudgetViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "addBudget";
@@ -75,6 +77,7 @@ public class BudgetController {
 			budgetDAO.add(budget);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:allBudgets";
@@ -116,6 +119,7 @@ public class BudgetController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:allBudgets";
@@ -129,6 +133,7 @@ public class BudgetController {
 			model.addAttribute("budgetViewModel", budgetViewModel);
 		} catch (Exception e) {			
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "verifyDeleteBudget";
@@ -147,6 +152,7 @@ public class BudgetController {
 			}			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:/allBudgets";

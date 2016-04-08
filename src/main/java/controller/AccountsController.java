@@ -63,6 +63,7 @@ public class AccountsController {
 		
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:/allAccounts";
@@ -92,6 +93,7 @@ public class AccountsController {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "allAccounts";
@@ -105,6 +107,7 @@ public class AccountsController {
 			model.addAttribute("accountId", id);
 		} catch (Exception e) {			
 			e.printStackTrace();
+			return "forward:error";
 		}
 		return "verifyDeleteAccount";
 		
@@ -126,6 +129,7 @@ public class AccountsController {
 			}			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:/allAccounts";
@@ -149,8 +153,7 @@ public class AccountsController {
 				throw new Exception("Invalid account to delete!");
 			}			
 		} catch (Exception e) {
-			e.printStackTrace();
-			model.addAttribute("errorMessage", e.getMessage());
+			e.printStackTrace();			
 			return "forward:error";
 		}
 		
@@ -176,6 +179,7 @@ public class AccountsController {
 			}				
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "forward:error";
 		}
 		
 		return "redirect:/allAccounts";
