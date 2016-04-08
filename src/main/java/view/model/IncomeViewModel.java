@@ -4,11 +4,11 @@ import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.LocalDate;
-
 import model.Currency;
 import model.RepeatType;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.joda.time.LocalDate;
 
 public class IncomeViewModel {
 
@@ -18,10 +18,13 @@ public class IncomeViewModel {
 	private float amount;
 	
 	@NotNull
+	private Currency currency;
+	
+	@NotNull
 	private float userCurrencyAmount;
 
 	@NotNull
-	private Currency currency;
+	private Currency userCurrency;
 
 	@NotNull
 	@NotEmpty
@@ -138,6 +141,12 @@ public class IncomeViewModel {
 	public void setUserCurrencyAmount(float userCurrencyAmount) {
 		this.userCurrencyAmount = userCurrencyAmount;
 	}
-	
-	
+
+	public Currency getUserCurrency() {
+		return userCurrency;
+	}
+
+	public void setUserCurrency(Currency userCurrency) {
+		this.userCurrency = userCurrency;
+	}
 }

@@ -1,14 +1,6 @@
 @charset "utf-8";
-/*
-Template Name: Internet Business
-Author: <a href="http://www.os-templates.com/">OS Templates</a>
-Author URI: http://www.os-templates.com/
-Licence: Free to use under our free template licence terms
-Licence URI: http://www.os-templates.com/template-terms
-File: Navigation CSS
-*/
 
-#topnav{display:block; float:left; width:100%; margin:0; padding:0; list-style:none; font-size:13px; font-weight:normal; font-family:Verdana, Arial, Helvetica, sans-serif; color:#FFFFFF; background-color:#000000;}
+#topnav{display:block; float:left; width:100%; margin:0; padding:0; list-style:none; font-size:18px; font-weight:normal; font-family:Verdana, Arial, Helvetica, sans-serif; color:#FFFFFF; background-color:#000000;}
 #topnav ul, #topnav li{float:left; list-style:none; margin:0; padding:0;}
 #topnav li a:link, #topnav li a:visited, #topnav li a:hover{display:block; margin:0; padding:15px 20px; color:#FFFFFF; background-color:#000000;}
 #topnav ul ul li a:link, #topnav ul ul li a:visited{border:none;}
@@ -30,7 +22,7 @@ File: Navigation CSS
 
 /* ----------------------------------------------Column Navigation------------------------------------- */
 
-#column .subnav{display:block; width:250px; padding:25px; background-color:#F9F9F9; margin-bottom:30px;}
+#column .subnav{display:block; width:100%; padding:25px; background-color:#F9F9F9; margin-bottom:30px;}
 #column .subnav h2{margin:0 0 20px 0; padding:0 0 14px 0; font-size:20px; font-weight:normal; font-family:Georgia, "Times New Roman", Times, serif; color:#666666; background-color:#F9F9F9; line-height:normal; border-bottom:1px dotted #666666;}
 #column .subnav ul{margin:0; padding:0; list-style:none;}
 #column .subnav li{margin:0 0 3px 0; padding:0;}

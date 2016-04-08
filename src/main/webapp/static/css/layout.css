@@ -4,6 +4,36 @@
 
 html{overflow-y:scroll;}
 body{margin:0; padding:10px 0 0 0; font-size:12px; font-family:verdana, Arial, Helvetica, sans-serif; color:#FFFFFF; background-color:#999999;}
+.site-content {
+	overflow: auto;
+	position: relative;
+	left: 0;
+	right: 0;
+	z-index: 9999;
+	margin-left: 20px;
+	margin-right: 20px;
+	width: 100%;
+	height: 100%;
+}
+.background-image {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	
+	display: block;
+	width: 100%;
+	height: 100%;
+	
+	background-image: url("../images/background.jpg");
+	background-size: cover;
+	
+	-webkit-filter: blur(5px);
+	-moz-filter: blur(5px);
+	-o-filter: blur(5px);
+	-ms-filter: blur(5px);
+	filter: blur(5px);
+}
 
 .justify{text-align:justify;}
 .bold{font-weight:bold;}
@@ -28,16 +58,16 @@ img{display:block; margin:0; padding:0; border:0;}
 
 h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; font-weight:normal; font-family:Georgia, "Times New Roman", Times, serif;}
 
-#header, #topbar, #featured_slide, #homecontent, #breadcrumb, #container, #footer, #copyright{display:block; width:960px; margin:0 auto;}
+#header, #topbar, #featured_slide, #homecontent, #breadcrumb, #container, #footer, #copyright{display:block; width:90%; margin:0 auto;}
 
-.wrapper{display:block; width:920px; padding:15px 10px; color:#666666; background-color:#FFFFFF; border-left:10px solid #DFDFDF; border-right:10px solid #DFDFDF;}
+.wrapper{display:block; width:100%; padding:15px 10px; color:#666666; background-color:#FFFFFF; border-left:10px solid #DFDFDF; border-right:10px solid #DFDFDF;}
 
 /* ----------------------------------------------Header------------------------------------- */
 
 #header .wrapper{border-top:10px solid #DFDFDF;}
 #header h1, #header p{margin:0; padding:0;}
-#header .fl_left{display:block; float:left; width:400px; margin:5px 0 0 0;}
-#header .fl_right{display:block; float:right; width:468px;}
+#header .fl_left{display:block; float:left; width:65%; margin:5px 0 0 0;}
+#header .fl_right{display:block; float:right; width:35%;}
 #header h1{margin:0; font-size:36px; border:none;}
 #header h1 a{color:#059BD8; background-color:#FFFFFF;}
 
@@ -69,7 +99,7 @@ h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; fon
 
 #container .wrapper{padding:20px 10px; line-height:1.4em; color:#666666; background-color:#F5F5F5;}
 #container h1, #container h2, #container h3, #container h4, #container h5, #container h6{padding-bottom:8px;}
-#content{display:block; float:left; width:580px;}
+#content{display:block; float:left; width:65%;}
 
 /* Comments */
 
@@ -88,7 +118,7 @@ h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; fon
 
 /* ----------------------------------------------Column------------------------------------- */
 
-#column{display:block; float:right; width:300px;}
+#column{display:block; float:right; width:30%;}
 #column .holder, #column #featured{display:block; width:300px; margin-bottom:20px;}
 #column .holder h2.title{display:block; width:100%; height:65px; margin:0; padding:15px 0 0 0; font-size:20px; line-height:normal; border-bottom:1px dashed #666666;}
 #column .holder h2.title img{float:left; margin:-15px 8px 0 0; padding:5px; border:1px solid #666666;}
@@ -134,6 +164,22 @@ h1, h2, h3, h4, h5, h6{margin:0 0 20px 0; padding:0 0 8px 0; font-size:20px; fon
 	text-align: center;
 }
 
+#container .wrapper {
+	min-height: 550px;
+	text-align: center;
+}
+
+#content.index-page {
+	width: 45%;
+	text-align: left;
+	padding-left: 200px;
+	padding-top: 100px;
+}
+
+#column.index-page {
+	width: 55%;
+}
+
 .finance-operation-element {
 	border: 1px solid #aaa;
 }
@@ -176,7 +222,30 @@ ul li {
 
 .finance-info > div {
 	margin: 15px;
+	padding: 0;
+	display: block;
 }
+
+	.finance-info > div > span.date {
+		float: left;
+	}
+	
+	.finance-info > div > span.money-amount {
+		float: right;
+	}
+	
+	.finance-info > div > span.category {
+		float: left;
+	}
+	
+	.finance-info > div > span.tags {
+		float: left;
+		margin-left: 5px;
+	}
+	
+	.finance-info > div > span.actual-amount {
+		float: right;
+	}
 
 .month {
 	font-weight: bold;

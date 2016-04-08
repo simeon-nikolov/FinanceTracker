@@ -22,7 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import utils.CurrencyChange;
+import utils.CurrencyConverter;
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
 import dao.DAOException;
@@ -79,7 +79,7 @@ public class OverviewController {
 						
 						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);						
 						if (expense.getCurrency() != user.getCurrency()) {
-							int result = CurrencyChange.convertToThisCurrency(expense.getAmount(),
+							int result = CurrencyConverter.convertToThisCurrency(expense.getAmount(),
 									expense.getCurrency(), user.getCurrency());
 							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 							expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
@@ -110,7 +110,6 @@ public class OverviewController {
 			model.addAttribute("categories", moneyByCategory.keySet());
 			model.addAttribute("expensesAmounts", moneyByCategory.values());
 			model.addAttribute("accounts", accounts);
-			System.out.println(accounts);
 		} catch (DAOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {			

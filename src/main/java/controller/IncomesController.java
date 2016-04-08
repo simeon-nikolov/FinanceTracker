@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import utils.CurrencyChange;
+import utils.CurrencyConverter;
 import utils.MoneyOperations;
 import view.model.IncomeViewModel;
 import dao.DAOException;
@@ -80,7 +80,7 @@ public class IncomesController {
 					if (in.getDate().getMonthOfYear() == month && in.getDate().getYear() == year) {
 						IncomeViewModel incomeViewModel = incomeToIncomeViewModel(in);
 						if (in.getCurrency() != user.getCurrency()) {
-							int result = CurrencyChange.convertToThisCurrency(in.getAmount(),
+							int result = CurrencyConverter.convertToThisCurrency(in.getAmount(),
 											in.getCurrency(), user.getCurrency());
 							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 							incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);

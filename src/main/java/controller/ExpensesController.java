@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import utils.CurrencyChange;
+import utils.CurrencyConverter;
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
 import dao.DAOException;
@@ -77,7 +77,7 @@ public class ExpensesController {
 					if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
 						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
 						if (expense.getCurrency() != user.getCurrency()) {
-							int result = CurrencyChange.convertToThisCurrency(expense.getAmount(), 
+							int result = CurrencyConverter.convertToThisCurrency(expense.getAmount(), 
 										expense.getCurrency(), user.getCurrency());
 							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 							expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
@@ -101,13 +101,9 @@ public class ExpensesController {
 			Collections.sort(expenseViews, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
 			
 			model.addAttribute("categories", amountsByCategory.keySet());
-			System.out.println(amountsByCategory.keySet());
 			model.addAttribute("expensesAmounts", amountsByCategory.values());
-			System.out.println(amountsByCategory.values());
 			model.addAttribute("expenses", expenseViews);
-			System.out.println(expenseViews);
 			model.addAttribute("accounts", accounts);
-			System.out.println(accounts);
 		} catch (DAOException e) {
 			e.printStackTrace();		
 		} catch (Exception e) {			

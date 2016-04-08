@@ -17,10 +17,13 @@ public class ExpenseViewModel {
 	private float amount;
 	
 	@NotNull
+	private Currency currency;
+	
+	@NotNull
 	private float userCurrencyAmount;
 
 	@NotNull
-	private Currency currency;
+	private Currency userCurrency;
 
 	@NotNull
 	@NotEmpty
@@ -135,5 +138,13 @@ public class ExpenseViewModel {
 
 	public void setUserCurrencyAmount(float userCurrencyAmount) {
 		this.userCurrencyAmount = userCurrencyAmount;
+	}
+
+	public Currency getUserCurrency() {
+		return userCurrency;
+	}
+
+	public void setUserCurrency(Currency userCurrency) {
+		this.userCurrency = userCurrency;
 	}
 }

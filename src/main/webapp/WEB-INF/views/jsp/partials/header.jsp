@@ -21,6 +21,8 @@
 </sec:authorize>
 </head>
 <body id="top">
+	<div class="background-image"></div>
+	<div class="site-content">
 	<div id="header">
 		<div class="wrapper">
 			<div class="fl_left">
@@ -30,7 +32,7 @@
 				<p>IT Talents Season 5 Final Project</p>
 			</div>
 			<div class="fl_right">
-				<a href="#"><img src="images/demo/468x60.gif" alt="" /></a>
+				<a href="#"><img src="" alt="" /></a>
 			</div>
 			<br class="clear" />
 		</div>

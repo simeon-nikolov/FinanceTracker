@@ -13,11 +13,15 @@ import com.google.gson.JsonObject;
 
 import exceptions.APIException;
 
-public class CurrencyChange {
+public class CurrencyConverter {
 	private static final int SUCCESS_CODE = 200;
 	private static final String MAIN_URL = "http://api.fixer.io/latest?base=";
 
 	public static int convertToThisCurrency(int sum, Currency currency, Currency userCurrency) throws APIException {
+		if (currency.equals(userCurrency)) {
+			return sum;
+		}
+		
 		String url = MAIN_URL + currency + "&symbols=" + userCurrency;		
 		
 		try {
@@ -32,9 +36,7 @@ public class CurrencyChange {
 				JsonObject jsonObj = gson.fromJson(line, JsonObject.class);
 				
 				float rate = jsonObj.getAsJsonObject("rates").get(userCurrency.toString()).getAsFloat();
-				System.out.println(rate);
-				System.out.println(sum*rate);
-				return (int) (sum * rate);			
+				return Math.round(sum * rate);			
 			}	
 			else {
 				throw new APIException("Error reading currency API!");
