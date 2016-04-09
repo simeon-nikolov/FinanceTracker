@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>	
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -40,15 +40,11 @@
 				</h1>
 				<p>IT Talents Season 5 Final Project</p>
 			</div>
-			<div class="fl_right">
-				<a href="#"><img src="" alt="" /></a>
+			<div id="international" class="fl_right">
+				<a href="?language=en"><img width="30px" height="15px" src="./images/gb.png" alt="English language" /></a>
+				<a href="?language=bg"><img width="30px" height="15px" src="./images/bg.png" alt="Bulgarian language" /></a>
 			</div>
 			<br class="clear" />
-			<div id="international">
-				<a href = "?language=en"><img src="./images/gb.png"></a>
-				<a href = "?language=bg"><img src="./images/bg.png"></a>
-				
-			</div>			
 		</div>
 	</div>
 	<sec:authorize access="isAuthenticated()">
