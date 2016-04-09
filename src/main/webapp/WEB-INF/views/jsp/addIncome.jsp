@@ -28,20 +28,25 @@
 							<td><form:errors path="currency" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td><label for="account"><spring:message code="forAccount.message"/></label></td>
-							<td><form:select id="account"
-									style="width: 100px; height: 25px;" path="account">
-									<form:options items="${allAccounts}" />
-								</form:select></td>
-							<td><form:errors path="account" cssClass="error" /></td>
+							<td><label for="category"><spring:message code="category.message"/></label></td>
+							<td>
+								<form:select id="category" style="width: 100px; height: 25px;" path="category" onchange="reloadTags(this.value)">
+									<c:forEach var="category" items="${allCategories}">
+										<form:option value="${category}" />
+									</c:forEach>
+								</form:select>
+							</td>
+							<td><form:errors path="category" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td><label for="category"><spring:message code="category.message"/></label></td>
-							<td><form:select id="category"
-									style="width: 100px; height: 25px;" path="category">
-									<form:options items="${allCategories}" />
-								</form:select></td>
-							<td><form:errors path="category" cssClass="error" /></td>
+							<td><label><spring:message code="tagsMessage"/></label></td>
+							<td id="tags">
+								<c:forEach var="tag" items="${tags}">
+									<form:checkbox id="tag${tag}" path="tags" value="${tag}"></form:checkbox>
+									<label for="tag${tag}">${tag}</label>
+								</c:forEach>
+							</td>
+							<td><form:errors path="tags" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td><label for="date-picker"><spring:message code="dateMessage"/></label></td>
@@ -61,14 +66,6 @@
 									<form:options items="${allRepeatTypes}" />
 								</form:select></td>
 							<td><form:errors path="repeatType" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td><label><spring:message code="tagsMessage"/></label></td>
-							<td><c:forEach var="tag" items="${allTags}">
-									<form:checkbox id="tag${tag}" path="tags" value="${tag}"></form:checkbox>
-									<label for="tag${tag}">${tag}</label>
-								</c:forEach></td>
-							<td><form:errors path="tags" cssClass="error" /></td>
 						</tr>
 					</table>
 					<input type="submit" class="btn btn-primary btn-md" value="<spring:message code="button.add"/>" />

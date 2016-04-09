@@ -133,13 +133,22 @@ public class IncomesController {
 
 			List<String> allCategories = getAllCategoriesForIncomes();
 			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForIncomes();
+			List<String> tags = new LinkedList<String>();
+
+			if (allCategories != null && allCategories.size() > 0) {
+				Category category = categoryDao.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDao.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
+			}
 
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
 			model.addAttribute("allAccounts", allAccounts);
-			model.addAttribute("allTags", allTags);
+			model.addAttribute("tags", tags);
 			model.addAttribute("incomeViewModel", new IncomeViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,11 +167,20 @@ public class IncomesController {
 				User user = userDao.getUserByUsername(username);
 				List<String> allCategories = getAllCategoriesForIncomes();
 				List<String> allAccounts = getAllAccountsForUser(user);
-				List<String> allTags = getAllTagsForIncomes();
+				List<String> tags = new LinkedList<String>();
+
+				if (allCategories != null && allCategories.size() > 0) {
+					Category category = categoryDao.getCategoryByName(allCategories.get(0));
+					Collection<Tag> tagsForCategory = tagDao.getTagsForCategory(category);
+
+					for (Tag tag : tagsForCategory) {
+						tags.add(tag.getTagName());
+					}
+				}
 
 				model.addAttribute("allCategories", allCategories);
 				model.addAttribute("allAccounts", allAccounts);
-				model.addAttribute("allTags", allTags);
+				model.addAttribute("tags", tags);
 				model.addAttribute("incomeViewModel", incomeViewModel);
 				return "addIncome";
 			}
@@ -186,14 +204,23 @@ public class IncomesController {
 
 			List<String> allCategories = getAllCategoriesForIncomes();
 			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForIncomes();
+			List<String> tags = new LinkedList<String>();
+
+			if (allCategories != null && allCategories.size() > 0) {
+				Category category = categoryDao.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDao.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
+			}
 
 			if (foDao.checkUserHasFinanceOperation(income, user)) {
 				IncomeViewModel incomeViewModel = incomeToIncomeViewModel(income);
 				model.addAttribute("incomeViewModel", incomeViewModel);
 				model.addAttribute("allCategories", allCategories);
 				model.addAttribute("allAccounts", allAccounts);
-				model.addAttribute("allTags", allTags);
+				model.addAttribute("tags", tags);
 			} else {
 				throw new Exception("Invalid Income!");
 			}
@@ -214,11 +241,20 @@ public class IncomesController {
 			User user = userDao.getUserByUsername(username);
 			List<String> allCategories = getAllCategoriesForIncomes();
 			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForIncomes();
+			List<String> tags = new LinkedList<String>();
+
+			if (allCategories != null && allCategories.size() > 0) {
+				Category category = categoryDao.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDao.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
+			}
 
 			model.addAttribute("allCategories", allCategories);
 			model.addAttribute("allAccounts", allAccounts);
-			model.addAttribute("allTags", allTags);
+			model.addAttribute("tags", tags);
 			return "addIncome";
 		}
 
@@ -351,8 +387,10 @@ public class IncomesController {
 		Collection<Category> categories = categoryDao.getAllCategoriesForFOType(FinanceOperationType.INCOME);
 		List<String> allCategories = new LinkedList<String>();
 
-		for (Category category : categories) {
-			allCategories.add(category.getCategoryName());
+		if (categories != null) {
+			for (Category category : categories) {
+				allCategories.add(category.getCategoryName());
+			}
 		}
 
 		return allCategories;
