@@ -44,6 +44,11 @@
 				<a href="#"><img src="" alt="" /></a>
 			</div>
 			<br class="clear" />
+			<div id="international">
+				<a href = "?language=en"><img src="./images/gb.png"></a>
+				<a href = "?language=bg"><img src="./images/bg.png"></a>
+				
+			</div>			
 		</div>
 	</div>
 	<sec:authorize access="isAuthenticated()">
