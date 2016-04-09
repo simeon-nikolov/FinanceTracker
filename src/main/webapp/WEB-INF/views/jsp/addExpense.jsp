@@ -39,8 +39,10 @@
 						<tr>
 							<td><label for="category"><spring:message code="category.message"/></label></td>
 							<td>
-								<form:select id="category" style="width: 100px; height: 25px;" path="category">
-									<form:options items="${allCategories}" />
+								<form:select id="category" style="width: 100px; height: 25px;" path="category" onchange="reloadTags(this.value)">
+									<c:forEach var="category" items="${allCategories}">
+										<form:option value="${category}" />
+									</c:forEach>
 								</form:select>
 							</td>
 							<td><form:errors path="category" cssClass="error" /></td>

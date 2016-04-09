@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import utils.CurrencyConverter;
 import utils.MoneyOperations;
-import view.model.CategoryViewModel;
 import view.model.ExpenseViewModel;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
@@ -130,12 +129,17 @@ public class ExpensesController {
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
 
-			List<CategoryViewModel> allCategories = getAllCategoriesForExpenses();
+			List<String> allCategories = getAllCategoriesForExpenses();
 			List<String> allAccounts = getAllAccountsForUser(user);
 			List<String> tags = new LinkedList<String>();
 
 			if (allCategories != null && allCategories.size() > 0) {
-				tags.addAll(allCategories.get(0).getTags());
+				Category category = categoryDAO.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDAO.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
 			}
 
 			model.addAttribute("allCurrencies", allCurrencies);
@@ -159,13 +163,22 @@ public class ExpensesController {
 		if (result.hasErrors()) {
 			String username = (String) session.getAttribute("username");
 			User user = userDAO.getUserByUsername(username);
-			List<CategoryViewModel> allCategories = getAllCategoriesForExpenses();
+			List<String> allCategories = getAllCategoriesForExpenses();
 			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForExpenses();
+			List<String> tags = new LinkedList<String>();
+
+			if (allCategories != null && allCategories.size() > 0) {
+				Category category = categoryDAO.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDAO.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
+			}
 
 			model.addAttribute("allCategories", allCategories);
 			model.addAttribute("allAccounts", allAccounts);
-			model.addAttribute("allTags", allTags);
+			model.addAttribute("tags", tags);
 			return "addExpense";
 		}
 
@@ -190,16 +203,25 @@ public class ExpensesController {
 			User user = userDAO.getUserByUsername(username);
 			Expense expense = financeOperationDAO.getExpenseById(id);
 
-			List<CategoryViewModel> allCategories = getAllCategoriesForExpenses();
+			List<String> allCategories = getAllCategoriesForExpenses();
 			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForExpenses();
+			List<String> tags = new LinkedList<String>();
+
+			if (allCategories != null && allCategories.size() > 0) {
+				Category category = categoryDAO.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDAO.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
+			}
 
 			if (financeOperationDAO.checkUserHasFinanceOperation(expense, user)) {
 				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
 				model.addAttribute("expenseViewModel", expenseViewModel);
 				model.addAttribute("allCategories", allCategories);
 				model.addAttribute("allAccounts", allAccounts);
-				model.addAttribute("allTags", allTags);
+				model.addAttribute("tags", tags);
 			} else {
 				throw new Exception("Invalid expense!");
 			}
@@ -218,14 +240,22 @@ public class ExpensesController {
 		User user = userDAO.getUserByUsername(username);
 
 		if (result.hasErrors()) {
-
-			List<CategoryViewModel> allCategories = getAllCategoriesForExpenses();
+			List<String> allCategories = getAllCategoriesForExpenses();
 			List<String> allAccounts = getAllAccountsForUser(user);
-			List<String> allTags = getAllTagsForExpenses();
+			List<String> tags = new LinkedList<String>();
+
+			if (allCategories != null && allCategories.size() > 0) {
+				Category category = categoryDAO.getCategoryByName(allCategories.get(0));
+				Collection<Tag> tagsForCategory = tagDAO.getTagsForCategory(category);
+
+				for (Tag tag : tagsForCategory) {
+					tags.add(tag.getTagName());
+				}
+			}
 
 			model.addAttribute("allCategories", allCategories);
 			model.addAttribute("allAccounts", allAccounts);
-			model.addAttribute("allTags", allTags);
+			model.addAttribute("tags", tags);
 			return "editExpense";
 		}
 
@@ -332,38 +362,17 @@ public class ExpensesController {
 		return expense;
 	}
 
-	private List<CategoryViewModel> getAllCategoriesForExpenses() throws DAOException {
+	private List<String> getAllCategoriesForExpenses() throws DAOException {
 		Collection<Category> categories = categoryDAO.getAllCategoriesForFOType(FinanceOperationType.EXPENSE);
-		List<CategoryViewModel> allCategories = new LinkedList<CategoryViewModel>();
+		List<String> allCategories = new LinkedList<String>();
 
-		for (Category category : categories) {
-			CategoryViewModel viewModel = categoryToCategoryViewModel(category);
-			allCategories.add(viewModel);
+		if (categories != null) {
+			for (Category category : categories) {
+				allCategories.add(category.getCategoryName());
+			}
 		}
 
 		return allCategories;
-	}
-
-	private CategoryViewModel categoryToCategoryViewModel(Category category) {
-		CategoryViewModel viewModel = new CategoryViewModel();
-
-		if (category != null) {
-			viewModel.setId(category.getId());
-			viewModel.setCategoryName(category.getCategoryName());
-			viewModel.setForType(category.getForType());
-			Collection<String> tags = new LinkedList<String>();
-			Collection<Tag> categoryTags = category.getTags();
-
-			if (categoryTags != null) {
-				for (Tag tag : categoryTags) {
-					tags.add(tag.getTagName());
-				}
-			}
-
-			viewModel.setTags(tags);
-		}
-
-		return viewModel;
 	}
 
 	private List<String> getAllAccountsForUser(User user) throws DAOException {
