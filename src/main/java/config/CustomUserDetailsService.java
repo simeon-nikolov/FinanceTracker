@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import dao.DAOException;
 import dao.IUserDAO;
+import exceptions.DAOException;
 import exceptions.InvalidArgumentException;
 import model.User;
 import web.security.SecurityUser;

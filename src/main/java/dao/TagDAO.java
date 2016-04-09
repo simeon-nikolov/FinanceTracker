@@ -3,6 +3,7 @@ package dao;
 import java.util.Collection;
 import java.util.List;
 
+import model.Category;
 import model.FinanceOperationType;
 import model.Tag;
 
@@ -11,6 +12,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import exceptions.DAOException;
+
 @Repository
 public class TagDAO implements ITagDAO {
 
@@ -18,17 +21,16 @@ public class TagDAO implements ITagDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public int addTag(Tag tag) throws DAOException {		
-		int id =0;
+	public int addTag(Tag tag) throws DAOException {
 		try {
 			sessionFactory.getCurrentSession().beginTransaction();
-			id = (int) sessionFactory.getCurrentSession().save(tag);
+			int id = (int) sessionFactory.getCurrentSession().save(tag);
 			sessionFactory.getCurrentSession().getTransaction().commit();
+			return id;
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("Tag can not be read from database!", e);
+			throw new DAOException("Tag can not be added to database!", e);
 		}
-		return id;
 	}
 
 	@Override
@@ -51,7 +53,7 @@ public class TagDAO implements ITagDAO {
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("Tag can not be read from database!", e);
+			throw new DAOException("Tag can not be deleted from database!", e);
 		}
 	}
 
@@ -111,4 +113,26 @@ public class TagDAO implements ITagDAO {
 		return result;
 	}
 
+	@Override
+	public Collection<Tag> getTagsForCategory(Category category) throws DAOException {
+		Collection<Tag> result = null;
+
+		try {
+			sessionFactory.getCurrentSession().beginTransaction();
+			Query query = sessionFactory.getCurrentSession()
+					.createQuery("select t from Tag t, Category c where t in elements(c.tags) and c = :category");
+			query.setEntity("category", category);
+			result = query.list();
+			sessionFactory.getCurrentSession().getTransaction().commit();
+
+			if (result == null || result.size() == 0) {
+				return null;
+			}
+		} catch (RuntimeException e) {
+			sessionFactory.getCurrentSession().getTransaction().rollback();
+			throw new DAOException("Tags can not be read from database!", e);
+		}
+
+		return result;
+	}
 }

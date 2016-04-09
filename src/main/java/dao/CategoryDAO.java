@@ -11,6 +11,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import exceptions.DAOException;
+
 @Repository
 public class CategoryDAO implements ICategoryDAO {
 
@@ -20,14 +22,16 @@ public class CategoryDAO implements ICategoryDAO {
 	@Override
 	public int addCategory(Category category) throws DAOException {
 		int id = 0;
+		
 		try {
 			sessionFactory.getCurrentSession().beginTransaction();
 			id = (int) sessionFactory.getCurrentSession().save(category);
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("Category can not be read from database!", e);
+			throw new DAOException("Category can not be added to database!", e);
 		}
+		
 		return id;
 	}
 
@@ -82,7 +86,7 @@ public class CategoryDAO implements ICategoryDAO {
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("Category can not be read from database!", e);
+			throw new DAOException("Categories can not be read from database!", e);
 		}
 
 		return result;

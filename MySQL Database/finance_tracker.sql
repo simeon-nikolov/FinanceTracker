@@ -251,6 +251,29 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `finance_tracker`.`categories_has_tags`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `finance_tracker`.`categories_has_tags` (
+  `category_id` INT(11) NOT NULL,
+  `tag_id` INT(11) NOT NULL,
+  PRIMARY KEY (`category_id`, `tag_id`),
+  INDEX `fk_categories_has_tags_tags1_idx` (`tag_id` ASC),
+  INDEX `fk_categories_has_tags_categories1_idx` (`category_id` ASC),
+  CONSTRAINT `fk_categories_has_tags_categories1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `finance_tracker`.`categories` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_categories_has_tags_tags1`
+    FOREIGN KEY (`tag_id`)
+    REFERENCES `finance_tracker`.`tags` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

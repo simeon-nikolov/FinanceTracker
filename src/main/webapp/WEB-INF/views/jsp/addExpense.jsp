@@ -46,6 +46,16 @@
 							<td><form:errors path="category" cssClass="error" /></td>
 						</tr>
 						<tr>
+							<td><label><spring:message code="tagsMessage"/></label></td>
+							<td id="tags">
+								<c:forEach var="tag" items="${tags}">
+									<form:checkbox id="tag${tag}" path="tags" value="${tag}"></form:checkbox>
+									<label for="tag${tag}">${tag}</label>
+								</c:forEach>
+							</td>
+							<td><form:errors path="tags" cssClass="error" /></td>
+						</tr>
+						<tr>
 							<td><label for="date-picker"><spring:message code="dateMessage"/></label></td>
 							<td><form:input id="date-picker" style="width: 100px;" path="date" /></td>
 							<td><form:errors path="date" cssClass="error" /></td>
@@ -63,16 +73,6 @@
 								</form:select>
 							</td>
 							<td><form:errors path="repeatType" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td><label><spring:message code="tagsMessage"/></label></td>
-							<td>
-								<c:forEach var="tag" items="${allTags}">
-									<form:checkbox id="tag${tag}" path="tags" value="${tag}"></form:checkbox>
-									<label for="tag${tag}">${tag}</label>
-								</c:forEach>
-							</td>
-							<td><form:errors path="tags" cssClass="error" /></td>
 						</tr>
 					</table>
 					<input type="submit" class="btn btn-primary btn-md" value="<spring:message code="button.add"/>" />

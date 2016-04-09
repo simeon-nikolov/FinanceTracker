@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import exceptions.DAOException;
 import exceptions.DuplicateUserException;
 import model.User;
 

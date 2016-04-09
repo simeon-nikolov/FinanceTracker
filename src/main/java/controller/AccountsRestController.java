@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
-import dao.DAOException;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
+import exceptions.DAOException;
 
 @RestController
 public class AccountsRestController {

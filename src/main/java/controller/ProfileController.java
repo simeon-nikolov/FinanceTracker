@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import view.model.ChangeCurrencyViewModel;
 import view.model.ChangeEmailViewModel;
 import view.model.ChangePasswordViewModel;
-import dao.DAOException;
 import dao.IUserDAO;
+import exceptions.DAOException;
 
 @Controller
 public class ProfileController {

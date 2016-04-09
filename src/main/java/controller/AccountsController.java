@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
 import dao.IUserDAO;
+import exceptions.DAOException;
 import model.Account;
 import model.Expense;
 import model.Income;

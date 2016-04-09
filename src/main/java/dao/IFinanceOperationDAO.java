@@ -10,6 +10,8 @@ import model.User;
 
 import org.joda.time.LocalDate;
 
+import exceptions.DAOException;
+
 public interface IFinanceOperationDAO {
 	int add(FinanceOperation financeOperation) throws DAOException;
 	

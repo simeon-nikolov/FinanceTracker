@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import utils.CurrencyConverter;
 import utils.MoneyOperations;
 import view.model.BudgetViewModel;
-import dao.DAOException;
 import dao.IBudgetDAO;
 import dao.IUserDAO;
 import exceptions.APIException;
+import exceptions.DAOException;
 
 @Controller
 public class BudgetController {

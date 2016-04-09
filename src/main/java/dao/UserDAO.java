@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
+import exceptions.DAOException;
 import exceptions.DuplicateUserException;
 
 @Repository

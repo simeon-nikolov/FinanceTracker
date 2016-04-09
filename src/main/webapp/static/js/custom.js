@@ -3,81 +3,81 @@ $(document).ready(function() {
     $('.date-picker').datepicker();
 });
 
-function loadFinanceOperationsData(financeOperationType) {	
-	var accountName = $("#account").val();		
+function loadFinanceOperationsData(financeOperationType) {
+	var accountName = $("#account").val();
 	var elementId = "#" + financeOperationType;
 	var url = "./accounts";
-	
+
 	if (accountName != "") {
 		url += "/" + accountName;
 	}
-	
+
 	$.ajax({
 	    url: url,
 	    type: 'GET',
 	    success: function(data) {
 	    	$(elementId).empty();
 	    	var chartData = [];
-	    	
+
 	        $.each(data, function(index, financeOperation) {
 	        	var index = -1;
-	        	
+
 	        	for(var i = 0, len = chartData.length; i < len; i++ ) {
 	        	    if(chartData[i][0] === financeOperation.category) {
 	        	    	index = i;
 	        	        break;
 	        	    }
 	        	}
-	        	
+
 	        	if (index >= 0) {
 	        		 chartData[index][1] += financeOperation.amount;
 	    		} else {
 	    			chartData.push([financeOperation.category, financeOperation.amount]);
 	    		}
-	        	
-	        	var html = generateHtml(financeOperation); 
+
+	        	var html = generateHtml(financeOperation);
 				$("<div>").appendTo(elementId).html(html);
 	        });
-	        
+
 	    	sortByCategory(chartData);
 	    	draw3dDonut(financeOperationType, chartData);
-	    }		
+	    }
 	});
 }
 
 function generateHtml(financeOperation) {
 	var tags = "";
-	
+
 	$.each(financeOperation.tags, function(index, tag) {
-		tags += " " + tag;	
+		tags += " " + tag;
 	});
-	
+
 	var html = "" +
 	"<div class='finance-info bordered'>" +
 		"<div>" +
 			"<p>" +
-				"<span class='date'>" + 
-				financeOperation.date.year + "-" + 
+				"<span class='date'>" +
+				financeOperation.date.year + "-" +
 					("0" + financeOperation.date.monthOfYear).slice(-2)  + "-" +
-					("0" + financeOperation.date.dayOfMonth).slice(-2)  + 
-				"</span>" + 
-				"<span class='money-amount'>" + 
+					("0" + financeOperation.date.dayOfMonth).slice(-2)  +
+				"</span>" +
+				"<span class='money-amount'>" +
 				financeOperation.currency + " " + (financeOperation.amount).toFixed(2) +
 				"</span>" +
 			"</p>" +
 		"</div>" +
 		"<div>" +
 			"<p>" +
-				"<span class='category'>" + financeOperation.category + "</span>" + 
+				"<span class='category'>" + financeOperation.category + "</span>" +
 				"<span class='tags'>" + tags + "</span>" +
 			"</p>" +
 		"</div>" +
 	"</div>" +
 	"<div class='operations'>" +
-		"<a href='./editExpense?id=" + financeOperation.id + "' class='btn btn-info btn-xs'>Edit</a>" + 
+		"<a href='./editExpense?id=" + financeOperation.id + "' class='btn btn-info btn-xs'>Edit</a>" +
 		"<a href='./verifyDeleteExpense?id=" + financeOperation.id + "' class='btn btn-danger btn-xs'>Delete</a>" +
 	"</div>";
-	
+
 	return html;
 }
 
@@ -156,6 +156,21 @@ function draw3dGroupedColumn(cdata, categories) {
     });
 }
 
+function reloadTags(category) {
+	$.ajax({
+	    url: "./" + category + "/tags",
+	    type: 'GET',
+	    success: function(data) {
+	    	$("#tags").empty();
 
+	    	$.each(data, function(index, tag) {
+	    		var html = ' <input id="tagelectricity" name="tags" type="checkbox" value="' + tag + '"> ';
+	    		html += ' <input type="hidden" name="_tags" value="on"> ';
+	    		html += ' <label for="tag' + tag + '">' + tag + '</label> ';
+	    		$("#tags").append(html);
+	    	});
+	    }
+	});
+}
 
 

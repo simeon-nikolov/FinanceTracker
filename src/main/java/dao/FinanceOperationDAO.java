@@ -15,6 +15,8 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import exceptions.DAOException;
+
 @Repository
 public class FinanceOperationDAO implements IFinanceOperationDAO {
 

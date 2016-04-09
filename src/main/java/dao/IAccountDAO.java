@@ -2,6 +2,7 @@ package dao;
 
 import java.util.Collection;
 
+import exceptions.DAOException;
 import model.Account;
 import model.User;
 

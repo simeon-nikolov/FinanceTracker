@@ -34,12 +34,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import utils.CurrencyConverter;
 import utils.MoneyOperations;
 import view.model.IncomeViewModel;
-import dao.DAOException;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
+import exceptions.DAOException;
 
 @Controller
 public class IncomesController {

@@ -35,10 +35,10 @@ import view.model.ExpenseViewModel;
 
 import com.google.gson.Gson;
 
-import dao.DAOException;
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
 import dao.IUserDAO;
+import exceptions.DAOException;
 
 @Controller
 public class OverviewController {
