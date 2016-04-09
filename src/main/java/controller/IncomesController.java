@@ -99,11 +99,20 @@ public class IncomesController {
 					amountsByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(incomeViewModel.getAmount()));
 				}
 			}
+			
+			List<List<String>> chartData = new LinkedList<List<String>>();
+			
+			for (String category : amountsByCategory.keySet()) {
+				int amount = amountsByCategory.get(category);
+				List<String> dataRow = new LinkedList<String>();
+				dataRow.add(category);
+				dataRow.add(String.valueOf(amount));
+				chartData.add(dataRow);
+			}
 
 			Collections.sort(incomeViews, (i1, i2) -> i1.getDate().getDayOfMonth() - i2.getDate().getDayOfMonth());
 			
-			model.addAttribute("categories", amountsByCategory.keySet());			
-			model.addAttribute("incomesAmounts", amountsByCategory.values());			
+			model.addAttribute("chartData", chartData);
 			model.addAttribute("incomes", incomeViews);			
 			model.addAttribute("accounts", accounts);
 		} catch (Exception e) {

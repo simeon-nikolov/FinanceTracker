@@ -10,13 +10,10 @@
 	<div class="wrapper">
 		<div id="content">
 			<div class="month"> <h2>&lt; April &gt;</h2> </div>
-			<div class="ct-chart ct-perfect-fourth"></div>
-			<script src="js/chartist.js"></script>
+			<div id="chart" class="ct-chart ct-perfect-fourth"></div>
 			<script>
-				var labels = <c:out value="${categories}" escapeXml="false"></c:out>;
-				var series = <c:out value="${expensesAmounts}"></c:out>;
-
-				drawPieGraphic(labels, series);
+				var chartData = <c:out value="${chartData}" escapeXml="false"></c:out>;
+				draw3dDonut("expenses", chartData);
 			</script>
 		</div>
 		<div id="column">

@@ -11,33 +11,12 @@
 		<div id="content">
 			<div class="month"> <h2>&lt; April &gt;</h2> </div>
 			<h2>BGN ${moneyToSpend} Left to spend</h2>
-			<div class="ct-chart ct-perfect-fourth"></div>
-			<script src="js/chartist.js"></script>
+			<div id="chart" class="ct-chart ct-perfect-fourth"></div>
 			<script>
-				var data = {
-						labels :<c:out value="${categories}" escapeXml="false"></c:out>,
-						series : <c:out value="${expensesAmounts}"></c:out>
-				};
-
-				var options = {
-					labelInterpolationFnc : function(value) {
-						return value[0]
-					}
-				};
-
-				var responsiveOptions = [ [ 'screen and (min-width: 640px)', {
-					chartPadding : 30,
-					labelOffset : 100,
-					labelDirection : 'explode',
-					labelInterpolationFnc : function(value) {
-						return value;
-					}
-				} ], [ 'screen and (min-width: 1024px)', {
-					labelOffset : 80,
-					chartPadding : 20
-				} ] ];
-
-				new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+				var chartData = <c:out value="${chartData}" escapeXml="false"></c:out>;
+				//var chartData = [{name:"Expenses", data:[1,5,3]}, {name:"Incomes", data:[1,2,1]}];
+				var dates = <c:out value="${dates}" escapeXml="false"></c:out>;
+				draw3dGroupedColumn(chartData, dates);
 			</script>
 		</div>
 		<div id="column">

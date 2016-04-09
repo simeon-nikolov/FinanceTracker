@@ -17,18 +17,30 @@ function loadFinanceOperationsData(financeOperationType) {
 	    type: 'GET',
 	    success: function(data) {
 	    	$(elementId).empty();
-	    	var list = [];
+	    	var chartData = [];
 	    	
 	        $.each(data, function(index, financeOperation) {
-	        	list.push({'category': financeOperation.category, 'amount': financeOperation.amount});
+	        	var index = -1;
+	        	
+	        	for(var i = 0, len = chartData.length; i < len; i++ ) {
+	        	    if(chartData[i][0] === financeOperation.category) {
+	        	    	index = i;
+	        	        break;
+	        	    }
+	        	}
+	        	
+	        	if (index >= 0) {
+	        		 chartData[index][1] += financeOperation.amount;
+	    		} else {
+	    			chartData.push([financeOperation.category, financeOperation.amount]);
+	    		}
+	        	
 	        	var html = generateHtml(financeOperation); 
 				$("<div>").appendTo(elementId).html(html);
 	        });
 	        
-	        var labels = [];
-	    	var series = [];
-	    	sortArrays(list, labels, series)
-	        drawPieGraphic(labels, series);
+	    	sortByCategory(chartData);
+	    	draw3dDonut(financeOperationType, chartData);
 	    }		
 	});
 }
@@ -69,46 +81,81 @@ function generateHtml(financeOperation) {
 	return html;
 }
 
-function sortArrays(list, labels, series) {
-	list.sort(function(a, b) {
-        return ((a.category < b.category) ? -1 : ((a.category == b.category) ? 0 : 1));
+function sortByCategory(data) {
+	data.sort(function(a, b) {
+        return ((a[0] < b[0]) ? -1 : ((a[0] == b[0]) ? 0 : 1));
     });
-    
-    for (var k = 0; k < list.length; k++) {
-        var index = $.inArray(list[k].category, labels);
-    	
-    	if (index >= 0) {
-    		series[index] += list[k].amount;
-		} else {
-        	labels.push(list[k].category);
-        	series.push(list[k].amount);
-		}
-    }
 }
 
-function drawPieGraphic(labelsData, seriesData) {
-	var data = {
-			labels : labelsData,
-			series : seriesData
-	};
-
-	var options = {
-		labelInterpolationFnc : function(value) {
-			return value[0]
-		}
-	};
-
-	var responsiveOptions = [ [ 'screen and (min-width: 640px)', {
-		chartPadding : 30,
-		labelOffset : 100,
-		labelDirection : 'explode',
-		labelInterpolationFnc : function(value) {
-			return value;
-		}
-	} ], [ 'screen and (min-width: 1024px)', {
-		labelOffset : 80,
-		chartPadding : 20
-	} ] ];
-
-	new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+function draw3dDonut (financeOperationType, data) {
+    $('#chart').highcharts({
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+        title: {
+            text: 'Monthly overview of ' + financeOperationType + ' by category.'
+        },
+        subtitle: {
+            text: ''
+        },
+        plotOptions: {
+            pie: {
+            	allowPointSelect: true,
+                cursor: 'pointer',
+                innerSize: 100,
+                depth: 65
+            }
+        },
+        series: [{
+            name: financeOperationType + ' amount',
+            data: data
+        }]
+    });
 }
+
+function draw3dGroupedColumn(cdata, categories) {
+	var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'chart',
+            type: 'column',
+            margin: 75,
+            options3d: {
+                enabled: true,
+                alpha: 15,
+                beta: 15,
+                depth: 50,
+                viewDistance: 15
+            }
+        },
+        xAxis: {
+            categories: categories
+        },
+        yAxis: {
+            allowDecimals: false,
+            min: 0,
+            title: {
+                text: 'Income / Expense'
+            }
+        },
+        title: {
+            text: 'Monthly overview of incomes and expenses'
+        },
+        subtitle: {
+            text: ''
+        },
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        series: cdata
+    });
+}
+
+
+
+

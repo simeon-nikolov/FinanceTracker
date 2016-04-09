@@ -94,14 +94,23 @@ public class ExpensesController {
 				if (amountsByCategory.containsKey(category)) {
 					oldAmount = amountsByCategory.get(category);
 				}
-
+				
 				amountsByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+			}
+			
+			List<List<String>> chartData = new LinkedList<List<String>>();
+			
+			for (String category : amountsByCategory.keySet()) {
+				int amount = amountsByCategory.get(category);
+				List<String> dataRow = new LinkedList<String>();
+				dataRow.add(category);
+				dataRow.add(String.valueOf(amount));
+				chartData.add(dataRow);
 			}
 
 			Collections.sort(expenseViews, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
 			
-			model.addAttribute("categories", amountsByCategory.keySet());
-			model.addAttribute("expensesAmounts", amountsByCategory.values());
+			model.addAttribute("chartData", chartData);
 			model.addAttribute("expenses", expenseViews);
 			model.addAttribute("accounts", accounts);			
 		} catch (Exception e) {			

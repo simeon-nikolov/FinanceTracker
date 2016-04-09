@@ -12,33 +12,10 @@
 			<div class="month">
 				<h2>&lt; April &gt;</h2>
 			</div>
-			<div class="ct-chart ct-perfect-fourth"></div>
-			<script src="js/chartist.js"></script>
+			<div id="chart" class="ct-chart ct-perfect-fourth"></div>
 			<script>
-				var data = {
-					labels : <c:out value="${categories}" escapeXml="false"></c:out>,
-					series : <c:out value="${incomesAmounts}"></c:out>
-				};
-
-				var options = {
-					labelInterpolationFnc : function(value) {
-						return value[0]
-					}
-				};
-
-				var responsiveOptions = [ [ 'screen and (min-width: 640px)', {
-					chartPadding : 30,
-					labelOffset : 100,
-					labelDirection : 'explode',
-					labelInterpolationFnc : function(value) {
-						return value;
-					}
-				} ], [ 'screen and (min-width: 1024px)', {
-					labelOffset : 80,
-					chartPadding : 20
-				} ] ];
-
-				new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+				var chartData = <c:out value="${chartData}" escapeXml="false"></c:out>;
+				draw3dDonut("expenses", chartData);
 			</script>
 		</div>
 		<div id="column">
