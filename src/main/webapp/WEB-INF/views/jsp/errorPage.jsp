@@ -5,8 +5,8 @@
 <div id="container">
 	<div class="wrapper">
 		<div id="content">
-			<h3 class="alert alert-danger">Well, this is embarrassing!</h3>
-			<h3 class="alert alert-danger">Something went wrong!</h3>
+			<h3 class="alert alert-danger"><spring:message code="error.firstRow"/></h3>
+			<h3 class="alert alert-danger"><spring:message code="error.secondRow"/></h3>
 		</div>
 		<br class="clear" />
 	</div>

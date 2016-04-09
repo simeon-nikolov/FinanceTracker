@@ -24,12 +24,12 @@
 		<div id="column">
 			<div class="subnav">
 				<%@include file="partials/accountsSelect.jsp"%>
-				<a href="./addIncome" class="btn btn-lg btn-default">+ Add Income</a>
+				<a href="./addIncome" class="btn btn-lg btn-default"><spring:message code="incomes.addIncome" /></a>
 				<div id="incomes">
 					<c:forEach var="income" items="${incomes}">
 						<%@include file="partials/incomesListTemplate.jsp"%>
-						<a href="./editIncome?id=${income.id}" class="btn btn-info btn-xs">Edit</a> 
-						<a href="./verifyDeleteIncome?id=${income.id}" class="btn btn-danger btn-xs">Delete</a>
+						<a href="./editIncome?id=${income.id}" class="btn btn-info btn-xs"><spring:message code="button.edit" /></a> 
+						<a href="./verifyDeleteIncome?id=${income.id}" class="btn btn-danger btn-xs"><spring:message code="button.delete"/></a>
 					</c:forEach>
 				</div>
 			</div>

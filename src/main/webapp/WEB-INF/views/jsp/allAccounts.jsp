@@ -23,15 +23,15 @@
 						</p>
 					</div>
 					<div>
-						<a href="./editAccount?id=${account.id}" class="btn btn-info btn-xs">Edit Account</a>
-						<a href="./verifyDeleteAccount?id=${account.id}" class="btn btn-danger btn-xs">Delete Account</a>
+						<a href="./editAccount?id=${account.id}" class="btn btn-info btn-xs"><spring:message code="accounts.editAccount"/></a>
+						<a href="./verifyDeleteAccount?id=${account.id}" class="btn btn-danger btn-xs"><spring:message code="accounts.deleteAccount"/></a>
 					</div>
 				</c:forEach>
 			</div>
 		</div>	
 		<div id="column">
 			<div class="subnav">				
-				<a href="./addAccount" class="btn btn-lg btn-default">+ Add Account</a>				
+				<a href="./addAccount" class="btn btn-lg btn-default"><spring:message code="accounts.addAccount"/></a>				
 			</div>
 		</div>	
 		<br class="clear" />

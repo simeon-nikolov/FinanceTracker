@@ -4,9 +4,9 @@
 	<div class="wrapper">
 		<div id="topnav">
 			<ul>
-				<li><a href="./index">Home</a></li>
-				<li><a href="./login">Login</a></li>
-				<li class="last"><a href="./signUp">Sign Up</a></li>
+				<li><a href="./index"><spring:message code="menu.home"/></a></li>
+				<li><a href="./login"><spring:message code="menu.login"/></a></li>
+				<li class="last"><a href="./signUp"><spring:message code="menu.signUp"/></a></li>
 			</ul>
 		</div>
 		<br class="clear" />

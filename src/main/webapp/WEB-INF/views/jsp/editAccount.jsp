@@ -12,15 +12,15 @@
 			<div id="register">
 				<form:form action="editAccount" commandName="accountViewModel">
 					<fieldset>
-						<legend>Edit account</legend>
+						<legend><spring:message code="accounts.editAccountMessage"/></legend>
 						<table>
 							<tr>
-								<td><label for="title">Account title:</label></td>
+								<td><label for="title"><spring:message code="accounts.editTitle"/></label></td>
 								<td><form:input path="title" type="text" value="" /></td>
 								<td><form:errors path="title" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td><label for="balance">Balance:</label></td>
+								<td><label for="balance"><spring:message code="accounts.editBalance"/></label></td>
 								<td><form:input path="balance" type="number" value=""/></td>
 								<td>
 									<form:errors path="balance" cssClass="error" /> 
@@ -32,9 +32,9 @@
 				</form:form>				
 			</div>
 			<div>
-				<p>This is the initial balance of this account.</p>
-				<p>Beware that all expenses will be subtracted</p>
-				<p>and all incomes will be added to this account</p>
+				<p><spring:message code="accounts.warningFirstRow"/></p>
+				<p><spring:message code="accounts.warningSecondRow"/></p>
+				<p><spring:message code="accounts.warningThirdRow"/></p>
 			</div>			
 		</div>
 		<br class="clear" />

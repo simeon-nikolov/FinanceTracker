@@ -8,8 +8,8 @@
 <%@include file="partials/header.jsp"%>
 <div id="container">
 	<div class="wrapper">
-		<h2>Export all ecpenses and incomes: </h2>
-		<a href="./export/pdf" class="btn btn-lg btn-default">Export to PDF</a>
+		<h2><spring:message code="export.message"/> </h2>
+		<a href="./export/pdf" class="btn btn-lg btn-default"><spring:message code="export.toPDFMessage"/></a>
 	</div>
 </div>
 <%@include file="partials/footer.jsp"%>

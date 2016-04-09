@@ -11,7 +11,7 @@
 		<div id="content">
 			<div>
 				<h3>
-					Are you sure you want to delete account ${accountTitle}
+					Are you sure you want to delete account ${accountTitle}?
 				</h3>
 			</div>
 			<div>

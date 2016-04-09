@@ -4,13 +4,13 @@
 	<div class="wrapper">
 		<div id="topnav">
 			<ul>
-				<li><a href="./overview">Overview</a></li>
-				<li><a href="./allAccounts">Accounts</a></li>
-				<li><a href="./allExpenses">Expenses</a></li>
-				<li><a href="./allIncomes">Incomes</a></li>
-				<li><a href="./allBudgets">Budgets</a></li>
-				<li><a href="./export">Export</a></li>				
-				<li><a href="./logout">Logout</a></li>
+				<li><a href="./overview"><spring:message code="menu.overview"/></a></li>
+				<li><a href="./allAccounts"><spring:message code="menu.accounts"/></a></li>
+				<li><a href="./allExpenses"><spring:message code="menu.expenses"/></a></li>
+				<li><a href="./allIncomes"><spring:message code="menu.incomes"/></a></li>
+				<li><a href="./allBudgets"><spring:message code="menu.budgets"/></a></li>
+				<li><a href="./export"><spring:message code="menu.export"/></a></li>				
+				<li><a href="./logout"><spring:message code="menu.logout"/></a></li>
 				<li><a href="./profile">${username}</a></li>
 			</ul>
 		</div>

@@ -9,20 +9,20 @@
 			<div id="register">
 				<form:form action="addAccount" commandName="accountViewModel">
 					<fieldset>
-						<legend>Add Account: </legend>
+						<legend><spring:message code="accounts.addAccountMessage"/></legend>
 						<table>
 							<tr>
-								<td><label for="title">Account title:</label></td>
+								<td><label for="title"><spring:message code="accounts.accountTitleMessage"/></label></td>
 								<td><form:input path="title" type="text" value="" /></td>
 								<td><form:errors path="title" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td><label for="balance">Initial account balance:</label></td>
+								<td><label for="balance"><spring:message code="accounts.initialBalanceMessage"/></label></td>
 								<td><form:input path="balance" type="text"/></td>
 								<td><form:errors path="balance" cssClass="error" /> </td>
 							</tr>							
 						</table>
-						<input type="submit" value="Add Account" />
+						<input type="submit" value="<spring:message code="button.add"/>" />
 					</fieldset>
 				</form:form>
 			</div>

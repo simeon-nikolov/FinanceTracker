@@ -10,7 +10,7 @@
 	<div class="wrapper">
 		<div class="profile-row">
 			<div class="profile-left-column">
-				<h4>Username: </h4>
+				<h4><spring:message code="profile.username"/></h4>
 			</div>
 			<div class="profile-right-column">
 				<h4><mark>${username}</mark></h4>
@@ -19,67 +19,67 @@
 		<hr class="clear" />
 		<div class="profile-row">
 			<div class="profile-left-column">
-				<h4>Change default currency </h4>
+				<h4><spring:message code="profile.changeCurrency"/></h4>
 			</div>
 			<div class="profile-right-column">
 				<form:form action="changeCurrency" commandName="changeCurrencyViewModel" method="POST">
 					<form:select style="height: 33px;" id="currency" path="currency">
 						<form:options items="${currencies}" />
 					</form:select>
-					<input type="submit" class="btn btn-default btn-md" value="Change currency" />
+					<input type="submit" class="btn btn-default btn-md" value="<spring:message code="profile.changeCurrencyButton"/>" />
 				</form:form>
 			</div>
 		</div>
 		<hr class="clear" />
 		<div class="profile-row">
 			<div class="profile-left-column">
-				<h4>Change password</h4>
+				<h4><spring:message code="profile.changePassword"/></h4>
 			</div>
 			<div class="profile-right-column">
 				<form:form action="changePassword" commandName="changePasswordViewModel">
 					<div>
-						<label for="old-password">Old password:</label>
+						<label for="old-password"><spring:message code="profile.oldPassword"/></label>
 						<form:input id="old-password" path="oldPassword" type="password" value="" />
 						<form:errors path="oldPassword" cssClass="error" />
 					</div>
 					<div>
-						<label for="new-password">New password:</label>
+						<label for="new-password"><spring:message code="profile.newPassword"/></label>
 						<form:input id="new-password" path="newPassword" type="password" value="" />
 						<form:errors path="newPassword" cssClass="error" />
 					</div>
 					<div>
-						<label for="confirm-new-password">Confirm new password:</label>
+						<label for="confirm-new-password"><spring:message code="profile.confirmNewPassword"/></label>
 						<form:input id="confirm-new-password" path="confirmNewPassword" type="password" value="" />
 						<form:errors path="confirmNewPassword" cssClass="error" />
 					</div>
-					<input type="submit" class="btn btn-default btn-md" value="Change password" />
+					<input type="submit" class="btn btn-default btn-md" value="<spring:message code="profile.changePassword"/>" />
 				</form:form>
 			</div>
 		</div>
 		<hr class="clear" />
 		<div class="profile-row">
 			<div class="profile-left-column">
-				<h4>Change e-mail</h4>
+				<h4><spring:message code="profile.changeEmail"/></h4>
 			</div>
 			<div class="profile-right-column">
 				<form:form action="changeEmail" commandName="changeEmailViewModel">
-					<div><h5>Current e-mail: <mark>${email}</mark></h5></div>
+					<div><h5><spring:message code="profile.currentEmail"/><mark>${email}</mark></h5></div>
 					<div>
-						<label for="new-email">New e-mail:</label>
+						<label for="new-email"><spring:message code="profile.newEmail"/></label>
 						<form:input id="new-email" path="newEmail" type="email" value="" />
 						<form:errors path="newEmail" cssClass="error" />
 					</div>
 					<div>
-						<label for="confirm-new-password">Confirm new e-mail:</label>
+						<label for="confirm-new-password"><spring:message code="profile.confirmNewEmail"/></label>
 						<form:input id="confirm-new-password" path="confirmNewEmail" type="text" value="" />
 						<form:errors path="confirmNewEmail" cssClass="error" />
 					</div>
 					<div>
-						<label for="enter-password">Enter password:</label>
+						<label for="enter-password"><spring:message code="profile.enterPassword"/></label>
 						<form:input id="enter-password" path="enterPassword" type="password" value="" />
 						<form:errors path="enterPassword" cssClass="error" />
 					</div>
-					<input type="submit" class="btn btn-default btn-md" value="Change e-mail" />
+					<input type="submit" class="btn btn-default btn-md" value="<spring:message code="profile.changeEmail"/>" />
 				</form:form>
 			</div>
 		</div>
