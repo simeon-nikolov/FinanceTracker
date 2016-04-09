@@ -9,7 +9,12 @@
 <div id="container">
 	<div class="wrapper">
 		<div id="content">
-			<div class="month"> <h2>&lt; April &gt;</h2> </div>
+			<div class="month">
+				 <h2>
+				 	<a href="./previousMonth?view=overview">&lt; </a>
+				 		 ${month}. ${year}
+				 	 <a href="./nextMonth?view=overview">&gt;</a></h2> 
+			 </div>
 			<h2>BGN ${moneyToSpend} Left to spend</h2>
 			<div id="chart" class="ct-chart ct-perfect-fourth"></div>
 			<script>

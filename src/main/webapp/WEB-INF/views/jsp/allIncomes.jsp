@@ -10,8 +10,11 @@
 	<div class="wrapper">
 		<div id="content">
 			<div class="month">
-				<h2>&lt; April &gt;</h2>
-			</div>
+				 <h2>
+				 	<a href="./previousMonth?view=allIncomes">&lt; </a>
+				 		 ${month}. ${year}
+				 	 <a href="./nextMonth?view=allIncomes">&gt;</a></h2> 
+			 </div>
 			<div id="chart" class="ct-chart ct-perfect-fourth"></div>
 			<script>
 				var chartData = <c:out value="${chartData}" escapeXml="false"></c:out>;
