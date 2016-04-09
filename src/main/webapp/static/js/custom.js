@@ -166,7 +166,7 @@ function reloadTags(category) {
 	    	$("#tags").empty();
 
 	    	$.each(data, function(index, tag) {
-	    		var html = ' <input id="tagelectricity" name="tags" type="checkbox" value="' + tag + '"> ';
+	    		var html = ' <input id="tag' + tag + '" name="tags" type="checkbox" value="' + tag + '"> ';
 	    		html += ' <input type="hidden" name="_tags" value="on"> ';
 	    		html += ' <label for="tag' + tag + '">' + tag + '</label> ';
 	    		$("#tags").append(html);

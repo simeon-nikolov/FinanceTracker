@@ -108,7 +108,7 @@ public class TagDAOTests {
 		tagsFromDB = (List<Tag>) tagDAO.getAllTagsByTypeFor(FinanceOperationType.EXPENSE);
 		assertEquals(tags.size(), tagsFromDB.size() - sizeBefore);
 
-		for (Tag tag : tagsFromDB) {
+		for (Tag tag : tags) {
 			tagDAO.deleteTag(tag);
 		}
 	}

@@ -21,25 +21,25 @@ import dao.ICategoryDAO;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=config.SpringWebConfig.class)
 public class CategoryDAOTests {
-	
+
 	private static final int RANDOM_NUMBER_FOR_TESTS = 10_000;
 	private static final int NUMBER_OF_TEST_CATEGORIES = 10;
-	
+
 	@Autowired
 	private ICategoryDAO dao;
-	
+
 	@Test
 	public void testAddCatgory() throws Exception {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		Category category = makeNewCategory(type);
-		String title = category.getCategoryName();		
+		String title = category.getCategoryName();
 		int id = dao.addCategory(category);
 		Category fromDB = dao.getCategoryById(id);
 		assertEquals(fromDB.getCategoryName(), title);
 		assertEquals(fromDB.getForType(), type);
 		dao.deleteCategory(category);
 	}
-	
+
 	@Test
 	public void testUpdateCategory() throws Exception {
 		FinanceOperationType type = getRandomFinanceOperationType();
@@ -50,44 +50,45 @@ public class CategoryDAOTests {
 		dao.updateCategory(category);
 		Category fromDB = dao.getCategoryById(id);
 		assertEquals(fromDB.getCategoryName(), title);
-		dao.deleteCategory(category);		
+		dao.deleteCategory(category);
 	}
-	
+
 	@Test
 	public void testGetCategoryById() throws Exception {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		Category category = makeNewCategory(type);
-		String title = category.getCategoryName();		
+		String title = category.getCategoryName();
 		int id = dao.addCategory(category);
 		Category fromDB = dao.getCategoryById(id);
 		assertEquals(fromDB.getCategoryName(), title);
 		assertEquals(fromDB.getForType(), type);
-		dao.deleteCategory(category);		
+		dao.deleteCategory(category);
 	}
-	
+
 	@Test
 	public void testGetAllCategoriesForFOType() throws Exception {
 		FinanceOperationType type = getRandomFinanceOperationType();
 		List<Category> startingList = (List<Category>) dao.getAllCategoriesForFOType(type);
 		int startNumber = startingList.size();
 		List<Category> testCategories = new ArrayList<Category>();
-		
+
 		for (int numberOfNewCats = 0; numberOfNewCats < NUMBER_OF_TEST_CATEGORIES; numberOfNewCats++) {
 			Category testCat = makeNewCategory(type);
 			testCategories.add(testCat);
-			dao.addCategory(testCat);
+			int id = dao.addCategory(testCat);
+			testCat.setId(id);
 		}
-		
+
 		List<Category> finalList = (List<Category>) dao.getAllCategoriesForFOType(type);
 		int finalNumber = finalList.size();
 		startNumber += NUMBER_OF_TEST_CATEGORIES;
 		assertEquals(startNumber, finalNumber);
-		
-		for (int numberOftestCats = 0; numberOftestCats < testCategories.size(); numberOftestCats++) {
-			dao.deleteCategory(testCategories.get(numberOftestCats));
+
+		for (int numberOfTestCats = 0; numberOfTestCats < testCategories.size(); numberOfTestCats++) {
+			dao.deleteCategory(testCategories.get(numberOfTestCats));
 		}
 	}
-	
+
 	@Test
 	public void testGetCategoryByName() throws Exception {
 		FinanceOperationType type = getRandomFinanceOperationType();
@@ -99,19 +100,19 @@ public class CategoryDAOTests {
 		assertEquals(fromDB.getId(), id);
 		assertEquals(fromDB.getCategoryName(), category.getCategoryName());
 		assertEquals(fromDB.getForType(), category.getForType());
-		dao.deleteCategory(fromDB);		
+		dao.deleteCategory(fromDB);
 	}
-	
+
 	private Category makeNewCategory(FinanceOperationType type) {
 		Category category = new Category();
 		int randomNum = (int)(Math.random() * RANDOM_NUMBER_FOR_TESTS);
 		category.setCategoryName("testCategory" + randomNum);
 		category.setForType(type);
-		
+
 		return category;
-		
+
 	}
-	
+
 	private FinanceOperationType getRandomFinanceOperationType() {
 		FinanceOperationType type = null;
 		if (Math.random() > 0.5) {
@@ -120,7 +121,7 @@ public class CategoryDAOTests {
 		else {
 			type = FinanceOperationType.INCOME;
 		}
-		
+
 		return type;
 	}
 
