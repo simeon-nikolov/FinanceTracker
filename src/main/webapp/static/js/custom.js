@@ -12,6 +12,8 @@ function loadFinanceOperationsData(financeOperationType) {
 		url += "/" + accountName;
 	}
 
+	url += "/" + financeOperationType;
+
 	$.ajax({
 	    url: url,
 	    type: 'GET',

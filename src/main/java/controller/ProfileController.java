@@ -27,7 +27,7 @@ import exceptions.DAOException;
 public class ProfileController {
 	@Autowired
 	IUserDAO userDAO;
-	
+
 	@RequestMapping(value = "/profile", method = RequestMethod.GET)
 	public String showProfilePage(HttpSession session, Model model) {
 		try {
@@ -44,25 +44,29 @@ public class ProfileController {
 			e.printStackTrace();
 			return "forward:error";
 		}
-		
+
 		return "profile";
 	}
-	
+
 	@RequestMapping(value = "/changeCurrency", method = RequestMethod.POST)
 	public String changeDefaultCurrency(@ModelAttribute("changeCurrencyViewModel") @Valid ChangeCurrencyViewModel changeCurrencyViewModel,
 			BindingResult result, Model model, HttpSession session) {
+		Currency oldCurrency = null;
+		User user = null;
+
 		try {
-			User user = getUserFromSession(session);
+			user = getUserFromSession(session);
+			oldCurrency = user.getCurrency();
 			user.setCurrency(changeCurrencyViewModel.getCurrency());
 			userDAO.updateUser(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "forward:error";
 		}
-		
-		return "redirect:profile";
+
+		return "redirect:profile?changeCurrency&c1=" + oldCurrency.name() + "&c2=" + user.getCurrency();
 	}
-	
+
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
 	public String changePassword(@ModelAttribute("changePasswordViewModel") @Valid ChangePasswordViewModel changePasswordViewModel,
 			BindingResult result, Model model, HttpSession session) {
@@ -70,12 +74,12 @@ public class ProfileController {
 			User user = getUserFromSession(session);
 			String oldPassword = changePasswordViewModel.getOldPassword();
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			
+
 			if (encoder.matches(oldPassword, user.getPassword())) {
 				if (!changePasswordViewModel.getNewPassword().equals(changePasswordViewModel.getConfirmNewPassword())) {
 					throw new Exception("Passwords do not match!");
 				}
-				
+
 				String password = encoder.encode(changePasswordViewModel.getNewPassword());
 				user.setPassword(password);
 				userDAO.updateUser(user);
@@ -86,10 +90,10 @@ public class ProfileController {
 			e.printStackTrace();
 			return "forward:error";
 		}
-		
-		return "redirect:profile";
+
+		return "redirect:profile?changePassowrd";
 	}
-	
+
 	@RequestMapping(value = "/changeEmail", method = RequestMethod.POST)
 	public String changeEmail(@ModelAttribute("changeEmailViewModel") @Valid ChangeEmailViewModel changeEmailViewModel,
 			BindingResult result, Model model, HttpSession session) {
@@ -97,12 +101,12 @@ public class ProfileController {
 			User user = getUserFromSession(session);
 			String password = changeEmailViewModel.getEnterPassword();
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-			
+
 			if (encoder.matches(password, user.getPassword())) {
 				if (!changeEmailViewModel.getNewEmail().equals(changeEmailViewModel.getConfirmNewEmail())) {
-					throw new Exception("Emails do not match!");
+					throw new Exception("E-mails do not match!");
 				}
-				
+
 				String email = changeEmailViewModel.getNewEmail();
 				user.setEmail(email);
 				userDAO.updateUser(user);
@@ -113,19 +117,19 @@ public class ProfileController {
 			e.printStackTrace();
 			return "forward:error";
 		}
-		
-		return "redirect:profile";
+
+		return "redirect:profile?changeEmail";
 	}
-	
+
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
-		
+
 		if (username == null || username.isEmpty()) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			username = auth.getName();
 			session.setAttribute("username", username);
 		}
-		
+
 		User user = userDAO.getUserByUsername(username);
 
 		return user;

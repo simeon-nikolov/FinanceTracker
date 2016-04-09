@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%--@ page errorPage="./errorPage.jsp" --%>
+<%@ page errorPage="./errorPage.jsp" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -16,9 +16,9 @@
 <script src="./js/jquery-2.2.2.min.js" type="text/javascript"></script>
 <script src="./js/jquery-ui.min.js" type="text/javascript"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="./js/highcharts.js"></script>
+<script src="./js/highcharts-3d.js"></script>
+<script src="./js/exporting.js"></script>
 
 <script src="./js/custom.js" type="text/javascript"></script>
 <link rel="stylesheet" href="./css/jquery-ui.min.css">

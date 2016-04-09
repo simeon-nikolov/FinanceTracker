@@ -28,6 +28,9 @@
 					</form:select>
 					<input type="submit" class="btn btn-default btn-md" value="<spring:message code="profile.changeCurrencyButton"/>" />
 				</form:form>
+				<c:if test="${param.changeCurrency != null}">
+					<div class="alert alert-success">Currency successfully changed from ${param.c1} to ${param.c2}.</div>
+				</c:if>
 			</div>
 		</div>
 		<hr class="clear" />
@@ -54,6 +57,9 @@
 					</div>
 					<input type="submit" class="btn btn-default btn-md" value="<spring:message code="profile.changePassword"/>" />
 				</form:form>
+				<c:if test="${param.changePassowrd != null}">
+					<div class="alert alert-success">Password successfully changed!</div>
+				</c:if>
 			</div>
 		</div>
 		<hr class="clear" />
@@ -81,6 +87,9 @@
 					</div>
 					<input type="submit" class="btn btn-default btn-md" value="<spring:message code="profile.changeEmail"/>" />
 				</form:form>
+				<c:if test="${param.changeEmail != null}">
+					<div class="alert alert-success">E-mail successfully changed!</div>
+				</c:if>
 			</div>
 		</div>
 		<br class="clear" />

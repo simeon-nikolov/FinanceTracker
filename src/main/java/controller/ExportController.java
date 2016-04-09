@@ -46,19 +46,19 @@ import exceptions.DAOException;
 @Controller
 public class ExportController {
 	private static final int TABLE_COLS_COUNT = 5;
-	
+
 	@Autowired
 	private IUserDAO userDAO;
 	@Autowired
 	private IAccountDAO accountDAO;
 	@Autowired
 	private IFinanceOperationDAO financeOperationDAO;
-	
+
 	@RequestMapping(value = "/export", method = RequestMethod.GET)
 	public String showExportPage() {
 		return "export";
 	}
-	
+
 	@RequestMapping(value = "/export/pdf", method = RequestMethod.GET)
 	public void showPdfForCurrenthMonth(HttpServletResponse response, HttpSession session) {
 		try {
@@ -66,20 +66,20 @@ public class ExportController {
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			List<Expense> expenses = new LinkedList<Expense>();
 			List<Income> incomes = new LinkedList<Income>();
-			
+
 			for (Account account : accounts) {
 				List<Expense> expensesInAccount = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(account);
 				List<Income> incomesInAccount = (List<Income>) financeOperationDAO.getAllIncomesByAccount(account);
 				expenses.addAll(expensesInAccount);
 				incomes.addAll(incomesInAccount);
 			}
-			
+
 			generatePdf(response, expenses, incomes, user.getCurrency());
 		} catch (DAOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void generatePdf(HttpServletResponse response, List<Expense> expenses, List<Income> incomes, Currency userCurrency) {
 		Document document = new Document();
 		response.setContentType("application/pdf");
@@ -115,7 +115,7 @@ public class ExportController {
 	private void addTableInfo(PdfPTable table, List<? extends FinanceOperation> financeOperations, Currency userCurrency) throws DocumentException, IOException {
 		table.setWidthPercentage(100);
 		createTableHeading(table);
-		
+
 		if (financeOperations != null) {
 			for (FinanceOperation financeOperation : financeOperations) {
 				addTableRow(table, financeOperation, userCurrency);
@@ -130,22 +130,22 @@ public class ExportController {
 		addCellToTableRow(table, category);
 		String currency = financeOperation.getCurrency().name();
 		int amountSum = financeOperation.getAmount();
-		String amount = String.valueOf(MoneyOperations.amountPerHendred(amountSum));
-		addCellToTableRow(table, currency + amount);
+		String amount = String.format("%.2f", MoneyOperations.amountPerHendred(amountSum));
+		addCellToTableRow(table, currency + " " + amount);
 		String mainCurrency = userCurrency.name();
 		String amountInMainCurrency = "";
-		
+
 		try {
 			amountInMainCurrency = String.valueOf(MoneyOperations.amountPerHendred(CurrencyConverter
 					.convertToThisCurrency(amountSum, financeOperation.getCurrency(), userCurrency)));
 		} catch (APIException e) {
 			e.printStackTrace();
 		}
-		
+
 		addCellToTableRow(table, mainCurrency + amountInMainCurrency);
 		addCellToTableRow(table, financeOperation.getDescription());
 	}
-	
+
 	private void addCellToTableRow(PdfPTable table, String text) throws DocumentException, IOException {
 		PdfPCell cell = new PdfPCell();
 		Font rowCellFont = new Font(BaseFont.createFont(), 12, 0);
@@ -167,16 +167,16 @@ public class ExportController {
 		cell.addElement(new Paragraph(10, text, headFont));
 		table.addCell(cell);
 	}
-	
+
 	private User getUserFromSession(HttpSession session) throws DAOException {
 		String username = (String) session.getAttribute("username");
-		
+
 		if (username == null || username.isEmpty()) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			username = auth.getName();
 			session.setAttribute("username", username);
 		}
-		
+
 		User user = userDAO.getUserByUsername(username);
 
 		return user;

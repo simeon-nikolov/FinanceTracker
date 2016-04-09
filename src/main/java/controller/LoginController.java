@@ -23,25 +23,25 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String showLoginPage(Model model) {
 		model.addAttribute("loginUserViewModel", new LoginUserViewModel());
-		
+
 		return "login";
 	}
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel, 
+	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel,
 			BindingResult result, Model model, HttpSession session) {
-		
+
 		return "redirect:overview";
 	}
-	
+
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-	    
-	    if (auth != null){    
+
+	    if (auth != null){
 	        new SecurityContextLogoutHandler().logout(request, response, auth);
 	    }
-	    
+
 	    return "redirect:login";
 	}
 }

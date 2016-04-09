@@ -38,7 +38,6 @@ import com.google.gson.Gson;
 import dao.IAccountDAO;
 import dao.IFinanceOperationDAO;
 import dao.IUserDAO;
-import exceptions.DAOException;
 
 @Controller
 public class OverviewController {
@@ -184,8 +183,6 @@ public class OverviewController {
 			model.addAttribute("accounts", accounts);
 			model.addAttribute("chartData", new Gson().toJson(chartData));
 			model.addAttribute("dates", new Gson().toJson(dates));
-		} catch (DAOException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "forward:error";

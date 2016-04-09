@@ -396,6 +396,7 @@ public class ExpensesController {
 				allTags.add(tag.getTagName());
 			}
 		}
+
 		return allTags;
 	}
 }
