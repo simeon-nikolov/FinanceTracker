@@ -91,24 +91,27 @@ public class OverviewController {
 					if (expense.getDate().getMonthOfYear() == month && 
 								expense.getDate().getYear() == year) {
 						
-						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);						
+						float userCurrencyAmount = MoneyOperations.amountPerHendred(expense.getAmount());
+						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+						
 						if (expense.getCurrency() != user.getCurrency()) {
 							int result = CurrencyConverter.convertToThisCurrency(expense.getAmount(),
 									expense.getCurrency(), user.getCurrency());
-							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
-							expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
-							
-							Date date = expense.getDate().toDateTimeAtStartOfDay().toDate();
-							java.time.LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-							String dateKey = localDate.format(formatter);
-							
-							if (!expensesByDate.containsKey(expense.getDate())) {
-								expensesByDate.put(dateKey, 0.0f);
-							}
-							
-							expensesByDate.put(dateKey, expensesByDate.get(dateKey) + userCurrencyAmount);
+							userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 						}
+						
+						expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
 						expenseViews.add(expenseViewModel);
+						
+						Date date = expense.getDate().toDateTimeAtStartOfDay().toDate();
+						java.time.LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+						String dateKey = localDate.format(formatter);
+						
+						if (!expensesByDate.containsKey(dateKey)) {
+							expensesByDate.put(dateKey, 0.0f);
+						}
+						
+						expensesByDate.put(dateKey, expensesByDate.get(dateKey) + userCurrencyAmount);
 					}
 				}
 				
@@ -119,22 +122,23 @@ public class OverviewController {
 				for (Income income : accIncomes) {
 					if (income.getDate().getMonthOfYear() == month && 
 							income.getDate().getYear() == year) {
-										
+						float userCurrencyAmount = MoneyOperations.amountPerHendred(income.getAmount());
+						
 						if (income.getCurrency() != user.getCurrency()) {
 							int result = CurrencyConverter.convertToThisCurrency(income.getAmount(),
 									income.getCurrency(), user.getCurrency());
-							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
-							
-							Date date = income.getDate().toDateTimeAtStartOfDay().toDate();
-							java.time.LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-							String dateKey = localDate.format(formatter);
-							
-							if (!incomesByDate.containsKey(income.getDate())) {
-								incomesByDate.put(dateKey, 0.0f);
-							}
-							
-							incomesByDate.put(dateKey, incomesByDate.get(dateKey) + userCurrencyAmount);
+							userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 						}
+						
+						Date date = income.getDate().toDateTimeAtStartOfDay().toDate();
+						java.time.LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+						String dateKey = localDate.format(formatter);
+						
+						if (!incomesByDate.containsKey(dateKey)) {
+							incomesByDate.put(dateKey, 0.0f);
+						}
+						System.out.println(dateKey);
+						incomesByDate.put(dateKey, incomesByDate.get(dateKey) + userCurrencyAmount);
 					}
 				}
 			}
@@ -146,23 +150,23 @@ public class OverviewController {
 			YearMonth yearMonthObject = YearMonth.of(year, month);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 			List<String> dates = new ArrayList<String>(daysInMonth);
-			List<Integer> expensesInMonth = new ArrayList<Integer>(daysInMonth);
-			List<Integer> incomesInMonth = new ArrayList<Integer>(daysInMonth);
+			List<Float> expensesInMonth = new ArrayList<Float>(daysInMonth);
+			List<Float> incomesInMonth = new ArrayList<Float>(daysInMonth);
 			
 			for (int day = 1; day <= daysInMonth; day++) {
 				String date = year + "-" + month + "-" + day;
 				dates.add(date);
 				
 				if (expensesByDate.containsKey(date)) {
-					expensesInMonth.add(Math.round(expensesByDate.get(date)));
+					expensesInMonth.add(expensesByDate.get(date));
 				} else {
-					expensesInMonth.add(0);
+					expensesInMonth.add(0.0f);
 				}
 				
 				if (incomesByDate.containsKey(date)) {
-					incomesInMonth.add(Math.round(incomesByDate.get(date)));
+					incomesInMonth.add(incomesByDate.get(date));
 				} else {
-					incomesInMonth.add(0);
+					incomesInMonth.add(0.0f);
 				}
 			}
 			
