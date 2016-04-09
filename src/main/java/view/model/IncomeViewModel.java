@@ -3,6 +3,7 @@ package view.model;
 import java.util.Collection;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import model.Currency;
 import model.RepeatType;
@@ -32,10 +33,10 @@ public class IncomeViewModel {
 	@NotEmpty
 	private String account;
 
+	@NotNull
 	private LocalDate date;
 
-	@NotNull
-	@NotEmpty
+	@Size(min=1)
 	private String description;
 
 	@NotNull
