@@ -9,7 +9,7 @@
 				<li><a href="./allExpenses">Expenses</a></li>
 				<li><a href="./allIncomes">Incomes</a></li>
 				<li><a href="./allBudgets">Budgets</a></li>
-				<li><a href="export.html">Export</a></li>					
+				<li><a href="./export">Export</a></li>				
 				<li><a href="./logout">Logout</a></li>
 				<li><a href="./profile">${username}</a></li>
 			</ul>
