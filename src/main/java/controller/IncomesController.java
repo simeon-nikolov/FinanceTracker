@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import utils.CurrencyConverter;
 import utils.MoneyOperations;
-import view.model.ExpenseViewModel;
 import view.model.IncomeViewModel;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
@@ -79,6 +78,7 @@ public class IncomesController {
 									user.getCurrency());
 							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 							incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);
+							incomeViewModel.setUserCurrency(user.getCurrency());
 						}
 						incomeViews.add(incomeViewModel);
 					}

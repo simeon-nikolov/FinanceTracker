@@ -59,23 +59,27 @@ public class ExpensesController {
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			Map<String, Integer> amountsByCategory = new TreeMap<String, Integer>();
 			List<ExpenseViewModel> expenseViews = new LinkedList<ExpenseViewModel>();
-			
+
 			addMonthAndYearToSession(session);
 			int month = (int) session.getAttribute("month");
 			int year = (int) session.getAttribute("year");
-			
+
 			for (Account acc : accounts) {
 				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
 
 				for (Expense expense : accExpenses) {
 					if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
 						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+						float userCurrencyAmount = expenseViewModel.getAmount();
+
 						if (expense.getCurrency() != user.getCurrency()) {
 							int result = CurrencyConverter.convertToThisCurrency(expense.getAmount(),
 										expense.getCurrency(), user.getCurrency());
-							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
-							expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
+							userCurrencyAmount = MoneyOperations.amountPerHendred(result);
 						}
+
+						expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
+						expenseViewModel.setUserCurrency(user.getCurrency());
 						expenseViews.add(expenseViewModel);
 					}
 				}
@@ -393,13 +397,13 @@ public class ExpensesController {
 
 		return allTags;
 	}
-	
+
 	private void addMonthAndYearToSession(HttpSession session){
 		if (session.getAttribute("month") == null || session.getAttribute("year") == null) {
 			int month = LocalDate.now().getMonthOfYear();
 			session.setAttribute("month", month);
 			int year = LocalDate.now().getYear();
 			session.setAttribute("year", year);
-		}				
+		}
 	}
 }

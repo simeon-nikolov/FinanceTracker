@@ -37,15 +37,6 @@
 							<td><form:errors path="budgetType" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td><label for="repeatType"><spring:message code="repeatMessage"/></label></td>
-							<td>
-								<form:select id="repeatType" style="width: 100px; height: 25px;" path="repeatType">
-									<form:options items="${repeatTypes}" />
-								</form:select>
-							</td>
-							<td><form:errors path="repeatType" cssClass="error" /></td>
-						</tr>
-						<tr>
 							<td><label for="date-picker"><spring:message code="budgets.beginDateMessage"/></label></td>
 							<td><form:input class="date-picker" style="width: 100px;" path="beginDate" value="${budgetViewModel.beginDate}" /></td>
 							<td><form:errors path="beginDate" cssClass="error" /></td>

@@ -60,6 +60,12 @@
 				<c:if test="${param.changePassowrd != null}">
 					<div class="alert alert-success">Password successfully changed!</div>
 				</c:if>
+				<c:if test="${param.passwordsMatchError != null}">
+					<div class="alert alert-danger">Passwords do not match!</div>
+				</c:if>
+				<c:if test="${param.passwordIncorrect != null}">
+					<div class="alert alert-danger">Password is incorrect!</div>
+				</c:if>
 			</div>
 		</div>
 		<hr class="clear" />
@@ -89,6 +95,12 @@
 				</form:form>
 				<c:if test="${param.changeEmail != null}">
 					<div class="alert alert-success">E-mail successfully changed!</div>
+				</c:if>
+				<c:if test="${param.emailMatchError != null}">
+					<div class="alert alert-danger">E-mails do not match!</div>
+				</c:if>
+				<c:if test="${param.passwordEmailIncorrect != null}">
+					<div class="alert alert-danger">Password is incorrect!</div>
 				</c:if>
 			</div>
 		</div>

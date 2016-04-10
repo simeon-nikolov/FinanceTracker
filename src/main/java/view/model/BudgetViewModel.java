@@ -6,26 +6,28 @@ import model.BudgetType;
 import model.Currency;
 import model.RepeatType;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 
 public class BudgetViewModel {
 	private int id;
-	
+
 	@NotNull
 	private BudgetType budgetType;
-	
-	@NotNull
+
 	private RepeatType repeatType;
-	
+
 	private LocalDate beginDate;
-	
+
 	private LocalDate endDate;
-	
+
+	@NotNull
+	@NotEmpty
 	private float amount;
-	
+
 	@NotNull
 	private Currency currency;
-	
+
 	public BudgetViewModel() {}
 
 	public BudgetViewModel(int id, BudgetType budgetType, RepeatType repeatType, LocalDate beginDate, LocalDate endDate,

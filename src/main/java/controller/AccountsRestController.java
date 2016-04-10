@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import utils.CurrencyConverter;
 import utils.MoneyOperations;
 import view.model.ExpenseViewModel;
 import view.model.IncomeViewModel;
@@ -57,7 +58,7 @@ public class AccountsRestController {
 			List<Account> accounts = (List<Account>) accDao.getAllAccountsForUser(user);
 
 			for (Account acc : accounts) {
-				result.addAll(getExpensesByAccount(month, year, acc));
+				result.addAll(getExpensesByAccount(month, year, acc, user));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +80,7 @@ public class AccountsRestController {
 			int year = (int) session.getAttribute("year");
 
 			Account account = accDao.getAccountForUserByName(accountName, user);
-			result = getExpensesByAccount(month, year, account);
+			result = getExpensesByAccount(month, year, account, user);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,7 +101,7 @@ public class AccountsRestController {
 			List<Account> accounts = (List<Account>) accDao.getAllAccountsForUser(user);
 
 			for (Account acc : accounts) {
-				result.addAll(getIncomesByAccount(month, year, acc));
+				result.addAll(getIncomesByAccount(month, year, acc, user));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -122,7 +123,7 @@ public class AccountsRestController {
 			int year = (int) session.getAttribute("year");
 
 			Account account = accDao.getAccountForUserByName(accountName, user);
-			result = getIncomesByAccount(month, year, account);
+			result = getIncomesByAccount(month, year, account, user);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,13 +134,23 @@ public class AccountsRestController {
 		return result;
 	}
 
-	private List<ExpenseViewModel> getExpensesByAccount(int month, int year, Account acc) throws Exception {
+	private List<ExpenseViewModel> getExpensesByAccount(int month, int year, Account acc, User user) throws Exception {
 		List<ExpenseViewModel> result = new LinkedList<ExpenseViewModel>();
 		List<Expense> accExpenses = (List<Expense>) foDao.getAllExpensesByAccount(acc);
 
 		for (Expense expense : accExpenses) {
 			if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
 				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+				float userCurrencyAmount = expenseViewModel.getAmount();
+
+				if (expense.getCurrency() != user.getCurrency()) {
+					int amount = CurrencyConverter.convertToThisCurrency(expense.getAmount(),
+								expense.getCurrency(), user.getCurrency());
+					userCurrencyAmount = MoneyOperations.amountPerHendred(amount);
+				}
+
+				expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
+				expenseViewModel.setUserCurrency(user.getCurrency());
 				result.add(expenseViewModel);
 			}
 		}
@@ -147,14 +158,24 @@ public class AccountsRestController {
 		return result;
 	}
 
-	private List<IncomeViewModel> getIncomesByAccount(int month, int year, Account acc) throws Exception {
+	private List<IncomeViewModel> getIncomesByAccount(int month, int year, Account acc, User user) throws Exception {
 		List<IncomeViewModel> result = new LinkedList<IncomeViewModel>();
 		List<Income> accIncomes = (List<Income>) foDao.getAllIncomesByAccount(acc);
 
 		for (Income income : accIncomes) {
 			if (income.getDate().getMonthOfYear() == month && income.getDate().getYear() == year) {
-				IncomeViewModel expenseViewModel = incomeToIncomeViewModel(income);
-				result.add(expenseViewModel);
+				IncomeViewModel incomeViewModel = incomeToIncomeViewModel(income);
+				float userCurrencyAmount = incomeViewModel.getAmount();
+
+				if (income.getCurrency() != user.getCurrency()) {
+					int amount = CurrencyConverter.convertToThisCurrency(income.getAmount(),
+							income.getCurrency(), user.getCurrency());
+					userCurrencyAmount = MoneyOperations.amountPerHendred(amount);
+				}
+
+				incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);
+				incomeViewModel.setUserCurrency(user.getCurrency());
+				result.add(incomeViewModel);
 			}
 		}
 

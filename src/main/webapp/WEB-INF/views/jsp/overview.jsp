@@ -21,12 +21,12 @@
 			<script>
 				var chartData = <c:out value="${chartData}" escapeXml="false"></c:out>;
 				var dates = <c:out value="${dates}" escapeXml="false"></c:out>;
-				draw3dGroupedColumn(chartData, dates);
+				var title = '<spring:message code="overview.chartMessage" />';
+				draw3dGroupedColumn(chartData, dates, title);
 			</script>
 		</div>
 		<div id="column">
 			<div class="subnav">
-				<%@include file="partials/accountsSelect.jsp"%>
 				<c:forEach var="expense" items="${expenses}">
 					<%@include file="partials/expenseListTemplate.jsp"%>
 				</c:forEach>

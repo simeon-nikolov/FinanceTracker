@@ -68,14 +68,6 @@
 							<td><form:textarea id="description" path="description"></form:textarea></td>
 							<td><form:errors path="description" cssClass="error" /></td>
 						</tr>
-						<tr>
-							<td><label for="repeatType"><spring:message code="repeatMessage"/></label></td>
-							<td><form:select id="repeatType"
-									style="width: 100px; height: 25px;" path="repeatType">
-									<form:options items="${allRepeatTypes}" />
-								</form:select></td>
-							<td><form:errors path="repeatType" cssClass="error" /></td>
-						</tr>
 					</table>
 					<input type="submit" class="btn btn-primary btn-md" value="<spring:message code="button.add"/>" />
 				</fieldset>

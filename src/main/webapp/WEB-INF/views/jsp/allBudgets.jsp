@@ -9,14 +9,13 @@
 <div id="container">
 	<div class="wrapper">
 		<div id="budget-content">
-			<div class="month"> <h2>&lt; April &gt;</h2> </div>
 			<div><a href="./addBudget" class="btn btn-default btn-lg"><spring:message code="budgets.addBudget" /></a></div>
-			<c:forEach var="budget" items="${allBudgets}">				
+			<c:forEach var="budget" items="${allBudgets}">
 				<div class="budget">
 					<p>${budget.budgetType} - ${budget.repeatType}</p>
 					<p>${budget.currency} ${budget.amount}</p>
 					<div class="operations">
-						<a href="./editBudget?id=${budget.id}" class="btn btn-info btn-md"><spring:message code="button.edit" /></a> 
+						<a href="./editBudget?id=${budget.id}" class="btn btn-info btn-md"><spring:message code="button.edit" /></a>
 						<a href="./verifyDeleteBudget?id=${budget.id}" class="btn btn-danger btn-md"><spring:message code="button.delete"/></a>
 					</div>
 				</div>

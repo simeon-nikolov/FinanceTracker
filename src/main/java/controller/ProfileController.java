@@ -61,7 +61,7 @@ public class ProfileController {
 			userDAO.updateUser(user);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:profile?changeCurrency&c1=" + oldCurrency.name() + "&c2=" + user.getCurrency();
@@ -77,18 +77,18 @@ public class ProfileController {
 
 			if (encoder.matches(oldPassword, user.getPassword())) {
 				if (!changePasswordViewModel.getNewPassword().equals(changePasswordViewModel.getConfirmNewPassword())) {
-					throw new Exception("Passwords do not match!");
+					return "redirect:profile?passwordsMatchError";
 				}
 
 				String password = encoder.encode(changePasswordViewModel.getNewPassword());
 				user.setPassword(password);
 				userDAO.updateUser(user);
 			} else {
-				throw new Exception("Password is incorect!");
+				return "redirect:profile?passwordIncorrect";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:profile?changePassowrd";
@@ -104,18 +104,18 @@ public class ProfileController {
 
 			if (encoder.matches(password, user.getPassword())) {
 				if (!changeEmailViewModel.getNewEmail().equals(changeEmailViewModel.getConfirmNewEmail())) {
-					throw new Exception("E-mails do not match!");
+					return "redirect:profile?emailMatchError";
 				}
 
 				String email = changeEmailViewModel.getNewEmail();
 				user.setEmail(email);
 				userDAO.updateUser(user);
 			} else {
-				throw new Exception("Password is incorect!");
+				return "redirect:profile?passwordEmailIncorrect";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:profile?changeEmail";
