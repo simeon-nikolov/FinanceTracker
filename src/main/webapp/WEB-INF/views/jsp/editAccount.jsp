@@ -8,7 +8,7 @@
 <%@include file="partials/header.jsp"%>
 <div id="container">
 	<div class="wrapper">
-		<div id="content">			
+		<div id="content">
 			<div id="register">
 				<form:form action="editAccount" commandName="accountViewModel">
 					<fieldset>
@@ -23,19 +23,19 @@
 								<td><label for="balance"><spring:message code="accounts.editBalance"/></label></td>
 								<td><form:input path="balance" type="number" value=""/></td>
 								<td>
-									<form:errors path="balance" cssClass="error" /> 
+									<form:errors path="balance" cssClass="error" />
 								</td>
-							</tr>							
+							</tr>
 						</table>
-						<input type="submit" value="Submit" />
+						<input type="submit" class="btn btn-md btn-default" value="Submit" />
 					</fieldset>
-				</form:form>				
+				</form:form>
 			</div>
 			<div>
 				<p><spring:message code="accounts.warningFirstRow"/></p>
 				<p><spring:message code="accounts.warningSecondRow"/></p>
 				<p><spring:message code="accounts.warningThirdRow"/></p>
-			</div>			
+			</div>
 		</div>
 		<br class="clear" />
 	</div>

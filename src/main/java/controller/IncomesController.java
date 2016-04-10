@@ -39,6 +39,7 @@ import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
+import exceptions.APIException;
 import exceptions.DAOException;
 
 @Controller
@@ -69,45 +70,13 @@ public class IncomesController {
 
 			for (Account acc : accounts) {
 				List<Income> accIncomes = (List<Income>) foDao.getAllIncomesByAccount(acc);
-
-				for (Income in : accIncomes) {
-					if (in.getDate().getMonthOfYear() == month && in.getDate().getYear() == year) {
-						IncomeViewModel incomeViewModel = incomeToIncomeViewModel(in);
-						if (in.getCurrency() != user.getCurrency()) {
-							int result = CurrencyConverter.convertToThisCurrency(in.getAmount(), in.getCurrency(),
-									user.getCurrency());
-							float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
-							incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);
-							incomeViewModel.setUserCurrency(user.getCurrency());
-						}
-						incomeViews.add(incomeViewModel);
-					}
-				}
-
-				for (IncomeViewModel incomeViewModel : incomeViews) {
-					String category = "'" + incomeViewModel.getCategory() + "'";
-					int oldAmount = 0;
-
-					if (amountsByCategory.containsKey(category)) {
-						oldAmount = amountsByCategory.get(category);
-					}
-					amountsByCategory.put(category,
-							oldAmount + MoneyOperations.moneyToCents(incomeViewModel.getAmount()));
-				}
+				addAndCalculateIncomeForMonth(user, incomeViews, month, year, accIncomes);
+				calculateAmountsByCategory(incomeViews, amountsByCategory);
 			}
 
 			List<List<String>> chartData = new LinkedList<List<String>>();
-
-			for (String category : amountsByCategory.keySet()) {
-				int amount = amountsByCategory.get(category);
-				List<String> dataRow = new LinkedList<String>();
-				dataRow.add(category);
-				dataRow.add(String.valueOf(amount));
-				chartData.add(dataRow);
-			}
-
+			addChartData(amountsByCategory, chartData);
 			Collections.sort(incomeViews, (i1, i2) -> i1.getDate().getDayOfMonth() - i2.getDate().getDayOfMonth());
-
 			model.addAttribute("chartData", chartData);
 			model.addAttribute("incomes", incomeViews);
 			model.addAttribute("accounts", accounts);
@@ -117,6 +86,45 @@ public class IncomesController {
 		}
 
 		return "allIncomes";
+	}
+
+	private void addChartData(Map<String, Integer> amountsByCategory, List<List<String>> chartData) {
+		for (String category : amountsByCategory.keySet()) {
+			int amount = amountsByCategory.get(category);
+			List<String> dataRow = new LinkedList<String>();
+			dataRow.add(category);
+			dataRow.add(String.valueOf(amount));
+			chartData.add(dataRow);
+		}
+	}
+
+	private void calculateAmountsByCategory(List<IncomeViewModel> incomeViews, Map<String, Integer> amountsByCategory) {
+		for (IncomeViewModel incomeViewModel : incomeViews) {
+			String category = "'" + incomeViewModel.getCategory() + "'";
+			int oldAmount = 0;
+
+			if (amountsByCategory.containsKey(category)) {
+				oldAmount = amountsByCategory.get(category);
+			}
+			amountsByCategory.put(category,
+					oldAmount + MoneyOperations.moneyToCents(incomeViewModel.getAmount()));
+		}
+	}
+
+	private void addAndCalculateIncomeForMonth(User user, List<IncomeViewModel> incomeViews, int month, int year, List<Income> accIncomes) throws Exception, APIException {
+		for (Income in : accIncomes) {
+			if (in.getDate().getMonthOfYear() == month && in.getDate().getYear() == year) {
+				IncomeViewModel incomeViewModel = incomeToIncomeViewModel(in);
+				if (in.getCurrency() != user.getCurrency()) {
+					int result = CurrencyConverter.convertToThisCurrency(in.getAmount(), in.getCurrency(),
+							user.getCurrency());
+					float userCurrencyAmount = MoneyOperations.amountPerHendred(result);
+					incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);
+					incomeViewModel.setUserCurrency(user.getCurrency());
+				}
+				incomeViews.add(incomeViewModel);
+			}
+		}
 	}
 
 	@RequestMapping(value = "/addIncome", method = RequestMethod.GET)

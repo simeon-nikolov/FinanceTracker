@@ -36,6 +36,7 @@ import dao.ICategoryDAO;
 import dao.IFinanceOperationDAO;
 import dao.ITagDAO;
 import dao.IUserDAO;
+import exceptions.APIException;
 import exceptions.DAOException;
 
 @Controller
@@ -66,48 +67,13 @@ public class ExpensesController {
 
 			for (Account acc : accounts) {
 				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
-
-				for (Expense expense : accExpenses) {
-					if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
-						ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
-						float userCurrencyAmount = expenseViewModel.getAmount();
-
-						if (expense.getCurrency() != user.getCurrency()) {
-							int result = CurrencyConverter.convertToThisCurrency(expense.getAmount(),
-										expense.getCurrency(), user.getCurrency());
-							userCurrencyAmount = MoneyOperations.amountPerHendred(result);
-						}
-
-						expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
-						expenseViewModel.setUserCurrency(user.getCurrency());
-						expenseViews.add(expenseViewModel);
-					}
-				}
+				addAndCalculateExpensesForMonth(user, expenseViews, month, year, accExpenses);
 			}
 
-			for (ExpenseViewModel expenseViewModel : expenseViews) {
-				String category = "'" + expenseViewModel.getCategory() + "'";
-				int oldAmount = 0;
-
-				if (amountsByCategory.containsKey(category)) {
-					oldAmount = amountsByCategory.get(category);
-				}
-
-				amountsByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
-			}
-
+			calculateAmountsByCategory(amountsByCategory, expenseViews);
 			List<List<String>> chartData = new LinkedList<List<String>>();
-
-			for (String category : amountsByCategory.keySet()) {
-				int amount = amountsByCategory.get(category);
-				List<String> dataRow = new LinkedList<String>();
-				dataRow.add(category);
-				dataRow.add(String.valueOf(amount));
-				chartData.add(dataRow);
-			}
-
+			addChartData(amountsByCategory, chartData);
 			Collections.sort(expenseViews, (e1, e2) -> e1.getDate().getDayOfMonth() - e2.getDate().getDayOfMonth());
-
 			model.addAttribute("chartData", chartData);
 			model.addAttribute("expenses", expenseViews);
 			model.addAttribute("accounts", accounts);
@@ -117,6 +83,48 @@ public class ExpensesController {
 		}
 
 		return "allExpenses";
+	}
+
+	private void addChartData(Map<String, Integer> amountsByCategory, List<List<String>> chartData) {
+		for (String category : amountsByCategory.keySet()) {
+			int amount = amountsByCategory.get(category);
+			List<String> dataRow = new LinkedList<String>();
+			dataRow.add(category);
+			dataRow.add(String.valueOf(amount));
+			chartData.add(dataRow);
+		}
+	}
+
+	private void calculateAmountsByCategory(Map<String, Integer> amountsByCategory, List<ExpenseViewModel> expenseViews) {
+		for (ExpenseViewModel expenseViewModel : expenseViews) {
+			String category = "'" + expenseViewModel.getCategory() + "'";
+			int oldAmount = 0;
+
+			if (amountsByCategory.containsKey(category)) {
+				oldAmount = amountsByCategory.get(category);
+			}
+
+			amountsByCategory.put(category, oldAmount + MoneyOperations.moneyToCents(expenseViewModel.getAmount()));
+		}
+	}
+
+	private void addAndCalculateExpensesForMonth(User user, List<ExpenseViewModel> expenseViews, int month, int year, List<Expense> accExpenses) throws Exception, APIException {
+		for (Expense expense : accExpenses) {
+			if (expense.getDate().getMonthOfYear() == month && expense.getDate().getYear() == year) {
+				ExpenseViewModel expenseViewModel = expenseToExpenseViewModel(expense);
+				float userCurrencyAmount = expenseViewModel.getAmount();
+
+				if (expense.getCurrency() != user.getCurrency()) {
+					int result = CurrencyConverter.convertToThisCurrency(expense.getAmount(),
+								expense.getCurrency(), user.getCurrency());
+					userCurrencyAmount = MoneyOperations.amountPerHendred(result);
+				}
+
+				expenseViewModel.setUserCurrencyAmount(userCurrencyAmount);
+				expenseViewModel.setUserCurrency(user.getCurrency());
+				expenseViews.add(expenseViewModel);
+			}
+		}
 	}
 
 	@RequestMapping(value = "/addExpense", method = RequestMethod.GET)

@@ -20,9 +20,9 @@
 								<td><label for="balance"><spring:message code="accounts.initialBalanceMessage"/></label></td>
 								<td><form:input path="balance" type="text"/></td>
 								<td><form:errors path="balance" cssClass="error" /> </td>
-							</tr>							
+							</tr>
 						</table>
-						<input type="submit" value="<spring:message code="button.add"/>" />
+						<input type="submit" class="btn btn-md btn-default" value="<spring:message code="button.add"/>" />
 					</fieldset>
 				</form:form>
 			</div>
