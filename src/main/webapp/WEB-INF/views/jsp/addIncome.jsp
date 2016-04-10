@@ -28,6 +28,15 @@
 							<td><form:errors path="currency" cssClass="error" /></td>
 						</tr>
 						<tr>
+							<td><label for="account"><spring:message code="forAccount.message"/></label></td>
+							<td>
+								<form:select id="account" style="width: 100px; height: 25px;" path="account">
+									<form:options items="${allAccounts}" />
+								</form:select>
+							</td>
+							<td><form:errors path="account" cssClass="error" /></td>
+						</tr>
+						<tr>
 							<td><label for="category"><spring:message code="category.message"/></label></td>
 							<td>
 								<form:select id="category" style="width: 100px; height: 25px;" path="category" onchange="reloadTags(this.value)">

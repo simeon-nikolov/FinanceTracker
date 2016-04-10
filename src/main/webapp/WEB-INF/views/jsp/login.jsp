@@ -22,22 +22,22 @@
 				<form:form id="loginForm" method="post" action="./login"
 					class="form-horizontal" commandName="loginUserViewModel">
 					<fieldset>
-						<legend>Login</legend>
+						<legend><spring:message code="login.message"/></legend>
 						<table>
 							<tr>
-								<td><label for="username">Username:</label></td>
+								<td><label for="username"><spring:message code="profile.username"/></label></td>
 								<td><input path="username" type="text" id="username"
 									name="username" class="form-control" placeholder="Username" />
 								</td>
 							</tr>
 							<tr>
-								<td><label for="password">Password:</label></td>
+								<td><label for="password"><spring:message code="signUp.password"/></label></td>
 								<td><input path="password" type="password" id="password"
 									name="password" class="form-control" placeholder="Password" />
 								</td>
 							</tr>
 						</table>
-						<input class="btn btn-primary btn-md" type="submit" value="Login" />
+						<input class="btn btn-primary btn-md" type="submit" value="<spring:message code="button.login"/>" />
 					</fieldset>
 				</form:form>
 			</div>

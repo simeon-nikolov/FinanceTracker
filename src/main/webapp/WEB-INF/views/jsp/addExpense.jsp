@@ -28,7 +28,7 @@
 							<td><form:errors path="currency" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td><label for="account"><label for="currency"><spring:message code="forAccount.message"/></label></td>
+							<td><label for="account"><spring:message code="forAccount.message"/></label></td>
 							<td>
 								<form:select id="account" style="width: 100px; height: 25px;" path="account">
 									<form:options items="${allAccounts}" />

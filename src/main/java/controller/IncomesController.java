@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import utils.CurrencyConverter;
 import utils.MoneyOperations;
+import view.model.ExpenseViewModel;
 import view.model.IncomeViewModel;
 import dao.IAccountDAO;
 import dao.ICategoryDAO;
@@ -62,11 +63,11 @@ public class IncomesController {
 			List<Account> accounts = (List<Account>) accountDao.getAllAccountsForUser(user);
 			List<IncomeViewModel> incomeViews = new ArrayList<IncomeViewModel>();
 			Map<String, Integer> amountsByCategory = new HashMap<String, Integer>();
-			
+
 			addMonthAndYearToSession(session);
 			int month = (int) session.getAttribute("month");
 			int year = (int) session.getAttribute("year");
-			
+
 			for (Account acc : accounts) {
 				List<Income> accIncomes = (List<Income>) foDao.getAllIncomesByAccount(acc);
 
@@ -137,7 +138,6 @@ public class IncomesController {
 					tags.add(tag.getTagName());
 				}
 			}
-
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
@@ -400,15 +400,15 @@ public class IncomesController {
 
 		return allAccounts;
 	}
-	
-	private void addMonthAndYearToSession(HttpSession session){
+
+	private void addMonthAndYearToSession(HttpSession session) {
 		if (session.getAttribute("month") == null || session.getAttribute("year") == null) {
 			int month = LocalDate.now().getMonthOfYear();
 			session.setAttribute("month", month);
 			int year = LocalDate.now().getYear();
 			session.setAttribute("year", year);
 		}
-				
+
 	}
 
 }

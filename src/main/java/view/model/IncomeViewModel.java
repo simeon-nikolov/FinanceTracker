@@ -38,11 +38,9 @@ public class IncomeViewModel {
 
 	@Size(min=1)
 	private String description;
-
-	@NotNull
+	
 	private RepeatType repeatType;
-
-	@NotNull
+	
 	private Collection<String> tags;
 	
 	public IncomeViewModel() {}
