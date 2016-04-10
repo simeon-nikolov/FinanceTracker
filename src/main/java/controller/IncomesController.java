@@ -62,17 +62,11 @@ public class IncomesController {
 			List<Account> accounts = (List<Account>) accountDao.getAllAccountsForUser(user);
 			List<IncomeViewModel> incomeViews = new ArrayList<IncomeViewModel>();
 			Map<String, Integer> amountsByCategory = new HashMap<String, Integer>();
-			int month = LocalDate.now().getMonthOfYear();
-			int year = LocalDate.now().getYear();
-
-			if (session.getAttribute("month") != null) {
-				month = (int) session.getAttribute("month");
-			}
-
-			if (session.getAttribute("year") != null) {
-				year = (int) session.getAttribute("year");
-			}
-
+			
+			addMonthAndYearToSession(session);
+			int month = (int) session.getAttribute("month");
+			int year = (int) session.getAttribute("year");
+			
 			for (Account acc : accounts) {
 				List<Income> accIncomes = (List<Income>) foDao.getAllIncomesByAccount(acc);
 
@@ -405,6 +399,16 @@ public class IncomesController {
 		}
 
 		return allAccounts;
+	}
+	
+	private void addMonthAndYearToSession(HttpSession session){
+		if (session.getAttribute("month") == null || session.getAttribute("year") == null) {
+			int month = LocalDate.now().getMonthOfYear();
+			session.setAttribute("month", month);
+			int year = LocalDate.now().getYear();
+			session.setAttribute("year", year);
+		}
+				
 	}
 
 }

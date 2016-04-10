@@ -53,6 +53,7 @@ public class OverviewController {
 	public String showOverview(Model model, HttpSession session) {
 		try {
 			String username = (String) session.getAttribute("username");
+			
 
 			if (username == null || username.isEmpty()) {
 				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -62,16 +63,8 @@ public class OverviewController {
 
 			User user = userDAO.getUserByUsername(username);
 
-			if (session.getAttribute("month") == null) {
-				int month = LocalDate.now().getMonthOfYear();
-				session.setAttribute("month", month);
-			}
-			int month = (int) session.getAttribute("month");
-
-			if (session.getAttribute("year") == null) {
-				int year = LocalDate.now().getYear();
-				session.setAttribute("year", year);
-			}
+			addMonthAndYearToSession(session);			
+			int month = (int) session.getAttribute("month");			
 			int year = (int) session.getAttribute("year");
 
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
@@ -213,5 +206,15 @@ public class OverviewController {
 		expenseViewModel.setTags(tags);
 
 		return expenseViewModel;
+	}
+	
+	private void addMonthAndYearToSession(HttpSession session){
+		if (session.getAttribute("month") == null || session.getAttribute("year") == null) {
+			int month = LocalDate.now().getMonthOfYear();
+			session.setAttribute("month", month);
+			int year = LocalDate.now().getYear();
+			session.setAttribute("year", year);
+		}
+				
 	}
 }

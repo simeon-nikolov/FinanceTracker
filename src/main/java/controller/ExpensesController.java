@@ -59,17 +59,11 @@ public class ExpensesController {
 			List<Account> accounts = (List<Account>) accountDAO.getAllAccountsForUser(user);
 			Map<String, Integer> amountsByCategory = new TreeMap<String, Integer>();
 			List<ExpenseViewModel> expenseViews = new LinkedList<ExpenseViewModel>();
-			int month = LocalDate.now().getMonthOfYear();
-			int year = LocalDate.now().getYear();
-
-			if (session.getAttribute("month") != null) {
-				month = (int) session.getAttribute("month");
-			}
-
-			if (session.getAttribute("year") != null) {
-				year = (int) session.getAttribute("year");
-			}
-
+			
+			addMonthAndYearToSession(session);
+			int month = (int) session.getAttribute("month");
+			int year = (int) session.getAttribute("year");
+			
 			for (Account acc : accounts) {
 				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
 
@@ -398,5 +392,14 @@ public class ExpensesController {
 		}
 
 		return allTags;
+	}
+	
+	private void addMonthAndYearToSession(HttpSession session){
+		if (session.getAttribute("month") == null || session.getAttribute("year") == null) {
+			int month = LocalDate.now().getMonthOfYear();
+			session.setAttribute("month", month);
+			int year = LocalDate.now().getYear();
+			session.setAttribute("year", year);
+		}				
 	}
 }
