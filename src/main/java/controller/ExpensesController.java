@@ -79,7 +79,7 @@ public class ExpensesController {
 			model.addAttribute("accounts", accounts);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "allExpenses";
@@ -156,7 +156,7 @@ public class ExpensesController {
 			model.addAttribute("expenseViewModel", new ExpenseViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "addExpense";
@@ -195,7 +195,7 @@ public class ExpensesController {
 			financeOperationDAO.add(expense);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:allExpenses";
@@ -233,7 +233,7 @@ public class ExpensesController {
 			}
 		} catch(Exception e) {
 			model.addAttribute("errorMessage", e.getMessage());
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "editExpense";
@@ -277,7 +277,7 @@ public class ExpensesController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 		return "redirect:allExpenses";
 	}
@@ -291,7 +291,7 @@ public class ExpensesController {
 			model.addAttribute("expenseId", id);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 		return "verifyDeleteExpense";
 
@@ -311,7 +311,7 @@ public class ExpensesController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:/allExpenses";

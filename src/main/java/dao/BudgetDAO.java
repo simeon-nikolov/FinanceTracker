@@ -28,7 +28,7 @@ public class BudgetDAO implements IBudgetDAO {
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();
-			throw new DAOException("Budget can not be read from database!", e);
+			throw new DAOException("Budget can not be added to database!", e);
 		}
 		return id;
 	}
@@ -88,7 +88,7 @@ public class BudgetDAO implements IBudgetDAO {
 
 		return result;
 	}
-	
+
 	@Override
 	public boolean checkUserHasBudget(Budget budget, User user) throws DAOException {
 		try {
@@ -97,11 +97,11 @@ public class BudgetDAO implements IBudgetDAO {
 			query.setEntity("user", user);
 			Collection<FinanceOperation> result = query.list();
 			sessionFactory.getCurrentSession().getTransaction().commit();
-			
+
 			if (result.size() > 0) {
 				return true;
 			}
-			
+
 			return false;
 		} catch (RuntimeException e) {
 			sessionFactory.getCurrentSession().getTransaction().rollback();

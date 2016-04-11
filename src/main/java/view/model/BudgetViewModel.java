@@ -6,7 +6,6 @@ import model.BudgetType;
 import model.Currency;
 import model.RepeatType;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.time.LocalDate;
 
 public class BudgetViewModel {
@@ -21,8 +20,6 @@ public class BudgetViewModel {
 
 	private LocalDate endDate;
 
-	@NotNull
-	@NotEmpty
 	private float amount;
 
 	@NotNull

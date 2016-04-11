@@ -75,7 +75,7 @@ public class BudgetController {
 			budgetDAO.add(budget);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:allBudgets";
@@ -96,7 +96,7 @@ public class BudgetController {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "editBudget";
@@ -117,7 +117,7 @@ public class BudgetController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:allBudgets";
@@ -131,7 +131,7 @@ public class BudgetController {
 			model.addAttribute("budgetViewModel", budgetViewModel);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "verifyDeleteBudget";
@@ -150,7 +150,7 @@ public class BudgetController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:/allBudgets";

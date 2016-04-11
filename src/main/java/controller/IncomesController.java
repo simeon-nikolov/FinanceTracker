@@ -82,7 +82,7 @@ public class IncomesController {
 			model.addAttribute("accounts", accounts);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "allIncomes";
@@ -115,6 +115,7 @@ public class IncomesController {
 		for (Income in : accIncomes) {
 			if (in.getDate().getMonthOfYear() == month && in.getDate().getYear() == year) {
 				IncomeViewModel incomeViewModel = incomeToIncomeViewModel(in);
+
 				if (in.getCurrency() != user.getCurrency()) {
 					int result = CurrencyConverter.convertToThisCurrency(in.getAmount(), in.getCurrency(),
 							user.getCurrency());
@@ -122,6 +123,7 @@ public class IncomesController {
 					incomeViewModel.setUserCurrencyAmount(userCurrencyAmount);
 					incomeViewModel.setUserCurrency(user.getCurrency());
 				}
+
 				incomeViews.add(incomeViewModel);
 			}
 		}
@@ -146,6 +148,7 @@ public class IncomesController {
 					tags.add(tag.getTagName());
 				}
 			}
+
 			model.addAttribute("allCurrencies", allCurrencies);
 			model.addAttribute("allRepeatTypes", allRepeatTypes);
 			model.addAttribute("allCategories", allCategories);
@@ -154,7 +157,7 @@ public class IncomesController {
 			model.addAttribute("incomeViewModel", new IncomeViewModel());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 		return "addIncome";
 	}
@@ -192,7 +195,7 @@ public class IncomesController {
 			foDao.add(income);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:allIncomes";
@@ -228,7 +231,7 @@ public class IncomesController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "editIncome";
@@ -272,7 +275,7 @@ public class IncomesController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 		return "redirect:allIncomes";
 	}
@@ -304,7 +307,7 @@ public class IncomesController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "forward:error";
+			return "redirect:error";
 		}
 
 		return "redirect:/allIncomes";
@@ -418,5 +421,4 @@ public class IncomesController {
 		}
 
 	}
-
 }
