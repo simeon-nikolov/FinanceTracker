@@ -43,7 +43,6 @@ public class SignUpController {
 	public String signUp(@ModelAttribute("userViewModel") @Valid UserViewModel userViewModel, BindingResult result,
 			Model model) {
 
-		System.out.println(userViewModel.getUsername());
 		if (result.hasErrors()) {
 			return "signUp";
 		}

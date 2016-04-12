@@ -79,7 +79,7 @@ public class ProfileController {
 				if (!changePasswordViewModel.getNewPassword().equals(changePasswordViewModel.getConfirmNewPassword())) {
 					return "redirect:profile?passwordsMatchError";
 				}
-
+				
 				String password = encoder.encode(changePasswordViewModel.getNewPassword());
 				user.setPassword(password);
 				userDAO.updateUser(user);
@@ -101,6 +101,18 @@ public class ProfileController {
 			User user = getUserFromSession(session);
 			String password = changeEmailViewModel.getEnterPassword();
 			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+			
+			if (result.hasErrors()) {
+				model.addAttribute("username", user.getUsername());
+				model.addAttribute("email", user.getEmail());
+				model.addAttribute("changeEmailViewModel", new ChangeEmailViewModel());
+				model.addAttribute("changePasswordViewModel", new ChangePasswordViewModel());
+				ChangeCurrencyViewModel changeCurrencyViewModel = new ChangeCurrencyViewModel();
+				changeCurrencyViewModel.setCurrency(user.getCurrency());
+				model.addAttribute("changeCurrencyViewModel", changeCurrencyViewModel);
+				model.addAttribute("currencies", Currency.values());
+				return "profile";
+			}
 
 			if (encoder.matches(password, user.getPassword())) {
 				if (!changeEmailViewModel.getNewEmail().equals(changeEmailViewModel.getConfirmNewEmail())) {

@@ -30,7 +30,7 @@ public class UserDAO implements IUserDAO {
 			id = (int) sessionFactory.getCurrentSession().save(user);
 			sessionFactory.getCurrentSession().getTransaction().commit();
 		} catch (ConstraintViolationException  e) {
-			throw new  DuplicateUserException("Username or email is aleready taken!", e);			
+			throw new DuplicateUserException("Username or email is aleready taken!", e);			
 		} catch (RuntimeException e) {			
 			throw new DAOException("User can not be read from database!", e);
 		} 

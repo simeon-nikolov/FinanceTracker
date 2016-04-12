@@ -66,10 +66,10 @@ public class OverviewController {
 
 			for (Account acc : accounts) {
 				List<Expense> accExpenses = (List<Expense>) financeOperationDAO.getAllExpensesByAccount(acc);
-				amountToSpend += addAndCalculateExpensesForMonth(user, month, year, expenseViews, expensesByDate, amountToSpend, accExpenses);
+				amountToSpend = addAndCalculateExpensesForMonth(user, month, year, expenseViews, expensesByDate, amountToSpend, accExpenses);
 				amountToSpend += MoneyOperations.amountPerHendred(acc.getBalance());
 				List<Income> accIncomes = (List<Income>) financeOperationDAO.getAllIncomesByAccount(acc);
-				amountToSpend += addAndCalculateIncomesForMonth(user, month, year, incomesByDate, amountToSpend, accIncomes);
+				amountToSpend = addAndCalculateIncomesForMonth(user, month, year, incomesByDate, amountToSpend, accIncomes);
 			}
 
 			List<Map<String, Object>> chartData = new LinkedList<Map<String, Object>>();

@@ -26,6 +26,7 @@ public class UserViewModel {
     @NotEmpty
     @NotNull
     @Email
+    @Pattern(regexp = "(^\\S+@\\S+\\.\\S+$)", message = "Not valid e-mail address!")
     private String email;
     
   	public String getUsername() {

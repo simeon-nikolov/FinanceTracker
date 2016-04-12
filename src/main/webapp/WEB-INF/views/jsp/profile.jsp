@@ -88,7 +88,7 @@
 						</tr>
 						<tr>
 							<td><label for="confirm-new-password"><spring:message code="profile.confirmNewEmail"/></label></td>
-							<td><form:input id="confirm-new-password" path="confirmNewEmail" type="text" value="" /></td>
+							<td><form:input id="confirm-new-password" path="confirmNewEmail" type="email" value="" /></td>
 							<td><form:errors path="confirmNewEmail" cssClass="error" /></td>
 						</tr>
 						<tr>
