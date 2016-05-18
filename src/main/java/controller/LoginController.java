@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,6 +23,13 @@ public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String showLoginPage(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean isLoggedIn = auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+
+		if (isLoggedIn) {
+			return "redirect:/overview";
+		}
+
 		model.addAttribute("loginUserViewModel", new LoginUserViewModel());
 
 		return "login";
@@ -31,7 +39,7 @@ public class LoginController {
 	public String login(@ModelAttribute("loginUserViewModel") @Valid LoginUserViewModel loginUserViewModel,
 			BindingResult result, Model model, HttpSession session) {
 
-		return "redirect:overview";
+		return "redirect:/overview";
 	}
 
 	@RequestMapping(value="/logout", method = RequestMethod.GET)
@@ -42,6 +50,6 @@ public class LoginController {
 	        new SecurityContextLogoutHandler().logout(request, response, auth);
 	    }
 
-	    return "redirect:login";
+	    return "redirect:/login";
 	}
 }

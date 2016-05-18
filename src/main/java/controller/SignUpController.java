@@ -7,6 +7,9 @@ import model.Currency;
 import model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +37,13 @@ public class SignUpController {
 
 	@RequestMapping(value = "/signUp", method = RequestMethod.GET)
 	public String showSignUpPage(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean isLoggedIn = auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+
+		if (isLoggedIn) {
+			return "redirect:/overview";
+		}
+
 		UserViewModel userViewModel = new UserViewModel();
 		model.addAttribute("userViewModel", userViewModel);
 		return "signUp";
